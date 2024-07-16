@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  @apply bg-[#181818] text-[#F1F1F1];
+
+  font-family: "Victor Mono", monospace;
+}
+
+nav.navbar {
+  @apply text-lg select-none cursor-default;
+  @apply flex gap-4;
+  @apply sticky top-0;
+  @apply z-40;
+
+  .navbar-link {
+    @apply transition-all;
+
+    &.router-link-active {
+      @apply font-bold;
+    }
+
+    &:hover {
+      @apply font-bold;
+    }
+  }
+}
+
+.main-app {
+  @apply p-2
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-bold
+}
+
+h1 {
+  @apply text-2xl
+}
+
+input.control-input {
+  @apply px-2 py-2;
+  @apply rounded-lg;
+  @apply border border-[#787878] placeholder-[#787878] bg-[#181818];
+
+  @apply outline-none;
+}
+
+.control-button {
+  @apply px-2 py-2;
+  @apply rounded-lg;
+
+  @apply bg-[#183618];
+}
+
+.alert {
+  @apply p-2;
+  @apply border rounded-lg;
+
+  &.warning {
+    @apply border-amber-700 bg-amber-950;
+  }
+}

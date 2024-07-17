@@ -5,7 +5,7 @@ Minimalistic Game Launcher for Roblox
 ![Screenshot](docs/screenshot.png)
 
 > [!CAUTION]
-> 
+>
 > This is huge pre-alpha-beta version
 >  - Currently, you can sign in only with cookie
 >  - Code structure sucks
@@ -17,14 +17,14 @@ Minimalistic Game Launcher for Roblox
 3. I wanted to practice with my Rust/Vue skills
 4. **Because I can**™ 🕺
 
-## I mean why `rsblox` 
+## Why `rsblox`
 
 **Rust** + **Roblox** = **rsblox**
 
 ## Installation
 
 1. get rust, nodejs
-2. setup [tauri environment](https://tauri.app/v1/guides/getting-started/prerequisites) 
+2. setup [tauri environment](https://tauri.app/v1/guides/getting-started/prerequisites)
 3. install `tauri-cli`
    ```shell
    cargo install tauri-cli
@@ -34,11 +34,12 @@ Minimalistic Game Launcher for Roblox
    cargo tauri build
    ```
 5. do push-ups while building executable 💪💪💪
-6. run it! 
+6. run it!
 
 ## TODOs
-- [ ] Finish friend's tooltip
+- [X] Finish friend's tooltip
 - [ ] Make game page (currently its only play button)
 - [ ] Create user's profile page
+- [ ] Add skeleton elements [(example)](https://element-plus.org/en-US/component/skeleton.html)
 - [ ] Setup GitHub action
 - [ ] Support custom CSS

@@ -2337,8 +2337,8 @@ dependencies = [
 
 [[package]]
 name = "roboat"
-version = "0.34.5"
-source = "git+https://github.com/Mon4ik/roboat.git?branch=feat/more-methods-and-endpoints#9d05de1272ca926d58904e1acb51cddad1df9634"
+version = "0.35.0"
+source = "git+https://github.com/Mon4ik/roboat.git?branch=feat/more-methods-and-endpoints#bf11a2f6e79787d1836ed2b58aba7a33e726fe85"
 dependencies = [
  "base64 0.21.7",
  "reqwest",

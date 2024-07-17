@@ -201,6 +201,25 @@ fn open_place<R: Runtime>(app: AppHandle<R>, place_id: u64) -> Result<(), String
     Ok(())
 }
 
+#[tauri::command]
+fn open_server<R: Runtime>(
+    app: AppHandle<R>,
+    place_id: u64,
+    game_id: String,
+) -> Result<(), String> {
+    api::shell::open(
+        &app.shell_scope(),
+        format!(
+            "roblox://experiences/start?placeId={}&gameInstanceId={}",
+            place_id, game_id
+        ),
+        None,
+    )
+    .map_err(|err| err.to_string())?;
+
+    Ok(())
+}
+
 pub fn init<R: Runtime>() -> TauriPlugin<R> {
     Builder::new("roblox-api")
         .invoke_handler(tauri::generate_handler![

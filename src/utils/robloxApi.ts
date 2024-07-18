@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import {
     FriendUserInformation,
     GameDetails,
+    GameMedia,
     PlaceDetails,
     RecommendationsTopic,
     UserPresence,
@@ -74,6 +75,12 @@ export const useRobloxApi = defineStore("robloxApi", {
             });
         },
 
+        getGameMedia(universeId: number) {
+            return this._invoke<GameMedia[]>("game_media", {
+                universeId,
+            });
+        },
+
         getGameDetails(universeId: number) {
             return this._invoke<GameDetails>("game_details", {
                 universeId,
@@ -97,6 +104,13 @@ export const useRobloxApi = defineStore("robloxApi", {
                 placeIds,
             });
         },
+
+        getMediaUrls(assetIds: number[]) {
+            return this._invoke<string[]>("get_game_thumbnails", {
+                assetIds,
+            });
+        },
+
 
         playPlace(placeId: number) {
             return this._invoke<GameDetails>("open_place", {

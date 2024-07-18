@@ -2,7 +2,7 @@ use std::sync::Mutex;
 
 use roboat::discovery::RecommendationsTopic;
 use roboat::friends::FriendUserInformation;
-use roboat::games::{GameDetail, PlaceDetails};
+use roboat::games::{GameDetail, GameMedia, PlaceDetails};
 use roboat::presence::UserPresence;
 use roboat::thumbnails::{ThumbnailSize, ThumbnailType};
 use roboat::ClientBuilder;
@@ -107,6 +107,16 @@ async fn place_details(
 }
 
 #[tauri::command]
+async fn game_media(universe_id: u64) -> Result<Vec<GameMedia>, String> {
+    let client = ClientBuilder::new().build();
+
+    client
+        .game_media(universe_id)
+        .await
+        .map_err(|err| err.to_string())
+}
+
+#[tauri::command]
 async fn game_details(
     state: State<'_, RobloxApiState>,
     universe_id: u64,
@@ -190,6 +200,23 @@ async fn get_head_thumbnails(place_ids: Vec<u64>) -> Result<Vec<String>, String>
 }
 
 #[tauri::command]
+async fn get_game_thumbnails(asset_ids: Vec<u64>) -> Result<Vec<String>, String> {
+    // let cookie = {
+    //     state.0.lock().unwrap().clone()
+    // };
+
+    let client = ClientBuilder::new().build();
+
+    let size = ThumbnailSize::S768x432;
+    let thumbnail_type = ThumbnailType::Asset;
+
+    client
+        .thumbnail_url_bulk(asset_ids, size, thumbnail_type)
+        .await
+        .map_err(|err| err.to_string())
+}
+
+#[tauri::command]
 fn open_place<R: Runtime>(app: AppHandle<R>, place_id: u64) -> Result<(), String> {
     api::shell::open(
         &app.shell_scope(),
@@ -229,12 +256,15 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             friends_list,
             recommendations,
             get_presences,
+            game_media,
             game_details,
             place_details,
             get_icons,
             get_head_thumbnails,
+            get_game_thumbnails,
             get_headshots,
-            open_place
+            open_place,
+            open_server,
         ])
         .setup(|app_handle| {
             app_handle.manage(RobloxApiState::default());

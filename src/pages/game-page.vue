@@ -1,19 +1,38 @@
 <script setup lang="ts">
+import '../assets/css/splide.css';
+
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useRobloxApi } from "../utils/robloxApi";
 
-import { GameDetails } from "../utils/typings.ts";
+import GameDescriptionTab from "../components/GamePage/GameDescriptionTab.vue";
+
+import { GameDetails, GameMedia, GameMediaType } from "../utils/typings.ts";
 
 const robloxApi = useRobloxApi();
 const route = useRoute();
 
+const currentTab = ref<number>(0);
+
 const gameDetails = ref<GameDetails>();
+const gameMedia = ref<GameMedia[]>([]);
+const gameMediaUrls = ref<Record<number, string>>({});
 
 onMounted(async () => {
     gameDetails.value = await robloxApi.getGameDetails(
         parseInt(route.params.id as string),
     );
+
+    gameMedia.value = await robloxApi.getGameMedia(gameDetails.value.universe_id)
+    const gameMediaImages = gameMedia.value
+        .filter((media) => media.image_id)
+        .map((media) => media.image_id) as number[]
+
+    const _gameMediaUrls = await robloxApi.getMediaUrls(gameMediaImages)
+
+    gameMediaUrls.value = Object.fromEntries(
+        gameMediaImages.map((id, i) => [id, _gameMediaUrls[i]])
+    )
 });
 
 function play() {
@@ -27,7 +46,15 @@ function play() {
     <main class="game-page" v-if="gameDetails">
         <div class="game-header grid grid-cols-2 gap-4">
             <div class="game-images">
-                <img src="https://placehold.co/1920x1080" class="rounded-lg" />
+                <Splide :options="{ rewind: true }" aria-label="My Favorite Images">
+                    <SplideSlide v-for="media in gameMedia">
+                        <img v-if="media.asset_type === GameMediaType.Image"
+                            :src="gameMediaUrls[media.image_id ?? 0] ?? 'https://placehold.co/1920x1080?text=Loading...'"
+                            class="rounded-lg" />
+                        <img v-else src="https://placehold.co/1920x1080?text=Youtube+Embeds+not+currently+supported"
+                            class="rounded-lg" />
+                    </SplideSlide>
+                </Splide>
             </div>
             <div class="game-info">
                 <div class="game-title">
@@ -46,6 +73,27 @@ function play() {
                                 clip-rule="evenodd" />
                         </svg>
                     </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-sections" v-if="gameDetails">
+            <div class="game-tabs">
+                <button :class="currentTab === 0 ? 'tab-active' : ''" @click="currentTab = 0">About</button>
+                <button :class="currentTab === 1 ? 'tab-active' : ''" @click="currentTab = 1">Store</button>
+                <button :class="currentTab === 2 ? 'tab-active' : ''" @click="currentTab = 2">Servers</button>
+            </div>
+
+            <GameDescriptionTab v-if="currentTab === 0" :gameDetails="gameDetails" />
+            <div v-if="currentTab === 1" class="game-tab">
+                <div class="alert warning">
+                    I'm too broke to debug this menu, sooo
+                </div>
+            </div>
+
+            <div v-if="currentTab === 2" class="game-tab">
+                <div class="alert warning">
+                    WIP
                 </div>
             </div>
         </div>
@@ -83,6 +131,36 @@ function play() {
                     @apply bg-green-700;
                 }
             }
+        }
+    }
+
+    .game-sections {
+        @apply mt-2 rounded-lg;
+        @apply p-2 bg-[#121212];
+
+        .game-tabs {
+            @apply grid grid-cols-3 gap-2;
+
+            button {
+                @apply w-full p-2;
+                @apply rounded-sm;
+
+                &.tab-active {
+                    @apply bg-[#242424];
+                }
+
+                &:hover {
+                    @apply bg-[#242424];
+                }
+
+                &:active {
+                    @apply bg-[#101010];
+                }
+            }
+        }
+
+        .game-tab {
+            @apply p-2;
         }
     }
 }

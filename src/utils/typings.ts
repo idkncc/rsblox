@@ -69,6 +69,22 @@ export interface Recommendation {
     player_count: number;
 }
 
+export enum GameMediaType {
+    Image = "Image",
+    YoutubeVideo = "YoutubeVideo"
+}
+
+export interface GameMedia {
+    asset_type_id: number,
+    asset_type: GameMediaType,
+    approved: boolean,
+
+    image_id?: number,
+    alt_text?: string,
+    video_hash?: string,
+    video_title?: string,
+}
+
 export enum AvatarType {
     MorphToR6 = "MorphToR6",
     MorphToR15 = "MorphToR15",

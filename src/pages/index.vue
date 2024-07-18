@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { invoke } from "@tauri-apps/api/tauri";
 
 import { useRobloxApi } from "../utils/robloxApi";
+import chunk from "lodash.chunk";
 
 import FriendCard from "../components/FriendCard.vue";
 import GameCard from "../components/GameCard.vue";
@@ -57,10 +57,13 @@ onMounted(async () => {
         .then((topics) =>
             topics
                 .filter((a) => a.treatment_type !== TreatmentType.FriendCarousel)
-                .map((a) => ({
-                    ...a,
-                    recommendation_list: a.recommendation_list.slice(0, 24),
-                }))
+                .map((a) => {
+                    if (a.topic_id === 100000003) {
+                        a.recommendation_list = a.recommendation_list.slice(0, 8)
+                    }
+
+                    return a
+                })
                 .sort((a, b) =>
                     a.topic_id === 100000003 ? -1 : b.topic_id === 100000003 ? 1 : 0
                 )
@@ -74,24 +77,23 @@ onMounted(async () => {
     const iconsBatches = await Promise.all(
         topics.value.map(async (topic) => {
             if (topic.treatment_type === TreatmentType.Carousel) {
-                const thumbnails = await invoke<RecommendationsTopic[]>(
-                    "plugin:roblox-api|get_icons",
-                    {
-                        universeIds: topic.recommendation_list.map((r) => r.universe_id),
-                    }
-                );
+                const thumbnails = (await Promise.all(
+                    chunk(topic.recommendation_list.map((r) => r.universe_id), 9)
+                        .map((universeIdsChunk) => robloxApi.getGamesIcons(universeIdsChunk))
+                )).flat(1);
+
 
                 return topic.recommendation_list.map((r, i) => [
                     r.universe_id,
                     thumbnails[i],
                 ]);
             } else {
-                const thumbnails = await invoke<RecommendationsTopic[]>(
-                    "plugin:roblox-api|get_head_thumbnails",
-                    {
-                        placeIds: topic.recommendation_list.map((r) => r.root_place_id),
-                    }
-                );
+                const thumbnails = (await Promise.all(
+                    chunk(topic.recommendation_list.map((r) => r.root_place_id), 9)
+                        .map((universeIdsChunk) => robloxApi.getGamesThumbnails(universeIdsChunk))
+                )).flat(1);
+
+                console.log(thumbnails)
 
                 return topic.recommendation_list.map((r, i) => [
                     r.universe_id,

@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
-import { invoke } from "@tauri-apps/api/tauri";
 import { useRoute } from "vue-router";
-import { GameDetails } from "../utils/typings.ts";
 import { useRobloxApi } from "../utils/robloxApi";
+
+import { GameDetails } from "../utils/typings.ts";
 
 const robloxApi = useRobloxApi();
 const route = useRoute();
@@ -19,11 +19,7 @@ onMounted(async () => {
 function play() {
     if (!gameDetails.value) return;
 
-    robloxApi;
-
-    invoke<GameDetails>("plugin:roblox-api|open_place", {
-        placeId: gameDetails.value.root_place_id,
-    }).then(() => console.info("play"));
+    robloxApi.playPlace(gameDetails.value.root_place_id);
 }
 </script>
 
@@ -43,20 +39,11 @@ function play() {
 
                 <div class="game-play">
                     <button class="play-button" @click="play">
-                        <svg
-                            class="play-button-icon"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                fill-rule="evenodd"
+                        <svg class="play-button-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd"
                                 d="M10.271 5.575C8.967 4.501 7 5.43 7 7.12v9.762c0 1.69 1.967 2.618 3.271 1.544l5.927-4.881a2 2 0 0 0 0-3.088l-5.927-4.88Z"
-                                clip-rule="evenodd"
-                            />
+                                clip-rule="evenodd" />
                         </svg>
                     </button>
                 </div>

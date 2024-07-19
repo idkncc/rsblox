@@ -4,8 +4,11 @@ import {
     FriendUserInformation,
     GameDetails,
     GameMedia,
+    GameServer,
     PlaceDetails,
     RecommendationsTopic,
+    ThumbnailSize,
+    ThumbnailType,
     UserPresence,
 } from "./typings";
 
@@ -87,28 +90,41 @@ export const useRobloxApi = defineStore("robloxApi", {
             });
         },
 
+        getGameServers(placeId: number, cursor?: string) {
+            return this._invoke<[GameServer[], string | undefined]>("game_servers", {
+                placeId,
+                cursor
+            });
+        },
+
         getAvatarsHeadshots(avatarIds: number[]) {
             return this._invoke<string[]>("get_headshots", {
                 avatarIds,
             });
         },
 
-        getGamesIcons(universeIds: number[]) {
-            return this._invoke<string[]>("get_icons", {
-                universeIds,
-            });
+        getThumbnailsUrls(
+            ids: number[],
+            thumbnailSize: ThumbnailSize,
+            thumbnailType: ThumbnailType
+        ) {
+            return this._invoke<any[]>("thumbnail_url_bulk", {
+                ids,
+                thumbnailSize,
+                thumbnailType
+            })
         },
 
-        getGamesThumbnails(placeIds: number[]) {
-            return this._invoke<string[]>("get_head_thumbnails", {
-                placeIds,
-            });
-        },
-
-        getMediaUrls(assetIds: number[]) {
-            return this._invoke<string[]>("get_game_thumbnails", {
-                assetIds,
-            });
+        getTokensThumbnailsUrls(
+            tokens: string[],
+            thumbnailSize: ThumbnailSize,
+            thumbnailType: ThumbnailType
+        ) {
+            return this._invoke<string[]>("token_thumbnail_url_bulk", {
+                tokens,
+                thumbnailSize,
+                thumbnailType
+            })
         },
 
 

@@ -8,10 +8,12 @@ import { useRobloxApi } from "../utils/robloxApi";
 
 import FriendTooltip from "./FriendTooltip.vue";
 
-import type {
+import {
     FriendUserInformation,
     UserPresence,
     PlaceDetails,
+    ThumbnailSize,
+    ThumbnailType
 } from "../utils/typings.ts";
 
 const robloxApi = useRobloxApi();
@@ -49,7 +51,7 @@ onMounted(async () => {
         );
 
         placeThumbnail = await robloxApi
-            .getGamesThumbnails([placeDetails.universe_root_place_id])
+            .getThumbnailsUrls([placeDetails.universe_root_place_id], ThumbnailSize.S768x432, ThumbnailType.GameThumbnail)
             .then((res) => res[0]);
     }
 

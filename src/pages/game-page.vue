@@ -6,8 +6,9 @@ import { useRoute } from "vue-router";
 import { useRobloxApi } from "../utils/robloxApi";
 
 import GameDescriptionTab from "../components/GamePage/GameDescriptionTab.vue";
+import GameServerTab from "../components/GamePage/GameServerTab.vue";
 
-import { GameDetails, GameMedia, GameMediaType } from "../utils/typings.ts";
+import { GameDetails, GameMedia, GameMediaType, ThumbnailSize, ThumbnailType } from "../utils/typings.ts";
 
 const robloxApi = useRobloxApi();
 const route = useRoute();
@@ -28,7 +29,11 @@ onMounted(async () => {
         .filter((media) => media.image_id)
         .map((media) => media.image_id) as number[]
 
-    const _gameMediaUrls = await robloxApi.getMediaUrls(gameMediaImages)
+    const _gameMediaUrls = await robloxApi.getThumbnailsUrls(
+        gameMediaImages,
+        ThumbnailSize.S768x432,
+        ThumbnailType.Asset
+    )
 
     gameMediaUrls.value = Object.fromEntries(
         gameMediaImages.map((id, i) => [id, _gameMediaUrls[i]])
@@ -90,12 +95,7 @@ function play() {
                     I'm too broke to debug this menu, sooo
                 </div>
             </div>
-
-            <div v-if="currentTab === 2" class="game-tab">
-                <div class="alert warning">
-                    WIP
-                </div>
-            </div>
+            <GameServerTab v-if="currentTab === 2" :gameDetails="gameDetails" />
         </div>
     </main>
 </template>
@@ -139,7 +139,7 @@ function play() {
         @apply p-2 bg-[#121212];
 
         .game-tabs {
-            @apply grid grid-cols-3 gap-2;
+            @apply grid grid-cols-3 gap-2 mb-2;
 
             button {
                 @apply w-full p-2;
@@ -159,9 +159,7 @@ function play() {
             }
         }
 
-        .game-tab {
-            @apply p-2;
-        }
+        .game-tab {}
     }
 }
 </style>

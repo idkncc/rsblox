@@ -2351,7 +2351,7 @@ dependencies = [
 
 [[package]]
 name = "rsblox"
-version = "1.0.0-alpha.3"
+version = "0.0.0"
 dependencies = [
  "roboat",
  "serde",

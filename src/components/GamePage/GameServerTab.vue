@@ -14,15 +14,22 @@ import GameServerItem from "./GameServerItem.vue";
 
 const robloxApi = useRobloxApi()
 
-const gameServers = ref<GameServer[]>([])
+const friendsServers = ref<{
+    servers: GameServer[]
+    nextCursor: string | null
+}>({ servers: [], nextCursor: null })
+const publicServers = ref<{
+    servers: GameServer[]
+    nextCursor: string | null
+}>({ servers: [], nextCursor: null })
+
 const avatarUrls = ref<Record<string, string>>({})
-const nextCursor = ref<string | undefined>()
 
 const props = defineProps<{
     gameDetails: GameDetails
 }>()
 
-async function loadAvatars(serversPlayerTokens: string[][]) {
+async function loadAvatars(serversPlayerTokens: string[][]): Promise<Record<string, string>> {
     return Object.fromEntries(
         (await Promise.all(
             serversPlayerTokens
@@ -40,35 +47,86 @@ async function loadAvatars(serversPlayerTokens: string[][]) {
 }
 
 onMounted(async () => {
-    gameServers.value = []
-    nextCursor.value = undefined
+    const [_friendsGameServers, _friendsNextCursor] = await robloxApi.getGameServers(props.gameDetails.root_place_id, "Friends")
+    const [_publicGameServers, _publicNextCursor] = await robloxApi.getGameServers(props.gameDetails.root_place_id, "Public")
 
-    const [_gameServers, _nextCursor] = await robloxApi.getGameServers(props.gameDetails.root_place_id)
-    const _avatarUrls = await loadAvatars(_gameServers.map((s) => s.player_tokens))
+    const _avatarUrls = await loadAvatars([
+        ..._friendsGameServers.map((s) => s.player_tokens),
+        ..._publicGameServers.map((s) => s.player_tokens)
+    ])
 
-    console.log(_nextCursor)
-    gameServers.value = _gameServers
-    nextCursor.value = _nextCursor
+    friendsServers.value = {
+        servers: _friendsGameServers,
+        nextCursor: _friendsNextCursor
+    }
+
+    publicServers.value = {
+        servers: _publicGameServers,
+        nextCursor: _publicNextCursor
+    }
+
     avatarUrls.value = _avatarUrls
 })
 
-async function loadNextServers() {
-    console.log("usin", nextCursor.value)
-    const [_gameServers, _nextCursor] = await robloxApi.getGameServers(props.gameDetails.root_place_id, nextCursor.value)
-    const _avatarUrls = await loadAvatars(_gameServers.map((s) => s.player_tokens))
+async function loadNextFriendsServers() {
+    if (!friendsServers.value.nextCursor) return;
 
-    gameServers.value = [...gameServers.value, ..._gameServers]
-    nextCursor.value = _nextCursor
+    const [_friendsGameServers, _friendsNextCursor] = await robloxApi.getGameServers(
+        props.gameDetails.root_place_id,
+        "Friends",
+        friendsServers.value.nextCursor
+    )
+
+    const _avatarUrls = await loadAvatars(_friendsGameServers.map((s) => s.player_tokens))
+
+    friendsServers.value = {
+        servers: [...friendsServers.value.servers, ..._friendsGameServers],
+        nextCursor: _friendsNextCursor
+    }
+
+    avatarUrls.value = Object.assign(avatarUrls.value, _avatarUrls)
+}
+
+async function loadNextPublicServers() {
+    if (!publicServers.value.nextCursor) return;
+
+    const [_publicGameServers, _publicNextCursor] = await robloxApi.getGameServers(
+        props.gameDetails.root_place_id,
+        "Public",
+        publicServers.value.nextCursor
+    )
+
+    const _avatarUrls = await loadAvatars(_publicGameServers.map((s) => s.player_tokens))
+
+    publicServers.value = {
+        servers: [...publicServers.value.servers, ..._publicGameServers],
+        nextCursor: _publicNextCursor
+    }
+
     avatarUrls.value = Object.assign(avatarUrls.value, _avatarUrls)
 }
 </script>
 
 <template>
-    <section class="game-tab game-servers">
-        <GameServerItem v-for="gameServer in gameServers" :gameServer="gameServer" :avatarUrls="avatarUrls"
-            :placeId="gameDetails.root_place_id" />
+    <section class="game-tab">
+        <section class="game-servers-type">
+            <p class="mb-2">Friends:</p>
+            <div class="game-servers">
+                <GameServerItem v-for="gameServer in friendsServers.servers" :gameServer="gameServer"
+                    :avatarUrls="avatarUrls" :placeId="gameDetails.root_place_id" />
+            </div>
+            <button v-if="friendsServers.nextCursor !== null" @click="loadNextFriendsServers">Load next servers</button>
+        </section>
+
+        <section class="game-servers-type">
+            <p class="mb-2">Public Servers:</p>
+            <div class="game-servers">
+                <GameServerItem v-for="gameServer in publicServers.servers" :gameServer="gameServer"
+                    :avatarUrls="avatarUrls" :placeId="gameDetails.root_place_id" />
+            </div>
+            <button v-if="publicServers.nextCursor !== null" @click="loadNextPublicServers">Load next servers</button>
+        </section>
     </section>
-    <button @click="loadNextServers">Load next servers</button>
 </template>
 
 <style scoped lang="scss">

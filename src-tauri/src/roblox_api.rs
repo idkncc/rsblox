@@ -2,7 +2,7 @@ use std::sync::Mutex;
 
 use roboat::discovery::RecommendationsTopic;
 use roboat::friends::FriendUserInformation;
-use roboat::games::{GameDetail, GameMedia, GameServer, PlaceDetails};
+use roboat::games::{GameDetail, GameMedia, GameServer, PlaceDetails, ServerType};
 use roboat::presence::UserPresence;
 use roboat::ClientBuilder;
 use serde::{Deserialize, Serialize};
@@ -136,6 +136,7 @@ async fn game_details(
 async fn game_servers(
     state: State<'_, RobloxApiState>,
     place_id: u64,
+    servers_type: ServerType,
     cursor: Option<String>,
 ) -> Result<(Vec<GameServer>, Option<String>), String> {
     let cookie = { state.0.lock().unwrap().clone() };
@@ -143,7 +144,7 @@ async fn game_servers(
     let client = ClientBuilder::new().roblosecurity(cookie).build();
 
     client
-        .game_servers(place_id, None, None, cursor)
+        .game_servers(place_id, Some(servers_type), None, None, cursor)
         .await
         .map_err(|err| err.to_string())
 }

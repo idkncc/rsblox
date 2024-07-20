@@ -90,9 +90,10 @@ export const useRobloxApi = defineStore("robloxApi", {
             });
         },
 
-        getGameServers(placeId: number, cursor?: string) {
-            return this._invoke<[GameServer[], string | undefined]>("game_servers", {
+        getGameServers(placeId: number, serversType: "Public" | "Friends", cursor?: string) {
+            return this._invoke<[GameServer[], string | null]>("game_servers", {
                 placeId,
+                serversType,
                 cursor
             });
         },

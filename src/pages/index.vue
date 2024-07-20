@@ -10,8 +10,10 @@ import GameCard from "../components/GameCard.vue";
 import {
     FriendUserInformation,
     RecommendationsTopic,
-    TreatmentType,
     UserPresence,
+    TreatmentType,
+    ThumbnailSize,
+    ThumbnailType
 } from "../utils/typings.ts";
 
 const robloxApi = useRobloxApi();
@@ -39,10 +41,12 @@ onMounted(async () => {
 
     const [friendsPresencesArray, friendsHeadshotsArray] = await Promise.all([
         robloxApi.getPresences(friendsArray.map((fr) => fr.user_id)),
-        robloxApi.getAvatarsHeadshots(friendsArray.map((fr) => fr.user_id)),
+        robloxApi.getThumbnailsUrls(
+            friendsArray.map((fr) => fr.user_id),
+            ThumbnailSize.S150x150,
+            ThumbnailType.AvatarHeadshot
+        ),
     ]);
-
-    console.log(friendsPresencesArray);
 
     friends.value = friendsArray;
     friendsHeadshots.value = friendsHeadshotsArray;
@@ -79,7 +83,11 @@ onMounted(async () => {
             if (topic.treatment_type === TreatmentType.Carousel) {
                 const thumbnails = (await Promise.all(
                     chunk(topic.recommendation_list.map((r) => r.universe_id), 9)
-                        .map((universeIdsChunk) => robloxApi.getGamesIcons(universeIdsChunk))
+                        .map((universeIdsChunk) => robloxApi.getThumbnailsUrls(
+                            universeIdsChunk,
+                            ThumbnailSize.S150x150,
+                            ThumbnailType.GameIcon
+                        ))
                 )).flat(1);
 
 
@@ -90,10 +98,12 @@ onMounted(async () => {
             } else {
                 const thumbnails = (await Promise.all(
                     chunk(topic.recommendation_list.map((r) => r.root_place_id), 9)
-                        .map((universeIdsChunk) => robloxApi.getGamesThumbnails(universeIdsChunk))
+                        .map((universeIdsChunk) => robloxApi.getThumbnailsUrls(
+                            universeIdsChunk,
+                            ThumbnailSize.S768x432,
+                            ThumbnailType.GameThumbnail
+                        ))
                 )).flat(1);
-
-                console.log(thumbnails)
 
                 return topic.recommendation_list.map((r, i) => [
                     r.universe_id,

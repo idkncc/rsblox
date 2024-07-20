@@ -10,6 +10,7 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@splidejs/vue-splide": "^0.6.12",
     "@tauri-apps/api": "^1",
     "lodash.chunk": "^4.2.0",
     "pinia": "^2.1.7",

@@ -69,6 +69,34 @@ export interface Recommendation {
     player_count: number;
 }
 
+export enum GameMediaType {
+    Image = "Image",
+    YoutubeVideo = "YoutubeVideo"
+}
+
+export interface GameMedia {
+    asset_type_id: number,
+    asset_type: GameMediaType,
+    approved: boolean,
+
+    image_id?: number,
+    alt_text?: string,
+    video_hash?: string,
+    video_title?: string,
+}
+
+export interface GameServer {
+    id: string,
+    max_players: number,
+    playing: number,
+
+    player_tokens: string[],
+
+    // pub players: Vec<String>,
+    fps: number,
+    ping: number,
+}
+
 export enum AvatarType {
     MorphToR6 = "MorphToR6",
     MorphToR15 = "MorphToR15",
@@ -137,4 +165,39 @@ export interface PlaceDetails {
 
     universe_id: number;
     universe_root_place_id: number;
+}
+
+export const enum ThumbnailSize {
+    S30x30 = "S30x30",
+    S42x42 = "S42x42",
+    S50x50 = "S50x50",
+    S60x62 = "S60x62",
+    S75x75 = "S75x75",
+    S110x110 = "S110x110",
+    S140x140 = "S140x140",
+    S150x150 = "S150x150",
+    S160x100 = "S160x100",
+    S160x600 = "S160x600",
+    S250x250 = "S250x250",
+    S256x144 = "S256x144",
+    S300x250 = "S300x250",
+    S304x166 = "S304x166",
+    S384x216 = "S384x216",
+    S396x216 = "S396x216",
+    S420x420 = "S420x420",
+    S480x270 = "S480x270",
+    S512x512 = "S512x512",
+    S576x324 = "S576x324",
+    S700x700 = "S700x700",
+    S728x90 = "S728x90",
+    S768x432 = "S768x432",
+    S1200x80 = "S1200x80",
+}
+
+export const enum ThumbnailType {
+    Avatar = "Avatar",
+    AvatarHeadshot = "AvatarHeadshot",
+    Asset = "Asset",
+    GameIcon = "GameIcon",
+    GameThumbnail = "GameThumbnail",
 }

@@ -2,9 +2,8 @@ use std::sync::Mutex;
 
 use roboat::discovery::RecommendationsTopic;
 use roboat::friends::FriendUserInformation;
-use roboat::games::{GameDetail, PlaceDetails};
+use roboat::games::{GameDetail, GameMedia, GameServer, PlaceDetails, ServerType};
 use roboat::presence::UserPresence;
-use roboat::thumbnails::{ThumbnailSize, ThumbnailType};
 use roboat::ClientBuilder;
 use serde::{Deserialize, Serialize};
 use tauri::{
@@ -12,6 +11,8 @@ use tauri::{
     plugin::{Builder, TauriPlugin},
     AppHandle, Manager, Runtime, State,
 };
+
+use super::commands;
 
 #[derive(Default)]
 struct RobloxApiState(Mutex<String>);
@@ -107,6 +108,16 @@ async fn place_details(
 }
 
 #[tauri::command]
+async fn game_media(universe_id: u64) -> Result<Vec<GameMedia>, String> {
+    let client = ClientBuilder::new().build();
+
+    client
+        .game_media(universe_id)
+        .await
+        .map_err(|err| err.to_string())
+}
+
+#[tauri::command]
 async fn game_details(
     state: State<'_, RobloxApiState>,
     universe_id: u64,
@@ -122,6 +133,23 @@ async fn game_details(
 }
 
 #[tauri::command]
+async fn game_servers(
+    state: State<'_, RobloxApiState>,
+    place_id: u64,
+    servers_type: ServerType,
+    cursor: Option<String>,
+) -> Result<(Vec<GameServer>, Option<String>), String> {
+    let cookie = { state.0.lock().unwrap().clone() };
+
+    let client = ClientBuilder::new().roblosecurity(cookie).build();
+
+    client
+        .game_servers(place_id, Some(servers_type), None, None, cursor)
+        .await
+        .map_err(|err| err.to_string())
+}
+
+#[tauri::command]
 async fn get_presences(
     state: State<'_, RobloxApiState>,
     user_ids: Vec<u64>,
@@ -132,59 +160,6 @@ async fn get_presences(
 
     client
         .get_presence(user_ids)
-        .await
-        .map_err(|err| err.to_string())
-}
-
-#[tauri::command]
-async fn get_headshots(avatar_ids: Vec<u64>) -> Result<Vec<String>, String> {
-    // let cookie = {
-    //     state.0.lock().unwrap().clone()
-    // };
-
-    let client = ClientBuilder::new().build();
-
-    let size = ThumbnailSize::S150x150;
-    let thumbnail_type = ThumbnailType::AvatarHeadshot;
-
-    client
-        .thumbnail_url_bulk(avatar_ids, size, thumbnail_type)
-        .await
-        .map_err(|err| err.to_string())
-}
-
-// TODO: single command for getting thumbnails
-
-#[tauri::command]
-async fn get_icons(universe_ids: Vec<u64>) -> Result<Vec<String>, String> {
-    // let cookie = {
-    //     state.0.lock().unwrap().clone()
-    // };
-
-    let client = ClientBuilder::new().build();
-
-    let size = ThumbnailSize::S150x150;
-    let thumbnail_type = ThumbnailType::GameIcon;
-
-    client
-        .thumbnail_url_bulk(universe_ids, size, thumbnail_type)
-        .await
-        .map_err(|err| err.to_string())
-}
-
-#[tauri::command]
-async fn get_head_thumbnails(place_ids: Vec<u64>) -> Result<Vec<String>, String> {
-    // let cookie = {
-    //     state.0.lock().unwrap().clone()
-    // };
-
-    let client = ClientBuilder::new().build();
-
-    let size = ThumbnailSize::S384x216;
-    let thumbnail_type = ThumbnailType::GameThumbnail;
-
-    client
-        .thumbnail_url_bulk(place_ids, size, thumbnail_type)
         .await
         .map_err(|err| err.to_string())
 }
@@ -229,12 +204,14 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             friends_list,
             recommendations,
             get_presences,
+            game_media,
             game_details,
+            game_servers,
             place_details,
-            get_icons,
-            get_head_thumbnails,
-            get_headshots,
-            open_place
+            commands::thumbnail_url_bulk,
+            commands::token_thumbnail_url_bulk,
+            open_place,
+            open_server,
         ])
         .setup(|app_handle| {
             app_handle.manage(RobloxApiState::default());

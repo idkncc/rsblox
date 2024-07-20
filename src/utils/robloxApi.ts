@@ -3,8 +3,12 @@ import { defineStore } from "pinia";
 import {
     FriendUserInformation,
     GameDetails,
+    GameMedia,
+    GameServer,
     PlaceDetails,
     RecommendationsTopic,
+    ThumbnailSize,
+    ThumbnailType,
     UserPresence,
 } from "./typings";
 
@@ -74,9 +78,23 @@ export const useRobloxApi = defineStore("robloxApi", {
             });
         },
 
+        getGameMedia(universeId: number) {
+            return this._invoke<GameMedia[]>("game_media", {
+                universeId,
+            });
+        },
+
         getGameDetails(universeId: number) {
             return this._invoke<GameDetails>("game_details", {
                 universeId,
+            });
+        },
+
+        getGameServers(placeId: number, serversType: "Public" | "Friends", cursor?: string) {
+            return this._invoke<[GameServer[], string | null]>("game_servers", {
+                placeId,
+                serversType,
+                cursor
             });
         },
 
@@ -86,17 +104,30 @@ export const useRobloxApi = defineStore("robloxApi", {
             });
         },
 
-        getGamesIcons(universeIds: number[]) {
-            return this._invoke<string[]>("get_icons", {
-                universeIds,
-            });
+        getThumbnailsUrls(
+            ids: number[],
+            thumbnailSize: ThumbnailSize,
+            thumbnailType: ThumbnailType
+        ) {
+            return this._invoke<any[]>("thumbnail_url_bulk", {
+                ids,
+                thumbnailSize,
+                thumbnailType
+            })
         },
 
-        getGamesThumbnails(placeIds: number[]) {
-            return this._invoke<string[]>("get_head_thumbnails", {
-                placeIds,
-            });
+        getTokensThumbnailsUrls(
+            tokens: string[],
+            thumbnailSize: ThumbnailSize,
+            thumbnailType: ThumbnailType
+        ) {
+            return this._invoke<string[]>("token_thumbnail_url_bulk", {
+                tokens,
+                thumbnailSize,
+                thumbnailType
+            })
         },
+
 
         playPlace(placeId: number) {
             return this._invoke<GameDetails>("open_place", {

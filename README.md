@@ -37,4 +37,4 @@ Minimalistic Game Launcher for Roblox
 6. run it!
 
 ## TODOs
-[https://github.com/orgs/idkncc/projects/1/views/1](Moved to Project)
+[Moved to Project](https://github.com/orgs/idkncc/projects/1/views/1)

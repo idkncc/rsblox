@@ -105,12 +105,24 @@ async function loadNextPublicServers() {
 
     avatarUrls.value = Object.assign(avatarUrls.value, _avatarUrls)
 }
+
+function refresh(servers_type: "Public" | "Friends") {
+    if (servers_type === "Friends") {
+        friendsServers.value = {
+            servers: [],
+            nextCursor: null
+        }
+    }
+}
 </script>
 
 <template>
     <section class="game-tab">
         <section class="game-servers-type">
-            <p class="mb-2">Friends:</p>
+            <div class="game-servers-title">
+                <p>Friends:</p>
+                <!-- <button>Refresh</button> -->
+            </div>
             <div class="game-servers">
                 <GameServerItem v-for="gameServer in friendsServers.servers" :gameServer="gameServer"
                     :avatarUrls="avatarUrls" :placeId="gameDetails.root_place_id" />
@@ -119,7 +131,11 @@ async function loadNextPublicServers() {
         </section>
 
         <section class="game-servers-type">
-            <p class="mb-2">Public Servers:</p>
+            <!-- TODO: filters (sortOrder, excludeFullServers)  -->
+            <div class="game-servers-title">
+                <p>Public Servers:</p>
+                <!-- <button>Refresh</button> -->
+            </div>
             <div class="game-servers">
                 <GameServerItem v-for="gameServer in publicServers.servers" :gameServer="gameServer"
                     :avatarUrls="avatarUrls" :placeId="gameDetails.root_place_id" />
@@ -132,5 +148,15 @@ async function loadNextPublicServers() {
 <style scoped lang="scss">
 .game-servers {
     @apply grid grid-cols-3 gap-2;
+}
+
+.game-servers-type {
+    .game-servers-title {
+        @apply flex justify-between;
+
+        button {
+            @apply underline font-medium;
+        }
+    }
 }
 </style>

@@ -106,14 +106,14 @@ async function loadNextPublicServers() {
     avatarUrls.value = Object.assign(avatarUrls.value, _avatarUrls)
 }
 
-function refresh(servers_type: "Public" | "Friends") {
-    if (servers_type === "Friends") {
-        friendsServers.value = {
-            servers: [],
-            nextCursor: null
-        }
-    }
-}
+// function refresh(servers_type: "Public" | "Friends") {
+//     if (servers_type === "Friends") {
+//         friendsServers.value = {
+//             servers: [],
+//             nextCursor: null
+//         }
+//     }
+// }
 </script>
 
 <template>

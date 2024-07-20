@@ -1,5 +1,15 @@
 <script setup lang="ts">
-import '../assets/css/splide.css';
+// Import Swiper Vue.js components
+import { Swiper, SwiperSlide } from 'swiper/vue';
+
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
+import '../assets/css/swiper.css';
+
+import { Pagination, Navigation } from 'swiper/modules';
 
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
@@ -51,15 +61,17 @@ function play() {
     <main class="game-page" v-if="gameDetails">
         <div class="game-header grid grid-cols-2 gap-4">
             <div class="game-images">
-                <Splide :options="{ rewind: true }" aria-label="My Favorite Images">
-                    <SplideSlide v-for="media in gameMedia">
+                <swiper :pagination="{
+                    type: 'fraction',
+                }" :navigation="true" :modules="[Pagination, Navigation]" class="mySwiper">
+                    <swiper-slide v-for="media in gameMedia">
                         <img v-if="media.asset_type === GameMediaType.Image"
                             :src="gameMediaUrls[media.image_id ?? 0] ?? 'https://placehold.co/1920x1080?text=Loading...'"
                             class="rounded-lg" />
                         <img v-else src="https://placehold.co/1920x1080?text=Youtube+Embeds+not+currently+supported"
                             class="rounded-lg" />
-                    </SplideSlide>
-                </Splide>
+                    </swiper-slide>
+                </swiper>
             </div>
             <div class="game-info">
                 <div class="game-title">

@@ -14,6 +14,7 @@
     "@tauri-apps/api": "^1",
     "lodash.chunk": "^4.2.0",
     "pinia": "^2.1.7",
+    "swiper": "^11.1.5",
     "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1",
     "tippy.js": "^6.3.7",
     "victormono": "^1.5.6",

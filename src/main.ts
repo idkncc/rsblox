@@ -4,7 +4,6 @@ import "tippy.js/animations/shift-away-subtle.css";
 import { createPinia } from "pinia";
 import { createRouter, createWebHashHistory } from "vue-router";
 import { createApp } from "vue";
-import VueSplide from "@splidejs/vue-splide"
 
 import IndexView from "./pages/index.vue";
 import GamePage from "./pages/game-page.vue";
@@ -29,7 +28,6 @@ const router = createRouter({
 });
 
 createApp(App)
-    .use(VueSplide)
     .use(pinia)
     .use(router)
     .mount("#app");

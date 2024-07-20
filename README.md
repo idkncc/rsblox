@@ -37,9 +37,4 @@ Minimalistic Game Launcher for Roblox
 6. run it!
 
 ## TODOs
-- [X] Finish friend's tooltip
-- [ ] Make game page (currently its only play button)
-- [ ] Create user's profile page
-- [ ] Add skeleton elements [(example)](https://element-plus.org/en-US/component/skeleton.html)
-- [ ] Setup GitHub action
-- [ ] Support custom CSS
+[https://github.com/orgs/idkncc/projects/1/views/1](Moved to Project)

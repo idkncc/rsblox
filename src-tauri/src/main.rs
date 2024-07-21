@@ -3,6 +3,7 @@
 
 mod commands;
 mod roblox_api;
+mod types;
 
 fn main() {
     tauri::Builder::default()

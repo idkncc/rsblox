@@ -50,6 +50,10 @@ export const useRobloxApi = defineStore("robloxApi", {
             return invoke<T>(`plugin:roblox-api|${method}`, args);
         },
 
+        auth(roblosecurity: string) {
+            return this._invoke<void>("auth", { roblosecurity });
+        },
+
         updatePresence() {
             return this._invoke<void>("presence");
         },

@@ -1,5 +1,6 @@
 import "victormono";
 import "tippy.js/animations/shift-away-subtle.css";
+import "./assets/css/main.scss"
 
 import { createPinia } from "pinia";
 import { createRouter, createWebHashHistory } from "vue-router";

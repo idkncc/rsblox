@@ -2,13 +2,13 @@
 import { onMounted, ref } from "vue";
 
 import { Store } from "tauri-plugin-store-api";
+import { useIntervalFn } from "@vueuse/core";
 
 import { ClientInfo, useRobloxApi } from "./utils/robloxApi.ts";
 import { STORE_PATH } from "./constants.ts";
 
 import Login from "./pages/login.vue";
 import NavbarProfile from "./components/NavbarProfile/index.vue";
-import { invoke } from "@tauri-apps/api/tauri";
 
 const robloxApi = useRobloxApi();
 const clientInfo = ref<ClientInfo | undefined>();
@@ -16,10 +16,9 @@ const clientInfo = ref<ClientInfo | undefined>();
 /* This function gets some information about account */
 async function processCookie(cookie: string) {
     try {
-        await invoke("plugin:roblox-api|auth", { roblosecurity: cookie });
-        console.info("authorized");
-        clientInfo.value = await invoke<ClientInfo>("plugin:roblox-api|get_me");
+        robloxApi.auth(cookie)
 
+        clientInfo.value = await robloxApi.getMe()
         robloxApi.loadClientInfo(clientInfo.value);
     } catch (e) {
         console.error("Cookie is invalid!");
@@ -36,6 +35,7 @@ onMounted(async () => {
         robloxApi.loadCookie(value);
         await processCookie(value);
     }
+
     await memoryStore.onChange<string>(async (key, value) => {
         if (key !== "roblox-cookie") return;
 
@@ -43,10 +43,15 @@ onMounted(async () => {
             robloxApi.loadCookie(value);
             await processCookie(value);
         } else {
-            robloxApi.$patch({ cookie: undefined });
+            robloxApi.$patch({ cookie: undefined, clientInfo: undefined });
         }
     });
 });
+
+useIntervalFn(() => {
+    robloxApi.updatePresence()
+}, 12_000)
+
 </script>
 
 <template>
@@ -63,5 +68,3 @@ onMounted(async () => {
         <Login v-else />
     </main>
 </template>
-
-<style src="./assets/css/main.scss" lang="scss" />

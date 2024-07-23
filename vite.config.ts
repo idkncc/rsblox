@@ -1,12 +1,8 @@
-import { defineConfig } from "vite";
+import { sveltekit } from '@sveltejs/kit/vite';
+import { defineConfig } from 'vite';
 
-import vue from "@vitejs/plugin-vue";
-
-// https://vitejs.dev/config/
-export default defineConfig(async () => ({
-    plugins: [
-        vue()
-    ],
+export default defineConfig({
+    plugins: [sveltekit()],
 
     clearScreen: false,
     server: {
@@ -17,4 +13,4 @@ export default defineConfig(async () => ({
             ignored: ["**/src-tauri/**"],
         },
     },
-}));
+});

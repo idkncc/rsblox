@@ -26,6 +26,13 @@ fn auth<R: Runtime>(_app: AppHandle<R>, state: State<'_, RobloxApiState>, roblos
 }
 
 #[tauri::command]
+fn is_authed(state: State<'_, RobloxApiState>) -> bool {
+    let cookie = { state.0.lock().unwrap().clone() };
+
+    cookie != ""
+}
+
+#[tauri::command]
 async fn presence(state: State<'_, RobloxApiState>) -> Result<(), String> {
     let cookie = { state.0.lock().unwrap().clone() };
 
@@ -72,6 +79,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
     Builder::new("roblox-api")
         .invoke_handler(tauri::generate_handler![
             auth,
+            is_authed,
             presence,
             recommendations,
             get_presences,

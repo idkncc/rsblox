@@ -1,38 +1,40 @@
-# create-svelte
+# rsblox
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+Minimalistic Game Launcher for Roblox
 
-## Creating a project
+![Screenshot](docs/screenshot.png)
 
-If you're seeing this, you've probably already done this step. Congrats!
+> [!CAUTION]
+>
+> This is huge pre-alpha-beta version
+>  - Currently, you can sign in only with cookie
+>  - Code structure sucks
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Why
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+1. Roblox Website is bloated: analytics, metrics, useless HTTP requests, etc.
+2. Old design _(lets be honest, it sucks)_
+3. I wanted to practice with my Rust/Vue skills
+4. **Because I can**™ 🕺
 
-## Developing
+## Why `rsblox`
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+**Rust** + **Roblox** = **rsblox**
 
-```bash
-npm run dev
+## Installation
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+1. get rust, nodejs
+2. setup [tauri environment](https://tauri.app/v1/guides/getting-started/prerequisites)
+3. install `tauri-cli`
+   ```shell
+   cargo install tauri-cli
+   ```
+4. build it [(see more)](https://tauri.app/v1/guides/building/)
+   ```shell
+   cargo tauri build
+   ```
+5. do push-ups while building executable 💪💪💪
+6. run it!
 
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+## TODOs
+[Moved to Project](https://github.com/orgs/idkncc/projects/1/views/1)

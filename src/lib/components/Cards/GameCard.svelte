@@ -25,12 +25,8 @@
         @apply min-w-[120px];
         @apply cursor-pointer;
 
-        .game-image {
-            @apply min-w-[120px] min-h-[120px];
-        }
-
         .game-title {
-            @apply max-h-[52px] text-sm truncate;
+            @apply max-w-[120px] max-h-[52px] text-sm truncate;
         }
 
         .game-playing {
@@ -38,8 +34,16 @@
         }
     }
 
+    .game-card[data-treatment-type="Carousel"] {
+        .game-image {
+            @apply w-[120px] h-[120px];
+        }
+    }
+
     .game-card[data-treatment-type="SortlessGrid"] {
         .game-image {
+            @apply min-w-[120px] min-h-[120px];
+
             width: 100%;
             aspect-ratio: 16 / 9;
         }

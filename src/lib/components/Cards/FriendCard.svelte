@@ -2,45 +2,61 @@
     import "tippy.js/animations/shift-away.css";
     import "tippy.js/animations/shift-away-subtle.css";
 
-    // import FriendTooltip from "./FriendTooltip.vue";
+    import FriendTooltip from "./FriendTooltip.svelte";
 
-    import type { InternalFriend } from "$lib/typings.ts";
+    import {
+        ThumbnailSize,
+        ThumbnailType,
+        type InternalFriend,
+        type PlaceDetails,
+    } from "$lib/typings";
+    import { robloxApi } from "$lib/robloxApi";
+    import { tippy } from "$lib/tippy";
 
     export let friend: InternalFriend;
 
+    let tippyTooltip: HTMLDivElement;
     // onMounted(async () => {
-    //     console.log(props);
-    //     let placeDetails: PlaceDetails | undefined;
-    //     let placeThumbnail: string = "https://placehold.co/512";
-    //     if (
-    //         props.friendPresence.presence_type === "InGame" &&
-    //         props.friendPresence.place_id
-    //     ) {
-    //         const currentPlaceDetails = await robloxApi.getPlaceDetails(
-    //             props.friendPresence.place_id
-    //         );
+    async function fetchDataForTooltip() {
+        let placeDetails: PlaceDetails | undefined;
+        let placeThumbnail: string = "https://placehold.co/512";
+        if (
+            friend.presence.presence_type === "InGame" &&
+            friend.presence.place_id
+        ) {
+            const currentPlaceDetails = await robloxApi.getPlaceDetails(
+                friend.presence.place_id,
+            );
 
-    //         placeDetails = await robloxApi.getPlaceDetails(
-    //             currentPlaceDetails.universe_root_place_id
-    //         );
+            placeDetails = await robloxApi.getPlaceDetails(
+                currentPlaceDetails.universe_root_place_id,
+            );
 
-    //         placeThumbnail = await robloxApi
-    //             .getThumbnailsUrls([placeDetails.universe_root_place_id], ThumbnailSize.S768x432, ThumbnailType.GameThumbnail)
-    //             .then((res) => res[0]);
-    //     }
+            placeThumbnail = await robloxApi
+                .getThumbnailsUrls(
+                    [placeDetails.universe_root_place_id],
+                    ThumbnailSize.S768x432,
+                    ThumbnailType.GameThumbnail,
+                )
+                .then((res) => res[0]);
+        }
 
-    //     tooltip.setContent(
-    //         h(FriendTooltip, {
-    //             friend: props.friend,
-    //             friendPresence: props.friendPresence,
-    //             placeDetails,
-    //             placeThumbnail,
-    //         })
-    //     );
-    // });
+        setTimeout(() => {
+            tippyTooltip = document.querySelector(
+                `.friend-tooltip[data-user-id="${friend.info.user_id}"]`,
+            )!;
+        }, 20);
+
+        return {
+            friend: friend.info,
+            friendPresence: friend.presence,
+            placeDetails,
+            placeThumbnail,
+        };
+    }
 </script>
 
-<div class="friend-card">
+<div class="friend-card" use:tippy={{ content: tippyTooltip }}>
     <div class="friend-image">
         <img
             class="rounded-md"
@@ -108,6 +124,10 @@
         <p class="user-name">{friend.info.display_name}</p>
     </div>
 </div>
+
+{#await fetchDataForTooltip() then props}
+    <FriendTooltip {...props} />
+{/await}
 
 <style lang="scss">
     .friend-card {

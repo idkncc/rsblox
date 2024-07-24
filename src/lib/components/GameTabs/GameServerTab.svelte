@@ -27,8 +27,6 @@
     $: if (loadMoreAvatars) {
         loadMoreAvatars = false;
 
-        console.log("YOU SHOULD KEEP YOURSELF SAFE");
-
         loadAvatars([
             ...friendsServers.servers.map((s) => s.player_tokens),
             ...publicServers.servers.map((s) => s.player_tokens),

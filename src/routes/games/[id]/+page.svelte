@@ -1,5 +1,6 @@
 <script setup lang="ts">
-    // import '../assets/css/swiper.css';
+    import { register } from "swiper/element/bundle";
+    register();
 
     import GameDescriptionTab from "$lib/components/GameTabs/GameDescriptionTab.svelte";
     import GameStoreTab from "$lib/components/GameTabs/GameStoreTab.svelte";
@@ -9,18 +10,16 @@
     import { robloxApi } from "$lib/robloxApi";
 
     import {
+        GameMediaType,
         ThumbnailSize,
         ThumbnailType,
         type GameDetails,
         type GameMedia,
-        type GameMediaType,
     } from "$lib/typings";
 
     let currentTab: number = 0;
 
     let gameDetails: GameDetails;
-    let gameMedia: GameMedia[] = [];
-    let gameMediaUrls: Record<number, string> = {};
 
     async function fetchGameDetails() {
         gameDetails = await robloxApi.getGameDetails(
@@ -28,8 +27,10 @@
         );
     }
 
-    async function fetchGameMedia() {
-        gameMedia = await robloxApi.getGameMedia(gameDetails.universe_id);
+    async function fetchGameMedia(): Promise<
+        [GameMedia[], Record<number, string>]
+    > {
+        const gameMedia = await robloxApi.getGameMedia(gameDetails.universe_id);
 
         const gameMediaImages = gameMedia
             .filter((media) => media.image_id)
@@ -41,9 +42,11 @@
             ThumbnailType.Asset,
         );
 
-        gameMediaUrls = Object.fromEntries(
+        const gameMediaUrls = Object.fromEntries(
             gameMediaImages.map((id, i) => [id, _gameMediaUrls[i]]),
         );
+
+        return [gameMedia, gameMediaUrls];
     }
 
     function play() {
@@ -59,17 +62,37 @@
     <main class="game-page">
         <div class="game-header grid grid-cols-2 gap-4">
             <div class="game-images">
-                <!-- <swiper :pagination="{
-                    type: 'fraction',
-                }" :navigation="true" :modules="[Pagination, Navigation]" class="mySwiper">
-                    <swiper-slide v-for="media in gameMedia">
-                        <img v-if="media.asset_type === GameMediaType.Image"
-                            :src="gameMediaUrls[media.image_id ?? 0] ?? 'https://placehold.co/1920x1080?text=Loading...'"
-                            class="rounded-lg" />
-                        <img v-else src="https://placehold.co/1920x1080?text=Youtube+Embeds+not+currently+supported"
-                            class="rounded-lg" />
-                    </swiper-slide>
-                </swiper> -->
+                {#await fetchGameMedia()}
+                    TODO: skeleton elements
+                {:then [gameMedia, gameMediaUrls]}
+                    <swiper-container
+                        navigation="true"
+                        pagination="true"
+                        space-between={10}
+                    >
+                        >
+                        {#each gameMedia as media}
+                            <swiper-slide>
+                                {#if media.asset_type === GameMediaType.Image}
+                                    <img
+                                        src={gameMediaUrls[
+                                            media.image_id ?? 0
+                                        ] ??
+                                            "https://placehold.co/1920x1080?text=Loading..."}
+                                        alt={media.alt_text}
+                                        class="rounded-lg w-[calc(100%-10px)]"
+                                    />
+                                {:else}
+                                    <img
+                                        src={"https://placehold.co/1920x1080?text=Youtube+Embeds+not+currently+supported"}
+                                        alt={media.alt_text}
+                                        class="rounded-lg w-[calc(100%-10px)]"
+                                    />
+                                {/if}
+                            </swiper-slide>
+                        {/each}
+                    </swiper-container>
+                {/await}
             </div>
             <div class="game-info">
                 <div class="game-title">

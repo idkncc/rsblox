@@ -1,37 +1,36 @@
 {
-  "name": "rsblox",
-  "private": true,
-  "version": "0.3.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview",
-    "tauri": "tauri"
-  },
-  "dependencies": {
-    "@tauri-apps/api": "^1",
-    "@vueuse/core": "^10.11.0",
-    "lodash.chunk": "^4.2.0",
-    "pinia": "^2.1.7",
-    "swiper": "^11.1.5",
-    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1",
-    "tippy.js": "^6.3.7",
-    "victormono": "^1.5.6",
-    "vue": "^3.3.4",
-    "vue-router": "^4.4.0",
-    "vue-tippy": "^6.4.4"
-  },
-  "devDependencies": {
-    "@tauri-apps/cli": "^1",
-    "@types/lodash.chunk": "^4.2.9",
-    "@vitejs/plugin-vue": "^5.0.5",
-    "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.39",
-    "sass": "^1.77.7",
-    "tailwindcss": "^3.4.4",
-    "typescript": "^5.2.2",
-    "vite": "^5.3.1",
-    "vue-tsc": "^2.0.22"
-  }
+	"name": "rsblox",
+	"version": "0.0.1",
+	"private": true,
+	"scripts": {
+		"dev": "vite dev",
+		"build": "vite build",
+		"preview": "vite preview",
+		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch"
+	},
+	"devDependencies": {
+		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/adapter-static": "^3.0.2",
+		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"@types/lodash.chunk": "^4.2.9",
+		"autoprefixer": "^10.4.19",
+		"postcss": "^8.4.39",
+		"svelte": "^4.2.7",
+		"svelte-check": "^3.6.0",
+		"tailwindcss": "^3.4.6",
+		"tslib": "^2.4.1",
+		"typescript": "^5.0.0",
+		"vite": "^5.0.3"
+	},
+	"type": "module",
+	"dependencies": {
+		"@tauri-apps/api": "^1.6.0",
+		"lodash.chunk": "^4.2.0",
+		"swiper": "^11.1.7",
+		"tauri-plugin-store-api": "^0.0.0",
+		"tippy.js": "^6.3.7",
+		"victormono": "^1.5.6"
+	}
 }

@@ -1,3 +1,24 @@
+import type { Writable } from "svelte/store";
+
+// Svelte typings
+
+export interface InternalFriend {
+    info: FriendUserInformation;
+    headshot: string;
+    presence: UserPresence;
+}
+
+export type ClientInfoWritable = Writable<ClientInfo | undefined>
+
+export interface ClientInfo {
+    userId: number;
+    username: string;
+    display_name: string;
+    robux: number;
+}
+
+// Api Typings
+
 export interface FriendUserInformation {
     user_id: number;
     username: string;

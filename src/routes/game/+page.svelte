@@ -23,7 +23,7 @@
 
     async function fetchGameDetails() {
         gameDetails = await robloxApi.getGameDetails(
-            parseInt($page.params.id as string),
+            parseInt(($page.url.searchParams.get("id") ?? "0") as string),
         );
     }
 

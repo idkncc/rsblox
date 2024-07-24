@@ -6,7 +6,7 @@
     export let treatmentType: TreatmentType;
 </script>
 
-<a href="/games/{game.universe_id}">
+<a href="/game?id={game.universe_id}">
     <div class="game-card w-full" data-treatment-type={treatmentType}>
         <img
             class="game-image rounded-md"

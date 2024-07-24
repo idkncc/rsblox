@@ -3,16 +3,16 @@
     import chunk from "lodash.chunk";
 
     import FriendCard from "$lib/components/Cards/FriendCard.svelte";
+    import FriendCardSkeleton from "$lib/components/Cards/FriendCardSkeleton.svelte";
     import GameCard from "$lib/components/Cards/GameCard.svelte";
+    import GameCardSkeleton from "$lib/components/Cards/GameCardSkeleton.svelte";
 
     import {
         TreatmentType,
         ThumbnailSize,
         ThumbnailType,
         type InternalFriend,
-        type FriendUserInformation,
         type RecommendationsTopic,
-        type UserPresence,
     } from "$lib/typings.js";
 
     let friends: InternalFriend[] = [];
@@ -144,7 +144,9 @@
     <p class="section-title">Friends</p>
     <div class="section-content">
         {#await fetchFriends()}
-            TODO: skeleton elements
+            {#each Array(8).map(() => 0) as _}
+                <FriendCardSkeleton />
+            {/each}
         {:then}
             {#each friends as friend}
                 <FriendCard {friend} />
@@ -154,7 +156,16 @@
 </section>
 
 {#await fetchRecommendations()}
-    TODO: skeleton elements
+    {#each Array(8).map(() => 0) as _}
+        <section class="topic-section">
+            <p class="section-title"><span class="placeholder w-28" /></p>
+            <div class="section-content carousel">
+                {#each Array(10).map(() => 0) as _}
+                    <GameCardSkeleton />
+                {/each}
+            </div>
+        </section>
+    {/each}
 {:then}
     {#each topics as topic}
         <section class="topic-section">

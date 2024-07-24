@@ -144,7 +144,7 @@
     <p class="section-title">Friends</p>
     <div class="section-content">
         {#await fetchFriends()}
-            skeleton elements
+            TODO: skeleton elements
         {:then}
             {#each friends as friend}
                 <FriendCard {friend} />
@@ -154,7 +154,7 @@
 </section>
 
 {#await fetchRecommendations()}
-    skeleton elements
+    TODO: skeleton elements
 {:then}
     {#each topics as topic}
         <section class="topic-section">
@@ -173,7 +173,7 @@
                 {#each topic.recommendation_list as game}
                     <GameCard
                         {game}
-                        thumbnail="gameIcons[game.universe_id]"
+                        thumbnail={gameIcons[game.universe_id]}
                         treatmentType={topic.treatment_type}
                     />
                 {/each}

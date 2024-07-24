@@ -44,7 +44,7 @@
     <div class="friend-image">
         <img
             class="rounded-md"
-            src={"headshoturl"}
+            src={friend.headshot}
             alt={friend.info.display_name}
             width="90"
             height="90"

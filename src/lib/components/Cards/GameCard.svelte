@@ -6,11 +6,11 @@
     export let treatmentType: TreatmentType;
 </script>
 
-<a href={`/games/${game.universe_id}`}>
+<a href="/games/{game.universe_id}">
     <div class="game-card w-full" data-treatment-type={treatmentType}>
         <img
             class="game-image rounded-md"
-            src={thumbnail ?? "https://placehold.co/512"}
+            src={thumbnail}
             alt="Game"
             height="120"
         />

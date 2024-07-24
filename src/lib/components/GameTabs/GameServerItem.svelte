@@ -14,11 +14,17 @@
 <div class="game-server">
     <div class="game-server-avatars">
         {#each gameServer.player_tokens as playerToken}
-            <img
-                class="bg-[#282828]"
-                src={avatarUrls[playerToken] ?? "https://placehold.co/512"}
-                alt="Player Headshot"
-            />
+            {#if avatarUrls[playerToken]}
+                <img
+                    class="avatar-image"
+                    src={avatarUrls[playerToken]}
+                    alt="Player Headshot"
+                />
+            {:else}
+                <div
+                    class="placeholder avatar-image w-full h-full aspect-square"
+                />
+            {/if}
         {/each}
 
         {#if gameServer.playing > 5}
@@ -43,8 +49,12 @@
             @apply grid grid-cols-3 justify-items-center gap-2;
             @apply mb-2;
 
-            img {
+            .avatar-image {
                 @apply rounded-md;
+            }
+
+            img.avatar-image {
+                @apply bg-[#282828];
             }
         }
 

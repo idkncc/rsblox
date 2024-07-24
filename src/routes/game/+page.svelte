@@ -56,14 +56,12 @@
     }
 </script>
 
-{#await fetchGameDetails()}
-    TOOD: skeleton elements
-{:then _}
+{#await fetchGameDetails() then _}
     <main class="game-page">
         <div class="game-header grid grid-cols-2 gap-4">
             <div class="game-images">
                 {#await fetchGameMedia()}
-                    TODO: skeleton elements
+                    <div class="placeholder rounded-lg w-full aspect-video" />
                 {:then [gameMedia, gameMediaUrls]}
                     <swiper-container
                         navigation="true"

@@ -4,11 +4,11 @@ Minimalistic Game Launcher for Roblox
 
 ![Screenshot](docs/screenshot.png)
 
-> [!CAUTION]
+> [!WARNING]
 >
-> This is huge pre-alpha-beta version
->  - Currently, you can sign in only with cookie
->  - Code structure sucks
+> Currently, you can sign in only with cookie
+>
+> In plans, add signing in using [Quick Login](https://en.help.roblox.com/hc/en-us/articles/360056582012-Quick-Login)
 
 ## Why
 

@@ -147,8 +147,8 @@
         @apply flex flex-col;
 
         .friend-image {
-            min-width: var(--size);
-            min-height: var(--size);
+            width: var(--size);
+            height: var(--size);
 
             @apply aspect-square;
             @apply bg-[#787878] rounded-full relative;

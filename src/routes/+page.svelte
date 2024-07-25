@@ -14,18 +14,11 @@
         type InternalFriend,
         type RecommendationsTopic,
     } from "$lib/typings.js";
+    import { PRESENCE_INDEXES } from "$lib/constants";
 
     let friends: InternalFriend[] = [];
     let topics: RecommendationsTopic[] = [];
     let gameIcons: Record<number, string> = {};
-
-    const PRESENCE_INDEXES: Record<string, number> = {
-        Invisible: 0,
-        Offline: 0,
-        Online: 1,
-        InGame: 2,
-        InStudio: 2,
-    };
 
     async function fetchFriends() {
         let friendsArray = await robloxApi.getFriendsList();

@@ -12,9 +12,11 @@ import {
     type GameServer,
     type PlaceDetails,
     type RecommendationsTopic,
+    type UserDetails,
     type UserPresence
 } from "$lib/typings";
 import { STORE_PATH } from "./constants";
+import chunk from "lodash.chunk";
 
 console.log("RAWWRH 👹👹👹👹")
 
@@ -40,8 +42,16 @@ export const robloxApi = {
         return this._invoke<ClientInfo>("get_me");
     },
 
+    getUserDetails(userId: number) {
+        return this._invoke<UserDetails>("get_user", { userId });
+    },
+
     getFriendsList() {
         return this._invoke<FriendUserInformation[]>("friends_list");
+    },
+
+    getUsersFriendsList(userId: number) {
+        return this._invoke<FriendUserInformation[]>("users_friends_list", { userId });
     },
 
     getPresences(userIds: number[]) {
@@ -86,11 +96,22 @@ export const robloxApi = {
         });
     },
 
+    getThumbnailsUrlsChunked(
+        ids: number[],
+        thumbnailSize: ThumbnailSize,
+        thumbnailType: ThumbnailType
+    ): Promise<string[]> {
+        return Promise.all(
+            chunk(ids, 10)
+                .map((chunkedIds) => this.getThumbnailsUrls(chunkedIds, thumbnailSize, thumbnailType))
+        ).then((res) => res.flat(1))
+    },
+
     getThumbnailsUrls(
         ids: number[],
         thumbnailSize: ThumbnailSize,
         thumbnailType: ThumbnailType
-    ) {
+    ): Promise<string[]> {
         return this._invoke<any[]>("thumbnail_url_bulk", {
             ids,
             thumbnailSize,

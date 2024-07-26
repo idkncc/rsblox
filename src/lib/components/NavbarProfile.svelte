@@ -36,9 +36,17 @@
         </svg>
     </p>
 
-    <p use:tippy={{ content: tippyTooltip, placement: "bottom-end" }}>
-        {$clientInfo?.display_name ?? "Loading..."}
-    </p>
+    {#if $clientInfo}
+        <a href={`/user?id=${$clientInfo.user_id}`}>
+            <p use:tippy={{ content: tippyTooltip, placement: "bottom-end" }}>
+                {$clientInfo.display_name}
+            </p>
+        </a>
+    {:else}
+        <p use:tippy={{ content: tippyTooltip, placement: "bottom-end" }}>
+            Loading...
+        </p>
+    {/if}
 
     <NavbarProfileTooltip />
 </div>

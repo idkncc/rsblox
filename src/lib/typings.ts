@@ -11,13 +11,27 @@ export interface InternalFriend {
 export type ClientInfoWritable = Writable<ClientInfo | undefined>
 
 export interface ClientInfo {
-    userId: number;
+    user_id: number;
     username: string;
     display_name: string;
     robux: number;
 }
 
 // Api Typings
+
+export interface UserDetails {
+    id: number,
+    username: string,
+    display_name: string,
+    description: string,
+
+    // A time string of when the account was created. Follows ISO 8061 format.
+    created_at: string,
+
+    // Whether the account is terminated. Does not include non-termination bans.
+    is_terminated: boolean,
+    has_verified_badge: boolean,
+}
 
 export interface FriendUserInformation {
     user_id: number;

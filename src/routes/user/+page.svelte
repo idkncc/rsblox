@@ -3,6 +3,7 @@
     import { page } from "$app/stores";
     import { PRESENCE_INDEXES } from "$lib/constants";
 
+    import UserStatus from "$lib/components/UserStatus.svelte";
     import FriendCard from "$lib/components/Cards/FriendCard.svelte";
     import FriendCardSkeleton from "$lib/components/Cards/FriendCardSkeleton.svelte";
 
@@ -11,12 +12,16 @@
         ThumbnailType,
         type InternalFriend,
         type UserDetails,
+        type UserPresence,
     } from "$lib/typings";
 
     const userId = parseInt($page.url.searchParams.get("id") ?? "1");
 
-    async function fetchUserDetails(): Promise<UserDetails> {
-        return robloxApi.getUserDetails(userId);
+    async function fetchUserDetails(): Promise<[UserDetails, UserPresence]> {
+        return Promise.all([
+            robloxApi.getUserDetails(userId),
+            robloxApi.getPresences([userId]).then((res) => res[0]),
+        ]);
     }
 
     async function fetchUserThumbnail(): Promise<string> {
@@ -57,18 +62,27 @@
 </script>
 
 {#await fetchUserDetails()}
-    skeleton O_o
-{:then userDetails}
+    <br />
+{:then [userDetails, userPresence]}
     <main class="user-page">
         <section class="section-content user-details">
             {#await fetchUserThumbnail()}
-                <img
-                    class="user-image"
-                    src="https://placehold.co/512"
-                    alt="user"
-                />
+                <div class="user-image-container">
+                    <img
+                        class="user-image"
+                        src="https://placehold.co/512"
+                        alt="Loading..."
+                    />
+                </div>
             {:then thumbnailUrl}
-                <img class="user-image" src={thumbnailUrl} alt="user" />
+                <div class="user-image-container">
+                    <img
+                        class="user-image"
+                        src={thumbnailUrl}
+                        alt={userDetails.display_name}
+                    />
+                    <UserStatus presenceType={userPresence.presence_type} />
+                </div>
             {/await}
             <div class="user-info">
                 <div>
@@ -119,8 +133,12 @@
         .user-details {
             @apply flex gap-2;
 
-            .user-image {
-                @apply w-24 rounded-md;
+            .user-image-container {
+                @apply relative;
+
+                .user-image {
+                    @apply w-24 rounded-md;
+                }
             }
 
             .user-info {

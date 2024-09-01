@@ -7,9 +7,7 @@ pub fn open_place<R: Runtime>(app: AppHandle<R>, place_id: u64) -> Result<(), St
         format!("roblox://experiences/start?placeId={}", place_id),
         None,
     )
-    .map_err(|err| err.to_string())?;
-
-    Ok(())
+    .map_err(|err| err.to_string())
 }
 
 #[tauri::command]
@@ -26,7 +24,5 @@ pub fn open_server<R: Runtime>(
         ),
         None,
     )
-    .map_err(|err| err.to_string())?;
-
-    Ok(())
+    .map_err(|err| err.to_string())
 }

@@ -1,6 +1,7 @@
 use tauri::State;
 
 use crate::client::friends::FriendUserInformation;
+use crate::client::users::UserDetails;
 use crate::{
     client::RobloxError,
     types::{ClientInfo, RobloxApiState},
@@ -23,6 +24,19 @@ pub async fn get_me(state: State<'_, RobloxApiState>) -> Result<ClientInfo, Stri
 }
 
 #[tauri::command(async)]
+pub async fn get_user(
+    state: State<'_, RobloxApiState>,
+    user_id: u64,
+) -> Result<UserDetails, String> {
+    let client = state.0.read().await;
+
+    client
+        .user_details(user_id)
+        .await
+        .map_err(|e| e.to_string())
+}
+
+#[tauri::command(async)]
 pub async fn friends_list(
     state: State<'_, RobloxApiState>,
 ) -> Result<Vec<FriendUserInformation>, String> {
@@ -34,14 +48,12 @@ pub async fn friends_list(
         .map_err(|err| err.to_string())
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub async fn users_friends_list(
     state: State<'_, RobloxApiState>,
     user_id: u64,
 ) -> Result<Vec<FriendUserInformation>, String> {
-    let cookie = { state.0.lock().unwrap().clone() };
-
-    let client = ClientBuilder::new().roblosecurity(cookie).build();
+    let client = state.0.read().await;
 
     client
         .friends_list(user_id)

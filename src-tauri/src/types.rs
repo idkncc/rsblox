@@ -12,3 +12,10 @@ pub struct ClientInfo {
     pub display_name: String,
     pub robux: u64,
 }
+
+#[derive(Serialize, Deserialize)]
+pub struct UserProfileStats {
+    pub friends: usize,
+    pub followers: usize,
+    pub followings: usize,
+}

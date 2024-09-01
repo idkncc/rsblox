@@ -33,6 +33,12 @@ export interface UserDetails {
     has_verified_badge: boolean,
 }
 
+export interface UserProfileStats {
+    friends: number,
+    followers: number,
+    followings: number
+}
+
 export interface FriendUserInformation {
     user_id: number;
     username: string;

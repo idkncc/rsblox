@@ -86,6 +86,12 @@ pub(super) struct FriendsListResponse {
 
 #[derive(Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+pub(super) struct CountBasedResponse {
+    pub count: usize,
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub(super) struct FriendRequestsResponse {
     pub previous_page_cursor: Option<String>,
     pub next_page_cursor: Option<String>,

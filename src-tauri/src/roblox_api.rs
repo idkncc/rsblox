@@ -87,6 +87,7 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             // users.rs
             commands::get_me,
             commands::get_user,
+            commands::get_user_stats,
             commands::friends_list,
             commands::users_friends_list,
             // games.rs

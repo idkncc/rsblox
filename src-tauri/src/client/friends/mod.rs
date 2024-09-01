@@ -10,6 +10,10 @@ const FRIEND_REQUESTS_API: &str = "https://friends.roblox.com/v1/my/friends/requ
 const PENDING_FRIEND_REQUESTS_API: &str =
     "https://friends.roblox.com/v1/user/friend-requests/count";
 
+const FRIENDS_COUNT_API: &str = "https://friends.roblox.com/v1/users/{user_id}/friends/count";
+const FOLLOWERS_COUNT_API: &str = "https://friends.roblox.com/v1/users/{user_id}/followers/count";
+const FOLLOWINGS_COUNT_API: &str = "https://friends.roblox.com/v1/users/{user_id}/followings/count";
+
 const ACCEPT_FRIEND_REQUEST_API: &str =
     "https://friends.roblox.com/v1/users/{requester_id}/accept-friend-request";
 const DECLINE_FRIEND_REQUEST_API: &str =
@@ -120,6 +124,45 @@ impl RobloxApi {
         }
 
         Ok(friends)
+    }
+
+    /// Gets friends count of specific user using <https://friends.roblox.com/v1/users/{user_id}/friends/count>
+    pub async fn friends_count(&self, user_id: u64) -> Result<usize, RobloxError> {
+        let formatted_url = FRIENDS_COUNT_API.replace("{user_id}", &user_id.to_string());
+
+        let request_result = self.reqwest_client.get(formatted_url).send().await;
+
+        let response = Self::validate_request_result(request_result).await?;
+
+        Self::parse_to_raw::<request_types::CountBasedResponse>(response)
+            .await
+            .map(|res| res.count)
+    }
+
+    /// Gets followers count of specific user using <https://friends.roblox.com/v1/users/{user_id}/followers/count>
+    pub async fn followers_count(&self, user_id: u64) -> Result<usize, RobloxError> {
+        let formatted_url = FOLLOWERS_COUNT_API.replace("{user_id}", &user_id.to_string());
+
+        let request_result = self.reqwest_client.get(formatted_url).send().await;
+
+        let response = Self::validate_request_result(request_result).await?;
+
+        Self::parse_to_raw::<request_types::CountBasedResponse>(response)
+            .await
+            .map(|res| res.count)
+    }
+
+    /// Gets followings count of specific user using <https://friends.roblox.com/v1/users/{user_id}/followings/count>
+    pub async fn followings_count(&self, user_id: u64) -> Result<usize, RobloxError> {
+        let formatted_url = FOLLOWINGS_COUNT_API.replace("{user_id}", &user_id.to_string());
+
+        let request_result = self.reqwest_client.get(formatted_url).send().await;
+
+        let response = Self::validate_request_result(request_result).await?;
+
+        Self::parse_to_raw::<request_types::CountBasedResponse>(response)
+            .await
+            .map(|res| res.count)
     }
 
     /// Get list of friend requests with cursor using <https://friends.roblox.com/v1/my/friends/requests>.

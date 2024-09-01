@@ -13,14 +13,13 @@ import {
     type PlaceDetails,
     type RecommendationsTopic,
     type UserDetails,
-    type UserPresence
+    type UserPresence,
+    type UserProfileStats
 } from "$lib/typings";
 import { STORE_PATH } from "./constants";
 import chunk from "lodash.chunk";
 
-console.log("RAWWRH 👹👹👹👹")
-
-
+// Roblox api
 export const robloxApi = {
     _invoke<T>(method: string, args?: InvokeArgs) {
         return invoke<T>(`plugin:roblox-api|${method}`, args);
@@ -44,6 +43,10 @@ export const robloxApi = {
 
     getUserDetails(userId: number) {
         return this._invoke<UserDetails>("get_user", { userId });
+    },
+
+    getUserStats(userId: number) {
+        return this._invoke<UserProfileStats>("get_user_stats", { userId });
     },
 
     getFriendsList() {

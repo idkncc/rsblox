@@ -13,6 +13,7 @@
         type InternalFriend,
         type UserDetails,
         type UserPresence,
+        type UserProfileStats,
     } from "$lib/typings";
 
     const userId = parseInt($page.url.searchParams.get("id") ?? "1");
@@ -32,6 +33,10 @@
                 ThumbnailType.AvatarHeadshot,
             )
             .then((res) => res[0] ?? "https://placehold.co/512?text=Not+Found");
+    }
+
+    async function fetchUserProfileStats(): Promise<UserProfileStats> {
+        return robloxApi.getUserStats(userId);
     }
 
     async function fetchFriends(): Promise<InternalFriend[]> {
@@ -91,9 +96,27 @@
                 </div>
 
                 <div class="user-bar">
-                    <div class="user-stats">
-                        <p>TODO: stats</p>
-                    </div>
+                    {#await fetchUserProfileStats()}
+                        <div class="user-stats">
+                            <span
+                                class="placeholder w-full rounded-lg"
+                                style="width: 200px"
+                            />
+                        </div>
+                    {:then stats}
+                        <div class="user-stats">
+                            <p class="user-stat">
+                                Friends: <span>{stats.friends}</span>
+                            </p>
+                            <p class="user-stat">
+                                Followers: <span>{stats.followers}</span>
+                            </p>
+                            <p class="user-stat">
+                                Following: <span>{stats.followings}</span>
+                            </p>
+                        </div>
+                    {/await}
+
                     <div class="user-actions">
                         <button class="user-action unfriend">Unfriend</button>
                     </div>
@@ -156,7 +179,12 @@
                     @apply w-full;
 
                     .user-stats {
-                        /* @apply font-semibold text-2xl; */
+                        @apply flex gap-2 items-center;
+                        @apply text-sm;
+
+                        .user-stat span {
+                            @apply font-semibold;
+                        }
                     }
 
                     .user-actions {

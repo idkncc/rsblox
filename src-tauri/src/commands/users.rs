@@ -2,6 +2,7 @@ use tauri::State;
 
 use crate::client::friends::FriendUserInformation;
 use crate::client::users::UserDetails;
+use crate::types::UserProfileStats;
 use crate::{
     client::RobloxError,
     types::{ClientInfo, RobloxApiState},
@@ -34,6 +35,29 @@ pub async fn get_user(
         .user_details(user_id)
         .await
         .map_err(|e| e.to_string())
+}
+
+#[tauri::command(async)]
+pub async fn get_user_stats(
+    state: State<'_, RobloxApiState>,
+    user_id: u64,
+) -> Result<UserProfileStats, String> {
+    let client = state.0.read().await;
+
+    Ok(UserProfileStats {
+        friends: client
+            .friends_count(user_id)
+            .await
+            .map_err(|e| e.to_string())?,
+        followers: client
+            .followers_count(user_id)
+            .await
+            .map_err(|e| e.to_string())?,
+        followings: client
+            .followings_count(user_id)
+            .await
+            .map_err(|e| e.to_string())?,
+    })
 }
 
 #[tauri::command(async)]

@@ -111,29 +111,6 @@ pub struct UserSale {
 
 impl RobloxApi {
     /// Grabs robux count of the current account from <https://economy.roblox.com/v1/users/{user_id}/currency>.
-    ///
-    /// # Notes
-    /// * Requires a valid roblosecurity.
-    ///
-    /// # Errors
-    /// * All errors under [Standard Errors](#standard-errors).
-    /// * All errors under [Auth Required Errors](#auth-required-errors).
-    ///
-    /// # Example
-    /// ```no_run
-    /// use roboat::ClientBuilder;
-    ///
-    /// const ROBLOSECURITY: &str = "roblosecurity";
-    ///
-    /// # #[tokio::main]
-    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// let client = ClientBuilder::new().roblosecurity(ROBLOSECURITY.to_string()).build();
-    ///
-    /// let robux = client.robux().await?;
-    /// println!("Robux: {}", robux);
-    /// # Ok(())
-    /// # }
-    /// ```
     pub async fn robux(&self) -> Result<u64, RobloxError> {
         let user_id = self.user_id().await?;
         let formatted_url = format!("{}{}{}", ROBUX_API_PART_1, user_id, ROBUX_API_PART_2);
@@ -155,41 +132,6 @@ impl RobloxApi {
     }
 
     /// Grabs resellers of an item from <https://economy.roblox.com/v1/assets/{item_id}/resellers?cursor={cursor}&limit={limit}>.
-    ///
-    /// # Notes
-    /// * Requires a valid roblosecurity.
-    ///
-    /// # Argument Notes
-    /// * The cursor is used to get the a certain page of results. If you want the starting page, use `None`.
-    ///
-    /// # Return Value Notes
-    /// * The first value is a vector of reseller listings.
-    /// * The second value is the cursor for the next page of results. If there are no more pages, this will be `None`.
-    ///
-    /// # Errors
-    /// * All errors under [Standard Errors](#standard-errors).
-    /// * All errors under [Auth Required Errors](#auth-required-errors).
-    ///
-    /// # Example
-    /// ```no_run
-    /// use roboat::Limit;
-    /// use roboat::ClientBuilder;
-    ///
-    /// const ROBLOSECURITY: &str = "roblosecurity";
-    ///
-    /// # #[tokio::main]
-    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// let client = ClientBuilder::new().roblosecurity(ROBLOSECURITY.to_string()).build();
-    ///
-    /// let item_id = 1365767;
-    /// let limit = Limit::Ten;
-    /// let cursor = None;
-    ///
-    /// let (resellers, next_page_cursor) = client.resellers(item_id, limit, cursor).await?;
-    /// println!("Lowest Price for Item {}: {}", item_id, resellers[0].price);
-    /// # Ok(())
-    /// # }
-    /// ```
     pub async fn resellers(
         &self,
         item_id: u64,
@@ -239,47 +181,6 @@ impl RobloxApi {
     }
 
     /// Grabs user sales from <https://economy.roblox.com/v2/users/{user_id}/transactions?transactionType=Sale&cursor={cursor}&limit={limit}>.
-    ///
-    /// # Notes
-    /// * Requires a valid roblosecurity.
-    ///
-    /// # Argument Notes
-    /// * The cursor is used to get the a certain page of results. If you want the starting page, use `None`.
-    ///
-    /// # Return Value Notes
-    /// * The first value is a vector of user sales.
-    /// * The second value is the cursor for the next page of results. If there are no more pages, this will be `None`.
-    ///
-    /// # Errors
-    /// * All errors under [Standard Errors](#standard-errors).
-    /// * All errors under [Auth Required Errors](#auth-required-errors).
-    ///
-    /// # Example
-    /// ```no_run
-    /// use roboat::Limit;
-    /// use roboat::ClientBuilder;
-    ///
-    /// const ROBLOSECURITY: &str = "roblosecurity";
-    ///
-    /// # #[tokio::main]
-    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// let client = ClientBuilder::new().roblosecurity(ROBLOSECURITY.to_string()).build();
-    ///
-    /// let limit = Limit::Ten;
-    /// let cursor = None;
-    ///
-    /// let (user_sales, next_page_cursor) = client.user_sales(limit, cursor).await?;
-    ///
-    /// let sale_amount = user_sales.len();
-    /// let total_robux_earned = user_sales
-    ///     .iter()
-    ///     .map(|sale| sale.robux_received)
-    ///     .sum::<u64>();
-    ///
-    /// println!("Robux gained from last {} sales: {}", sale_amount, total_robux_earned);
-    /// # Ok(())
-    /// # }
-    /// ```
     pub async fn user_sales(
         &self,
         limit: Limit,
@@ -342,40 +243,6 @@ impl RobloxApi {
     }
 
     /// Puts a limited item on sale using the endpoint <https://economy.roblox.com/v1/assets/{item_id}/resellable-copies/{uaid}>.
-    ///
-    /// # Notes
-    /// * Requires a valid roblosecurity.
-    /// * Will repeat once if the x-csrf-token is invalid.
-    ///
-    /// # Return Value Notes
-    /// * Will return `Ok(())` if the item was successfully put on sale.
-    ///
-    /// # Errors
-    /// * All errors under [Standard Errors](#standard-errors).
-    /// * All errors under [Auth Required Errors](#auth-required-errors).
-    /// * All errors under [X-CSRF-TOKEN Required Errors](#x-csrf-token-required-errors).
-    ///
-    /// # Example
-    /// ```no_run
-    /// use roboat::ClientBuilder;
-    ///
-    /// const ROBLOSECURITY: &str = "roblosecurity";
-    ///
-    /// # #[tokio::main]
-    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// let client = ClientBuilder::new().roblosecurity(ROBLOSECURITY.to_string()).build();
-    ///
-    /// let item_id = 123456789;
-    /// let uaid = 987654321;
-    /// let price = 5000;
-    ///
-    /// match client.put_limited_on_sale(item_id, uaid, price).await {
-    ///    Ok(_) => println!("Successfully put item on sale!"),
-    ///    Err(e) => println!("Error: {}", e),
-    /// }
-    /// # Ok(())
-    /// # }
-    /// ```
     pub async fn put_limited_on_sale(
         &self,
         item_id: u64,
@@ -400,39 +267,6 @@ impl RobloxApi {
     }
 
     /// Takes a limited item off sale using the endpoint <https://economy.roblox.com/v1/assets/{item_id}/resellable-copies/{uaid}>.
-    ///
-    /// # Notes
-    /// * Requires a valid roblosecurity.
-    /// * Will repeat once if the x-csrf-token is invalid.
-    ///
-    /// # Return Value Notes
-    /// * Will return `Ok(())` if the item was successfully taken off sale.
-    ///
-    /// # Errors
-    /// * All errors under [Standard Errors](#standard-errors).
-    /// * All errors under [Auth Required Errors](#auth-required-errors).
-    /// * All errors under [X-CSRF-TOKEN Required Errors](#x-csrf-token-required-errors).
-    ///
-    /// # Example
-    /// ```no_run
-    /// use roboat::ClientBuilder;
-    ///
-    /// const ROBLOSECURITY: &str = "roblosecurity";
-    ///
-    /// # #[tokio::main]
-    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// let client = ClientBuilder::new().roblosecurity(ROBLOSECURITY.to_string()).build();
-    ///
-    /// let item_id = 123456789;
-    /// let uaid = 987654321;
-    ///
-    /// match client.take_limited_off_sale(item_id, uaid).await {
-    ///    Ok(_) => println!("Successfully took item off sale!"),
-    ///    Err(e) => println!("Error: {}", e),
-    /// }
-    /// # Ok(())
-    /// # }
-    /// ```
     pub async fn take_limited_off_sale(&self, item_id: u64, uaid: u64) -> Result<(), RobloxError> {
         match self.take_limited_off_sale_internal(item_id, uaid).await {
             Ok(x) => Ok(x),
@@ -449,45 +283,6 @@ impl RobloxApi {
 
     /// Purchases a limited using  <https://economy.roblox.com/v1/purchases/products/{product_id}>.
     /// Only works on tradeable (legacy) limiteds.
-    ///
-    /// # Notes
-    /// * Requires a valid roblosecurity.
-    /// * Will repeat once if the x-csrf-token is invalid.
-    ///
-    /// # Return Value Notes
-    /// * Will return `Ok(())` if the limited was successfully purchased.
-    /// * As it will repeat once if the x-csrf-token is invalid, you may want to manually refresh the x-csrf-token
-    /// on another thread by using [`Client::force_refresh_xcsrf`].
-    ///
-    /// # Argument Notes
-    /// * `product_id` is the product id of the limited, NOT the item id.
-    ///
-    /// # Errors
-    /// * All errors under [Standard Errors](#standard-errors).
-    /// * All errors under [Auth Required Errors](#auth-required-errors).
-    /// * All errors under [X-CSRF-TOKEN Required Errors](#x-csrf-token-required-errors).
-    /// * [`RobloxError::PurchaseTradableLimitedError`] - Nested inside this error, all variants of [`PurchaseTradableLimitedError`] may be thrown.
-    ///
-    /// # Example
-    /// ```no_run
-    /// use roboat::ClientBuilder;
-    ///
-    /// const ROBLOSECURITY: &str = "roblosecurity";
-    ///
-    /// # #[tokio::main]
-    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// let client = ClientBuilder::new().roblosecurity(ROBLOSECURITY.to_string()).build();
-    ///
-    /// let product_id = 12345679;
-    /// let seller_id = 5656565656;
-    /// let uaid = 987654321;
-    /// let price = 5000;
-    ///
-    /// let _ = client.purchase_tradable_limited(product_id, seller_id, uaid, price).await?;
-    /// println!("Successfully Purchased!");
-    /// # Ok(())
-    /// # }
-    /// ```
     pub async fn purchase_tradable_limited(
         &self,
         product_id: u64,

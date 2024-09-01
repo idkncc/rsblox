@@ -73,38 +73,6 @@ pub struct Recommendation {
 
 impl RobloxApi {
     /// Gets sections from Home using <https://apis.roblox.com/discovery-api/omni-recommendation>.
-    ///
-    /// # Notes
-    /// * Requires a valid roblosecurity.
-    ///
-    /// # Errors
-    /// * All errors under [Standard Errors](#standard-errors).
-    /// * All errors under [Auth Required Errors](#auth-required-errors).
-    ///
-    /// # Example
-    ///
-    /// ```no_run
-    /// use roboat::ClientBuilder;
-    ///
-    /// const ROBLOSECURITY: &str = "roblosecurity";
-    /// const KEYWORD: &str = "linkmon";
-    ///
-    /// # #[tokio::main]
-    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// let client = ClientBuilder::new().roblosecurity(ROBLOSECURITY.to_string()).build();
-    ///
-    /// let keyword = KEYWORD.to_string();
-    /// let users = client.user_search(keyword).await?;
-    ///
-    /// println!("Found {} users.", users.len());
-    ///
-    /// for user in users {
-    ///     println!("{}: {}", user.username, user.user_id);
-    /// }
-    ///
-    /// # Ok(())
-    /// # }
-    /// ```
     pub async fn omni_recommendations(&self) -> Result<Vec<RecommendationsTopic>, RobloxError> {
         match self.omni_recommendations_internal().await {
             Ok(x) => Ok(x),

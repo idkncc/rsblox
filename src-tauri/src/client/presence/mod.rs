@@ -54,38 +54,6 @@ pub struct UserPresence {
 impl RobloxApi {
     /// Registers presence on the website (makes you appear to be online). Endpoint called is
     /// <https://presence.roblox.com/v1/presence/register-app-presence>
-    ///
-    /// # Notes
-    /// * Requires a valid roblosecurity.
-    /// * Will repeat once if the x-csrf-token is invalid.
-    /// * Normally repeats every 15 seconds when viewing the Roblox homepage.
-    ///
-    /// # Return Value Notes
-    /// * Will return `Ok(())` if presence was successfully registered.
-    ///
-    /// # Errors
-    /// * All errors under [Standard Errors](#standard-errors).
-    /// * All errors under [Auth Required Errors](#auth-required-errors).
-    /// * All errors under [X-CSRF-TOKEN Required Errors](#x-csrf-token-required-errors).
-    ///
-    /// # Example
-    ///
-    /// ```no_run
-    /// use roboat::ClientBuilder;
-    ///
-    /// const ROBLOSECURITY: &str = "roblosecurity";
-    ///
-    /// # #[tokio::main]
-    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// let client = ClientBuilder::new().roblosecurity(ROBLOSECURITY.to_string()).build();
-    ///
-    /// match client.register_presence().await {
-    ///    Ok(_) => println!("Successfully registered presence!"),
-    ///    Err(e) => println!("Error: {}", e),
-    /// }
-    /// # Ok(())
-    /// # }
-    /// ```
     pub async fn register_presence(&self) -> Result<(), RobloxError> {
         match self.register_presence_internal().await {
             Ok(x) => Ok(x),
@@ -101,32 +69,6 @@ impl RobloxApi {
     }
 
     /// Gets presence of users using <https://presence.roblox.com/v1/presence/users>
-    ///
-    /// # Notes
-    /// * Does not require a valid roblosecurity.
-    /// * But if provided valid roblosecurity, you can access to peoples' presences, restricted due privacy
-    ///
-    /// # Errors
-    /// * All errors under [Standard Errors](#standard-errors).
-    ///
-    /// # Example
-    ///
-    /// ```no_run
-    /// use roboat::ClientBuilder;
-    ///
-    /// const ROBLOSECURITY: &str = "roblosecurity";
-    ///
-    /// # #[tokio::main]
-    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// let client = ClientBuilder::new().roblosecurity(ROBLOSECURITY.to_string()).build();
-    ///
-    /// match client.register_presence().await {
-    ///    Ok(_) => println!("Successfully registered presence!"),
-    ///    Err(e) => println!("Error: {}", e),
-    /// }
-    /// # Ok(())
-    /// # }
-    /// ```
     pub async fn get_presence(&self, user_ids: Vec<u64>) -> Result<Vec<UserPresence>, RobloxError> {
         let cookie = self
             .cookie_string()

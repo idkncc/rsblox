@@ -190,30 +190,6 @@ pub struct GameServer {
 
 impl RobloxApi {
     /// Gets games' details using <https://groups.roblox.com/v1/groups/{group_id}/roles>.
-    ///
-    /// # Notes
-    /// * Does not require a valid roblosecurity.
-    /// * If you pass valid roblosecurity, `is_favorited_by_user` would have right value
-    ///
-    /// # Errors
-    /// * All errors under [Standard Errors](#standard-errors).
-    ///
-    /// # Example
-    ///
-    /// ```no_run
-    /// use roboat::ClientBuilder;
-    ///
-    /// const UNIVERSE_ID: u64 = 3717264063;
-    ///
-    /// # #[tokio::main]
-    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// let client = ClientBuilder::new().build();
-    ///
-    /// // TODO: example
-    ///
-    /// # Ok(())
-    /// # }
-    /// ```
     pub async fn games_details(
         &self,
         universe_ids: Vec<u64>,
@@ -281,30 +257,6 @@ impl RobloxApi {
     }
 
     /// Gets games' details using <https://groups.roblox.com/v1/groups/{group_id}/roles>.
-    ///
-    /// # Notes
-    /// * Does not require a valid roblosecurity.
-    /// * If you pass valid roblosecurity, `is_favorited_by_user` would have right value
-    ///
-    /// # Errors
-    /// * All errors under [Standard Errors](#standard-errors).
-    ///
-    /// # Example
-    ///
-    /// ```no_run
-    /// use roboat::ClientBuilder;
-    ///
-    /// const UNIVERSE_ID: u64 = 3717264063;
-    ///
-    /// # #[tokio::main]
-    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// let client = ClientBuilder::new().build();
-    ///
-    /// // TODO: example
-    ///
-    /// # Ok(())
-    /// # }
-    /// ```
     pub async fn game_details(&self, universe_id: u64) -> Result<GameDetail, RobloxError> {
         let games_details = self.games_details(vec![universe_id]).await?;
 
@@ -314,31 +266,6 @@ impl RobloxApi {
     }
 
     /// Gets places' details using <https://games.roblox.com/v1/games/multiget-place-details?placeIds={place_ids}>.
-    ///
-    /// # Notes
-    /// * Requires a valid roblosecurity.
-    ///
-    /// # Errors
-    /// * All errors under [Standard Errors](#standard-errors).
-    /// * All errors under [Auth Required Errors](#auth-required-errors).
-    ///
-    /// # Example
-    ///
-    /// ```no_run
-    /// use roboat::ClientBuilder;
-    ///
-    /// const ROBLOSECURITY: &str = "roblosecurity";
-    /// const PLACES_ID: Vec<u64> = vec![10118559731];
-    ///
-    /// # #[tokio::main]
-    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// let client = ClientBuilder::new().roblosecurity(ROBLOSECURITY.to_string()).build();
-    ///
-    /// // TODO: example
-    ///
-    /// # Ok(())
-    /// # }
-    /// ```
     pub async fn place_details_bulk(
         &self,
         place_ids: Vec<u64>,
@@ -393,31 +320,6 @@ impl RobloxApi {
     }
 
     /// Gets place's details using <https://games.roblox.com/v1/games/multiget-place-details?placeIds={place_id}>.
-    ///
-    /// # Notes
-    /// * Requires a valid roblosecurity.
-    ///
-    /// # Errors
-    /// * All errors under [Standard Errors](#standard-errors).
-    /// * All errors under [Auth Required Errors](#auth-required-errors).
-    ///
-    /// # Example
-    ///
-    /// ```no_run
-    /// use roboat::ClientBuilder;
-    ///
-    /// const ROBLOSECURITY: &str = "roblosecurity";
-    /// const PLACE_ID: u64 = 10118559731;
-    ///
-    /// # #[tokio::main]
-    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// let client = ClientBuilder::new().roblosecurity(ROBLOSECURITY.to_string()).build();
-    ///
-    /// // TODO: example
-    ///
-    /// # Ok(())
-    /// # }
-    /// ```
     pub async fn place_details(&self, universe_id: u64) -> Result<PlaceDetails, RobloxError> {
         let places_details = self.place_details_bulk(vec![universe_id]).await?;
 
@@ -427,29 +329,6 @@ impl RobloxApi {
     }
 
     /// Gets places' details using <https://games.roblox.com/v2/games/{universe_id}/media>.
-    ///
-    /// # Notes
-    /// * Does not require a valid roblosecurity.
-    ///
-    /// # Errors
-    /// * All errors under [Standard Errors](#standard-errors).
-    ///
-    /// # Example
-    ///
-    /// ```no_run
-    /// use roboat::ClientBuilder;
-    ///
-    /// const UNIVERSE_ID: u64 = 3717264063;
-    ///
-    /// # #[tokio::main]
-    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// let client = ClientBuilder::new().roblosecurity(ROBLOSECURITY.to_string()).build();
-    ///
-    /// // TODO: example
-    ///
-    /// # Ok(())
-    /// # }
-    /// ```
     pub async fn game_media(&self, universe_id: u64) -> Result<Vec<GameMedia>, RobloxError> {
         let formatted_url = GAME_MEDIA_API.replace("{universe_id}", &universe_id.to_string());
 
@@ -477,34 +356,6 @@ impl RobloxApi {
     }
 
     /// Gets places' details using <https://games.roblox.com/v1/games/{place_id}/servers/{servers_type}>.
-    ///
-    /// # Notes
-    /// * Requires a valid roblosecurity.
-    ///
-    /// # Errors
-    /// * All errors under [Standard Errors](#standard-errors).
-    /// * All errors under [Auth Required Errors](#auth-required-errors).
-    ///
-    /// # Notes:
-    /// * Returns Vector of `GameServer` and Next page cursor
-    ///
-    /// # Example
-    ///
-    /// ```no_run
-    /// use roboat::ClientBuilder;
-    ///
-    /// const ROBLOSECURITY: &str = "roblosecurity";
-    /// const PLACES_ID: Vec<u64> = vec![10118559731];
-    ///
-    /// # #[tokio::main]
-    /// # async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    /// let client = ClientBuilder::new().roblosecurity(ROBLOSECURITY.to_string()).build();
-    ///
-    /// // TODO: example
-    ///
-    /// # Ok(())
-    /// # }
-    /// ```
     pub async fn game_servers(
         &self,
         place_id: u64,

@@ -1,6 +1,6 @@
-use crate::client::games::{GameDetail, GameMedia, GameServer, PlaceDetails, ServerType};
 use tauri::State;
 
+use crate::client::games::{GameDetail, GameMedia, GameServer, PlaceDetails, ServerType};
 use crate::types::RobloxApiState;
 
 #[tauri::command(async)]

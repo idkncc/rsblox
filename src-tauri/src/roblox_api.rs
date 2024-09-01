@@ -1,13 +1,13 @@
-use roboat::discovery::RecommendationsTopic;
-use roboat::presence::UserPresence;
-use roboat::ClientBuilder;
 use serde::{Deserialize, Serialize};
 use tauri::{
     plugin::{Builder, TauriPlugin},
     AppHandle, Manager, Runtime, State,
 };
 
-use crate::types::RobloxApiState;
+use crate::{
+    client::{discovery::RecommendationsTopic, presence::UserPresence},
+    types::RobloxApiState,
+};
 
 use super::commands;
 
@@ -21,22 +21,27 @@ struct ClientInfo {
 
 /// Log in method
 #[tauri::command]
-fn auth<R: Runtime>(_app: AppHandle<R>, state: State<'_, RobloxApiState>, roblosecurity: String) {
-    *state.0.lock().unwrap() = roblosecurity.clone();
+async fn auth<R: Runtime>(
+    _app: AppHandle<R>,
+    state: State<'_, RobloxApiState>,
+    roblosecurity: String,
+) -> Result<(), String> {
+    let client = state.0.write().await;
+
+    client.set_cookie(roblosecurity.clone()).await;
+    Ok(())
 }
 
 #[tauri::command]
-fn is_authed(state: State<'_, RobloxApiState>) -> bool {
-    let cookie = { state.0.lock().unwrap().clone() };
+async fn is_authed(state: State<'_, RobloxApiState>) -> Result<bool, ()> {
+    let client = state.0.read().await;
 
-    cookie != ""
+    Ok(client.cookie_string().await.is_ok())
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 async fn presence(state: State<'_, RobloxApiState>) -> Result<(), String> {
-    let cookie = { state.0.lock().unwrap().clone() };
-
-    let client = ClientBuilder::new().roblosecurity(cookie).build();
+    let client = state.0.read().await;
 
     client
         .register_presence()
@@ -46,14 +51,12 @@ async fn presence(state: State<'_, RobloxApiState>) -> Result<(), String> {
     Ok(())
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 async fn get_presences(
     state: State<'_, RobloxApiState>,
     user_ids: Vec<u64>,
 ) -> Result<Vec<UserPresence>, String> {
-    let cookie = { state.0.lock().unwrap().clone() };
-
-    let client = ClientBuilder::new().roblosecurity(cookie).build();
+    let client = state.0.read().await;
 
     client
         .get_presence(user_ids)
@@ -61,13 +64,11 @@ async fn get_presences(
         .map_err(|err| err.to_string())
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 async fn recommendations(
     state: State<'_, RobloxApiState>,
 ) -> Result<Vec<RecommendationsTopic>, String> {
-    let cookie = { state.0.lock().unwrap().clone() };
-
-    let client = ClientBuilder::new().roblosecurity(cookie).build();
+    let client = state.0.read().await;
 
     client
         .omni_recommendations()

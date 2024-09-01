@@ -10,12 +10,24 @@ edition = "2021"
 [build-dependencies]
 tauri-build = { version = "1", features = [] }
 [dependencies]
-tauri = { version = "1", features = [ "clipboard-write-text", "shell-open", "shell-open-api"] }
+tauri = { version = "1", features = [
+    "clipboard-write-text",
+    "shell-open",
+    "shell-open-api",
+] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 
 tauri-plugin-store = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
-roboat = { git = "https://github.com/Mon4ik/roboat", branch = "feat/more-methods-and-endpoints" }
+tokio = { version = "1.27.0", features = ["full"] }
+reqwest = { version = "0.12.5", default-features = false, features = [
+    "rustls-tls",
+    "json",
+    "multipart",
+    "blocking",
+] }
+thiserror = "1.0.63"
+base64 = "0.22.1"
 
 [features]
 # This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!

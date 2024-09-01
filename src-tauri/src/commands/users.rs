@@ -1,36 +1,35 @@
-use crate::types::{ClientInfo, RobloxApiState};
-use roboat::{friends::FriendUserInformation, ClientBuilder};
 use tauri::State;
+
+use crate::client::friends::FriendUserInformation;
+use crate::{
+    client::RobloxError,
+    types::{ClientInfo, RobloxApiState},
+};
 
 #[tauri::command]
 pub async fn get_me(state: State<'_, RobloxApiState>) -> Result<ClientInfo, String> {
-    let cookie = { state.0.lock().unwrap().clone() };
+    let client = state.0.read().await;
 
-    let client = ClientBuilder::new().roblosecurity(cookie).build();
+    let Some(user_info) = client.user_information().await else {
+        return Err(RobloxError::InvalidRoblosecurity.to_string());
+    };
 
     Ok(ClientInfo {
-        user_id: client.user_id().await.map_err(|err| err.to_string())?,
-        username: client.username().await.map_err(|err| err.to_string())?,
-        display_name: client.display_name().await.map_err(|err| err.to_string())?,
+        user_id: user_info.user_id,
+        username: user_info.username,
+        display_name: user_info.display_name,
         robux: client.robux().await.map_err(|err| err.to_string())?,
     })
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub async fn friends_list(
     state: State<'_, RobloxApiState>,
 ) -> Result<Vec<FriendUserInformation>, String> {
-    let cookie = { state.0.lock().unwrap().clone() };
-
-    let client = ClientBuilder::new().roblosecurity(cookie).build();
-
-    let user_id = match client.user_id().await {
-        Ok(v) => v,
-        Err(err) => return Err(err.to_string()),
-    };
+    let client = state.0.read().await;
 
     client
-        .friends_list(user_id)
+        .friends_list(client.user_id().await.map_err(|err| err.to_string())?)
         .await
         .map_err(|err| err.to_string())
 }

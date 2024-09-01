@@ -1,19 +1,14 @@
-use roboat::{
-    games::{GameDetail, GameMedia, GameServer, PlaceDetails, ServerType},
-    ClientBuilder,
-};
+use crate::client::games::{GameDetail, GameMedia, GameServer, PlaceDetails, ServerType};
 use tauri::State;
 
 use crate::types::RobloxApiState;
 
-#[tauri::command]
+#[tauri::command(async)]
 pub async fn place_details(
     state: State<'_, RobloxApiState>,
     place_id: u64,
 ) -> Result<PlaceDetails, String> {
-    let cookie = { state.0.lock().unwrap().clone() };
-
-    let client = ClientBuilder::new().roblosecurity(cookie).build();
+    let client = state.0.read().await;
 
     client
         .place_details(place_id)
@@ -21,9 +16,12 @@ pub async fn place_details(
         .map_err(|err| err.to_string())
 }
 
-#[tauri::command]
-pub async fn game_media(universe_id: u64) -> Result<Vec<GameMedia>, String> {
-    let client = ClientBuilder::new().build();
+#[tauri::command(async)]
+pub async fn game_media(
+    state: State<'_, RobloxApiState>,
+    universe_id: u64,
+) -> Result<Vec<GameMedia>, String> {
+    let client = state.0.read().await;
 
     client
         .game_media(universe_id)
@@ -31,14 +29,12 @@ pub async fn game_media(universe_id: u64) -> Result<Vec<GameMedia>, String> {
         .map_err(|err| err.to_string())
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub async fn game_details(
     state: State<'_, RobloxApiState>,
     universe_id: u64,
 ) -> Result<GameDetail, String> {
-    let cookie = { state.0.lock().unwrap().clone() };
-
-    let client = ClientBuilder::new().roblosecurity(cookie).build();
+    let client = state.0.read().await;
 
     client
         .game_details(universe_id)
@@ -46,16 +42,14 @@ pub async fn game_details(
         .map_err(|err| err.to_string())
 }
 
-#[tauri::command]
+#[tauri::command(async)]
 pub async fn game_servers(
     state: State<'_, RobloxApiState>,
     place_id: u64,
     servers_type: ServerType,
     cursor: Option<String>,
 ) -> Result<(Vec<GameServer>, Option<String>), String> {
-    let cookie = { state.0.lock().unwrap().clone() };
-
-    let client = ClientBuilder::new().roblosecurity(cookie).build();
+    let client = state.0.read().await;
 
     client
         .game_servers(place_id, Some(servers_type), None, None, cursor)

@@ -45,3 +45,6 @@ Minimalistic Game Launcher for Roblox
 
 ## TODOs
 [Moved to Project](https://github.com/orgs/idkncc/projects/1/views/1)
+
+## Credits
+- [roboat](https://github.com/fekie/roboat) – A high performance interface for the Roblox REST API _(p.s. no more as dependency, but i copied some parts from it)_

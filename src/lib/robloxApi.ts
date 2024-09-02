@@ -3,6 +3,7 @@ import { readable, writable } from "svelte/store";
 import { Store } from "tauri-plugin-store-api";
 
 import {
+    FriendStatus,
     ThumbnailSize,
     ThumbnailType,
     type ClientInfo,
@@ -49,12 +50,32 @@ export const robloxApi = {
         return this._invoke<UserProfileStats>("get_user_stats", { userId });
     },
 
+    getFriendStatus(userId: number) {
+        return this._invoke<FriendStatus>("friend_status", { userId });
+    },
+
     getFriendsList() {
         return this._invoke<FriendUserInformation[]>("friends_list");
     },
 
     getUsersFriendsList(userId: number) {
         return this._invoke<FriendUserInformation[]>("users_friends_list", { userId });
+    },
+
+    friend(userId: number) {
+        return this._invoke<void>("friend", { userId });
+    },
+
+    unfriend(userId: number) {
+        return this._invoke<void>("unfriend", { userId });
+    },
+
+    acceptFriendRequest(userId: number) {
+        return this._invoke<void>("accept_friend_request", { userId });
+    },
+
+    declineFriendRequest(userId: number) {
+        return this._invoke<void>("decline_friend_request", { userId });
     },
 
     getPresences(userIds: number[]) {

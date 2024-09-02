@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { getContext } from "svelte";
+
     import { robloxApi } from "$lib/robloxApi";
     import { page } from "$app/stores";
     import { PRESENCE_INDEXES } from "$lib/constants";
@@ -8,8 +10,11 @@
     import FriendCardSkeleton from "$lib/components/Cards/FriendCardSkeleton.svelte";
 
     import {
+        FriendStatus,
+        PresenceType,
         ThumbnailSize,
         ThumbnailType,
+        type ClientInfoWritable,
         type InternalFriend,
         type UserDetails,
         type UserPresence,
@@ -17,6 +22,9 @@
     } from "$lib/typings";
 
     const userId = parseInt($page.url.searchParams.get("id") ?? "1");
+
+    const clientInfo = getContext<ClientInfoWritable>("clientInfo");
+    let isFriendsWithUser: boolean | null = null;
 
     async function fetchUserDetails(): Promise<[UserDetails, UserPresence]> {
         return Promise.all([
@@ -58,11 +66,56 @@
                 ),
             ]);
 
+        if ($clientInfo!.user_id !== userId) {
+            isFriendsWithUser = friendsArray.some(
+                (fr) => fr.user_id === $clientInfo!.user_id,
+            );
+        }
+
         return friendsArray.map((info, i) => ({
             info,
             headshot: friendsHeadshotsArray[i],
             presence: friendsPresencesArray[i],
         }));
+    }
+
+    function isMe() {
+        return ($clientInfo?.user_id ?? -1) === userId;
+    }
+
+    async function fetchFriendStatus() {
+        return robloxApi.getFriendStatus(userId);
+    }
+
+    // Actions
+
+    async function join(friendPresence: UserPresence) {
+        if (friendPresence.place_id && friendPresence.game_id) {
+            robloxApi.playServer(
+                friendPresence.place_id,
+                friendPresence.game_id,
+            );
+        }
+    }
+
+    async function friend() {
+        await robloxApi.friend(userId);
+        location.reload();
+    }
+
+    async function unfriend() {
+        await robloxApi.unfriend(userId);
+        location.reload();
+    }
+
+    async function acceptFriendRequest() {
+        await robloxApi.acceptFriendRequest(userId);
+        location.reload();
+    }
+
+    async function declineFriendRequest() {
+        await robloxApi.declineFriendRequest(userId);
+        location.reload();
     }
 </script>
 
@@ -118,7 +171,53 @@
                     {/await}
 
                     <div class="user-actions">
-                        <button class="user-action unfriend">Unfriend</button>
+                        {#if !isMe()}
+                            {#if userPresence.universe_id !== null}
+                                <button
+                                    class="user-action join"
+                                    on:click={() => join(userPresence)}
+                                >
+                                    Join
+                                </button>
+                            {/if}
+
+                            {#await fetchFriendStatus()}
+                                <!--  -->
+                            {:then friendStatus}
+                                {#if friendStatus === FriendStatus.NotFriends}
+                                    <button
+                                        class="user-action friend"
+                                        on:click={friend}
+                                    >
+                                        Friend
+                                    </button>
+                                {:else if friendStatus === FriendStatus.Friends}
+                                    <button
+                                        class="user-action unfriend"
+                                        on:click={unfriend}
+                                    >
+                                        Unfriend
+                                    </button>
+                                {:else if friendStatus === FriendStatus.RequestSent}
+                                    <button class="user-action pending">
+                                        Pending
+                                    </button>
+                                {:else if friendStatus === FriendStatus.RequestReceived}
+                                    <button
+                                        class="user-action request-accept"
+                                        on:click={acceptFriendRequest}
+                                    >
+                                        Accept
+                                    </button>
+                                    <button
+                                        class="user-action request-decline"
+                                        on:click={declineFriendRequest}
+                                    >
+                                        Decline
+                                    </button>
+                                {/if}
+                            {/await}
+                        {/if}
                     </div>
                 </div>
             </div>
@@ -192,12 +291,29 @@
                             @apply px-2 py-1;
                             @apply rounded-md;
 
+                            &.join {
+                                @apply bg-green-800 mr-2;
+                            }
+
                             &.unfriend {
                                 @apply bg-red-900;
                             }
 
                             &.friend {
-                                @apply bg-green-900;
+                                @apply bg-green-800;
+                            }
+
+                            &.pending {
+                                @apply bg-[#242424] cursor-default;
+                            }
+
+                            &.request- {
+                                &accept {
+                                    @apply bg-green-800;
+                                }
+                                &decline {
+                                    @apply bg-red-900;
+                                }
                             }
                         }
                     }

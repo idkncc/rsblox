@@ -1,3 +1,5 @@
+use std::default;
+
 use reqwest::header;
 use serde::{Deserialize, Serialize};
 
@@ -6,14 +8,16 @@ use super::{presence::PresenceType, RobloxApi, RobloxError};
 mod request_types;
 
 const FRIENDS_LIST_API: &str = "https://friends.roblox.com/v1/users/{user_id}/friends";
-const FRIEND_REQUESTS_API: &str = "https://friends.roblox.com/v1/my/friends/requests";
-const PENDING_FRIEND_REQUESTS_API: &str =
-    "https://friends.roblox.com/v1/user/friend-requests/count";
+const FRIENDS_STATUS_API: &str =
+    "https://friends.roblox.com/v1/users/{user_id}/friends/statuses?userIds[]={user_ids}";
 
 const FRIENDS_COUNT_API: &str = "https://friends.roblox.com/v1/users/{user_id}/friends/count";
 const FOLLOWERS_COUNT_API: &str = "https://friends.roblox.com/v1/users/{user_id}/followers/count";
 const FOLLOWINGS_COUNT_API: &str = "https://friends.roblox.com/v1/users/{user_id}/followings/count";
 
+const FRIEND_REQUESTS_API: &str = "https://friends.roblox.com/v1/my/friends/requests";
+const PENDING_FRIEND_REQUESTS_API: &str =
+    "https://friends.roblox.com/v1/user/friend-requests/count";
 const ACCEPT_FRIEND_REQUEST_API: &str =
     "https://friends.roblox.com/v1/users/{requester_id}/accept-friend-request";
 const DECLINE_FRIEND_REQUEST_API: &str =
@@ -86,6 +90,31 @@ pub struct FriendRequest {
 
     /// When the friend request was sent.
     pub sent_at: String,
+}
+
+#[derive(
+    Clone, Copy, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Default, Serialize, Deserialize,
+)]
+pub enum FriendStatus {
+    #[default]
+    NotFriends,
+    Friends,
+    RequestSent,
+    RequestReceived,
+}
+
+impl TryFrom<String> for FriendStatus {
+    type Error = RobloxError;
+
+    fn try_from(value: String) -> Result<Self, Self::Error> {
+        match value.as_str() {
+            "NotFriends" => Ok(Self::NotFriends),
+            "Friends" => Ok(Self::Friends),
+            "RequestSent" => Ok(Self::RequestSent),
+            "RequestReceived" => Ok(Self::RequestReceived),
+            _ => Err(RobloxError::MalformedResponse),
+        }
+    }
 }
 
 impl RobloxApi {
@@ -163,6 +192,31 @@ impl RobloxApi {
         Self::parse_to_raw::<request_types::CountBasedResponse>(response)
             .await
             .map(|res| res.count)
+    }
+
+    /// Gets friend status with specific user using <https://friends.roblox.com/v1/users/{user_id}/friends/statuses?userIds[]={user_ids}>
+    pub async fn friend_status(&self, user_id: u64) -> Result<FriendStatus, RobloxError> {
+        let formatted_url = FRIENDS_STATUS_API
+            .replace(
+                "{user_id}",
+                &self.user_id().await.map(|user_id| user_id.to_string())?,
+            )
+            .replace("{user_ids}", &user_id.to_string());
+
+        let cookie = self.cookie_string().await?;
+
+        let request_result = self
+            .reqwest_client
+            .get(formatted_url)
+            .header(header::COOKIE, cookie)
+            .send()
+            .await;
+
+        let response = Self::validate_request_result(request_result).await?;
+
+        Self::parse_to_raw::<request_types::FriendsStatusResponse>(response)
+            .await
+            .map(|res| res.data[0].status)
     }
 
     /// Get list of friend requests with cursor using <https://friends.roblox.com/v1/my/friends/requests>.

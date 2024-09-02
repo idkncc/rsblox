@@ -1,6 +1,6 @@
 use tauri::State;
 
-use crate::client::friends::FriendUserInformation;
+use crate::client::friends::{FriendStatus, FriendUserInformation};
 use crate::client::users::UserDetails;
 use crate::types::UserProfileStats;
 use crate::{
@@ -61,6 +61,19 @@ pub async fn get_user_stats(
 }
 
 #[tauri::command(async)]
+pub async fn friend_status(
+    state: State<'_, RobloxApiState>,
+    user_id: u64,
+) -> Result<FriendStatus, String> {
+    let client = state.0.read().await;
+
+    client
+        .friend_status(user_id)
+        .await
+        .map_err(|err| err.to_string())
+}
+
+#[tauri::command(async)]
 pub async fn friends_list(
     state: State<'_, RobloxApiState>,
 ) -> Result<Vec<FriendUserInformation>, String> {
@@ -81,6 +94,52 @@ pub async fn users_friends_list(
 
     client
         .friends_list(user_id)
+        .await
+        .map_err(|err| err.to_string())
+}
+
+#[tauri::command(async)]
+pub async fn friend(state: State<'_, RobloxApiState>, user_id: u64) -> Result<(), String> {
+    let client = state.0.read().await;
+
+    client
+        .send_friend_request(user_id)
+        .await
+        .map_err(|err| err.to_string())
+}
+
+#[tauri::command(async)]
+pub async fn unfriend(state: State<'_, RobloxApiState>, user_id: u64) -> Result<(), String> {
+    let client = state.0.read().await;
+
+    client
+        .unfriend(user_id)
+        .await
+        .map_err(|err| err.to_string())
+}
+
+#[tauri::command(async)]
+pub async fn accept_friend_request(
+    state: State<'_, RobloxApiState>,
+    user_id: u64,
+) -> Result<(), String> {
+    let client = state.0.read().await;
+
+    client
+        .accept_friend_request(user_id)
+        .await
+        .map_err(|err| err.to_string())
+}
+
+#[tauri::command(async)]
+pub async fn decline_friend_request(
+    state: State<'_, RobloxApiState>,
+    user_id: u64,
+) -> Result<(), String> {
+    let client = state.0.read().await;
+
+    client
+        .decline_friend_request(user_id)
         .await
         .map_err(|err| err.to_string())
 }

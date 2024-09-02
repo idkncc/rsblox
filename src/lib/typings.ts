@@ -58,6 +58,13 @@ export interface FriendUserInformation {
     has_verified_badge: boolean;
 }
 
+export enum FriendStatus {
+    NotFriends = "NotFriends",
+    Friends = "Friends",
+    RequestSent = "RequestSent",
+    RequestReceived = "RequestReceived",
+}
+
 export enum PresenceType {
     Offline = "Offline",
     Online = "Online",

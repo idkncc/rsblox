@@ -87,6 +87,18 @@
         return robloxApi.getFriendStatus(userId);
     }
 
+    async function fetchAvatar() {
+        const avatarImagePromise = robloxApi
+            .getThumbnailsUrls(
+                [userId],
+                ThumbnailSize.S420x420,
+                ThumbnailType.Avatar,
+            )
+            .then((res) => res[0]);
+
+        return Promise.all([avatarImagePromise]);
+    }
+
     // Actions
 
     async function join(friendPresence: UserPresence) {
@@ -240,6 +252,28 @@
                 {/each}
             {/await}
         </section>
+
+        {#await fetchAvatar()}
+            <!--  -->
+        {:then [avatarURL]}
+            <section class="section-content user-avatar">
+                <div class="avatar-container">
+                    <img
+                        class="avatar"
+                        src={avatarURL}
+                        alt={userDetails.display_name}
+                    />
+                </div>
+                <div class="avatar-items-container">
+                    <div class="alert warning w-full h-full">
+                        <p class="font-bold">
+                            There's will be "currently wearing" items
+                        </p>
+                        <p>work in progress...</p>
+                    </div>
+                </div>
+            </section>
+        {/await}
     </main>
 {/await}
 
@@ -321,12 +355,30 @@
             }
         }
 
-        .use-description {
+        .user-description {
             @apply overflow-x-scroll;
         }
 
         .user-friends {
             @apply flex gap-2 overflow-x-scroll;
+        }
+
+        .user-avatar {
+            @apply grid grid-cols-2 h-80 gap-2;
+
+            .avatar-container {
+                @apply flex justify-center items-center;
+                @apply overflow-hidden;
+
+                .avatar {
+                    @apply h-[125%];
+                }
+            }
+
+            .avatar-items-container {
+                @apply bg-[#242424] rounded-md;
+            }
+            /* @apply flex gap-2 overflow-x-scroll; */
         }
     }
 </style>

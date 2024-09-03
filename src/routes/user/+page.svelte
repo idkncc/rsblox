@@ -24,7 +24,6 @@
     const userId = parseInt($page.url.searchParams.get("id") ?? "1");
 
     const clientInfo = getContext<ClientInfoWritable>("clientInfo");
-    let isFriendsWithUser: boolean | null = null;
 
     async function fetchUserDetails(): Promise<[UserDetails, UserPresence]> {
         return Promise.all([
@@ -65,12 +64,6 @@
                     ThumbnailType.AvatarHeadshot,
                 ),
             ]);
-
-        if ($clientInfo!.user_id !== userId) {
-            isFriendsWithUser = friendsArray.some(
-                (fr) => fr.user_id === $clientInfo!.user_id,
-            );
-        }
 
         return friendsArray.map((info, i) => ({
             info,
@@ -154,6 +147,7 @@
                     <UserStatus presenceType={userPresence.presence_type} />
                 </div>
             {/await}
+
             <div class="user-info">
                 <div>
                     <p class="user-display-name">{userDetails.display_name}</p>
@@ -236,7 +230,7 @@
         </section>
 
         <section class="section-content user-description">
-            <p class="whitespace-pre-wrap text-sm">
+            <p class="whitespace-pre-wrap overflow-hidden text-sm">
                 {userDetails.description}
             </p>
         </section>
@@ -254,7 +248,14 @@
         </section>
 
         {#await fetchAvatar()}
-            <!--  -->
+            <section class="section-content user-avatar">
+                <div class="avatar-container">
+                    <span class="placeholder w-full h-full rounded-md" />
+                </div>
+                <div class="avatar-items-container">
+                    <span class="placeholder w-full h-full rounded-md" />
+                </div>
+            </section>
         {:then [avatarURL]}
             <section class="section-content user-avatar">
                 <div class="avatar-container">
@@ -369,6 +370,7 @@
             .avatar-container {
                 @apply flex justify-center items-center;
                 @apply overflow-hidden;
+                @apply w-full h-full;
 
                 .avatar {
                     @apply h-[125%];
@@ -376,6 +378,7 @@
             }
 
             .avatar-items-container {
+                @apply w-full h-full;
                 @apply bg-[#242424] rounded-md;
             }
             /* @apply flex gap-2 overflow-x-scroll; */

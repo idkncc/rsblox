@@ -1,4 +1,6 @@
 <script lang="ts">
+    import { goto } from "$app/navigation";
+
     import { robloxApi } from "$lib/robloxApi";
 
     import type {
@@ -89,7 +91,16 @@
 
     <div class="friend-buttons">
         <p>@{friend.username}</p>
-        <button class="friend-button">View profile</button>
+        <button
+            class="friend-button"
+            on:click={() => {
+                goto(`/user?id=${friend.user_id}`).then(() =>
+                    location.reload(),
+                );
+            }}
+        >
+            View profile
+        </button>
     </div>
 </div>
 

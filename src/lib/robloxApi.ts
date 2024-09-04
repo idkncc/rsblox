@@ -3,6 +3,7 @@ import { readable, writable } from "svelte/store";
 import { Store } from "tauri-plugin-store-api";
 
 import {
+    FriendStatus,
     ThumbnailSize,
     ThumbnailType,
     type ClientInfo,
@@ -12,13 +13,14 @@ import {
     type GameServer,
     type PlaceDetails,
     type RecommendationsTopic,
-    type UserPresence
+    type UserDetails,
+    type UserPresence,
+    type UserProfileStats
 } from "$lib/typings";
 import { STORE_PATH } from "./constants";
+import chunk from "lodash.chunk";
 
-console.log("RAWWRH 👹👹👹👹")
-
-
+// Roblox api
 export const robloxApi = {
     _invoke<T>(method: string, args?: InvokeArgs) {
         return invoke<T>(`plugin:roblox-api|${method}`, args);
@@ -40,8 +42,40 @@ export const robloxApi = {
         return this._invoke<ClientInfo>("get_me");
     },
 
+    getUserDetails(userId: number) {
+        return this._invoke<UserDetails>("get_user", { userId });
+    },
+
+    getUserStats(userId: number) {
+        return this._invoke<UserProfileStats>("get_user_stats", { userId });
+    },
+
+    getFriendStatus(userId: number) {
+        return this._invoke<FriendStatus>("friend_status", { userId });
+    },
+
     getFriendsList() {
         return this._invoke<FriendUserInformation[]>("friends_list");
+    },
+
+    getUsersFriendsList(userId: number) {
+        return this._invoke<FriendUserInformation[]>("users_friends_list", { userId });
+    },
+
+    friend(userId: number) {
+        return this._invoke<void>("friend", { userId });
+    },
+
+    unfriend(userId: number) {
+        return this._invoke<void>("unfriend", { userId });
+    },
+
+    acceptFriendRequest(userId: number) {
+        return this._invoke<void>("accept_friend_request", { userId });
+    },
+
+    declineFriendRequest(userId: number) {
+        return this._invoke<void>("decline_friend_request", { userId });
     },
 
     getPresences(userIds: number[]) {
@@ -86,11 +120,22 @@ export const robloxApi = {
         });
     },
 
+    getThumbnailsUrlsChunked(
+        ids: number[],
+        thumbnailSize: ThumbnailSize,
+        thumbnailType: ThumbnailType
+    ): Promise<string[]> {
+        return Promise.all(
+            chunk(ids, 10)
+                .map((chunkedIds) => this.getThumbnailsUrls(chunkedIds, thumbnailSize, thumbnailType))
+        ).then((res) => res.flat(1))
+    },
+
     getThumbnailsUrls(
         ids: number[],
         thumbnailSize: ThumbnailSize,
         thumbnailType: ThumbnailType
-    ) {
+    ): Promise<string[]> {
         return this._invoke<any[]>("thumbnail_url_bulk", {
             ids,
             thumbnailSize,

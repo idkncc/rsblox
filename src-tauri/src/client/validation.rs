@@ -170,7 +170,6 @@ impl RobloxApi {
         response: Response,
     ) -> Result<T, RobloxError> {
         let response_text = response.text().await.unwrap();
-        // println!("{}", response_text);
         let response_struct = match serde_json::from_str::<T>(&response_text) {
             Ok(x) => x,
             Err(_) => {

@@ -1,5 +1,7 @@
 use serde::{Deserialize, Serialize};
 
+use super::FriendStatus;
+
 /// Model, representing user information that also contains select presence information
 #[allow(missing_docs)]
 #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Default, Serialize, Deserialize)]
@@ -24,6 +26,23 @@ pub struct FriendUserInformationRaw {
     pub friend_frequent_rank: i64,
 
     pub has_verified_badge: bool,
+}
+
+/// Model, representing FriendsStatus endpoint response
+#[allow(missing_docs)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Default, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct FriendsStatusResponse {
+    pub data: Vec<FriendStatusRaw>,
+}
+
+/// Model, representing friend status
+#[allow(missing_docs)]
+#[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, Default, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct FriendStatusRaw {
+    pub id: u64,
+    pub status: FriendStatus,
 }
 
 /// Model, representing a friend request.
@@ -82,6 +101,12 @@ pub struct FriendRequestDetailsRaw {
 #[serde(rename_all = "camelCase")]
 pub(super) struct FriendsListResponse {
     pub data: Vec<FriendUserInformationRaw>,
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub(super) struct CountBasedResponse {
+    pub count: usize,
 }
 
 #[derive(Serialize, Deserialize)]

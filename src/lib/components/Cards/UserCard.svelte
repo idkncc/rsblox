@@ -2,19 +2,19 @@
     import "tippy.js/animations/shift-away.css";
     import "tippy.js/animations/shift-away-subtle.css";
 
-    import FriendTooltip from "./FriendTooltip.svelte";
+    import UserTooltip from "./UserTooltip.svelte";
 
     import {
         ThumbnailSize,
         ThumbnailType,
-        type InternalFriend,
+        type InternalUser,
         type PlaceDetails,
     } from "$lib/typings";
     import { robloxApi } from "$lib/robloxApi";
     import { tippy } from "$lib/tippy";
     import UserStatus from "../UserStatus.svelte";
 
-    export let friend: InternalFriend;
+    export let user: InternalUser;
 
     let tippyTooltip: HTMLDivElement;
     // onMounted(async () => {
@@ -22,11 +22,11 @@
         let placeDetails: PlaceDetails | undefined;
         let placeThumbnail: string = "https://placehold.co/512";
         if (
-            friend.presence.presence_type === "InGame" &&
-            friend.presence.place_id
+            user.presence.presence_type === "InGame" &&
+            user.presence.place_id
         ) {
             const currentPlaceDetails = await robloxApi.getPlaceDetails(
-                friend.presence.place_id,
+                user.presence.place_id,
             );
 
             placeDetails = await robloxApi.getPlaceDetails(
@@ -44,13 +44,13 @@
 
         setTimeout(() => {
             tippyTooltip = document.querySelector(
-                `.friend-tooltip[data-user-id="${friend.info.user_id}"]`,
+                `.user-tooltip[data-user-id="${user.info.user_id}"]`,
             )!;
         }, 20);
 
         return {
-            friend: friend.info,
-            friendPresence: friend.presence,
+            user: user.info,
+            userPresence: user.presence,
             placeDetails,
             placeThumbnail,
         };
@@ -61,28 +61,28 @@
     class="friend-card-container"
     use:tippy={{ content: tippyTooltip, placement: "bottom" }}
 >
-    <a data-sveltekit-reload href="/user?id={friend.info.user_id}">
+    <a data-sveltekit-reload href="/user?id={user.info.user_id}">
         <div class="friend-card">
             <div class="friend-image">
                 <img
                     class="rounded-md"
-                    src={friend.headshot}
-                    alt={friend.info.display_name}
+                    src={user.headshot}
+                    alt={user.info.display_name}
                     width="90"
                     height="90"
                 />
 
-                <UserStatus presenceType={friend.presence.presence_type} />
+                <UserStatus presenceType={user.presence.presence_type} />
             </div>
 
             <div class="friend-username">
-                <p class="user-name">{friend.info.display_name}</p>
+                <p class="user-name">{user.info.display_name}</p>
             </div>
         </div>
     </a>
 
     {#await fetchDataForTooltip() then props}
-        <FriendTooltip {...props} />
+        <UserTooltip {...props} />
     {/await}
 </div>
 

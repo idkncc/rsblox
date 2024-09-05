@@ -6,8 +6,8 @@
     import { PRESENCE_INDEXES } from "$lib/constants";
 
     import UserStatus from "$lib/components/UserStatus.svelte";
-    import FriendCard from "$lib/components/Cards/FriendCard.svelte";
-    import FriendCardSkeleton from "$lib/components/Cards/FriendCardSkeleton.svelte";
+    import UserCard from "$lib/components/Cards/UserCard.svelte";
+    import UserCardSkeleton from "$lib/components/Cards/UserCardSkeleton.svelte";
 
     import {
         FriendStatus,
@@ -15,7 +15,7 @@
         ThumbnailSize,
         ThumbnailType,
         type ClientInfoWritable,
-        type InternalFriend,
+        type InternalUser,
         type UserDetails,
         type UserPresence,
         type UserProfileStats,
@@ -46,7 +46,7 @@
         return robloxApi.getUserStats(userId);
     }
 
-    async function fetchFriends(): Promise<InternalFriend[]> {
+    async function fetchFriends(): Promise<InternalUser[]> {
         let friendsArray = await robloxApi.getUsersFriendsList(userId);
 
         friendsArray = friendsArray.sort(
@@ -238,11 +238,11 @@
         <section class="section-content user-friends">
             {#await fetchFriends()}
                 {#each Array(8).map(() => 0) as _}
-                    <FriendCardSkeleton />
+                    <UserCardSkeleton />
                 {/each}
             {:then friends}
                 {#each friends as friend}
-                    <FriendCard {friend} />
+                    <UserCard user={friend} />
                 {/each}
             {/await}
         </section>

@@ -7,7 +7,7 @@ import {
     ThumbnailSize,
     ThumbnailType,
     type ClientInfo,
-    type FriendUserInformation,
+    type UserInformation,
     type GameDetails,
     type GameMedia,
     type GameServer,
@@ -55,11 +55,11 @@ export const robloxApi = {
     },
 
     getFriendsList() {
-        return this._invoke<FriendUserInformation[]>("friends_list");
+        return this._invoke<UserInformation[]>("friends_list");
     },
 
     getUsersFriendsList(userId: number) {
-        return this._invoke<FriendUserInformation[]>("users_friends_list", { userId });
+        return this._invoke<UserInformation[]>("users_friends_list", { userId });
     },
 
     friend(userId: number) {

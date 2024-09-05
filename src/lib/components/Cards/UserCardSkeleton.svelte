@@ -1,12 +1,12 @@
-<div class="friend-card">
-    <div class="friend-image">
+<div class="user-card">
+    <div class="user-image">
         <div
             class="placeholder rounded-lg"
             style="width: 90px; height: 90px;"
         />
     </div>
 
-    <div class="friend-username">
+    <div class="user-username">
         <p class="user-name text-center">
             <span class="placeholder w-full rounded-lg" style="width: 70px" />
         </p>
@@ -14,7 +14,7 @@
 </div>
 
 <style lang="scss">
-    .friend-card {
+    .user-card {
         --size: 100px;
 
         @media screen and (max-width: 920px) {
@@ -23,7 +23,7 @@
 
         @apply flex flex-col;
 
-        .friend-image {
+        .user-image {
             min-width: var(--size);
             min-height: var(--size);
 
@@ -35,7 +35,7 @@
             }
         }
 
-        div.friend-username {
+        div.user-username {
             @apply text-xs text-center;
             @apply flex gap-1 justify-center;
 

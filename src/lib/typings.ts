@@ -2,8 +2,8 @@ import type { Writable } from "svelte/store";
 
 // Svelte typings
 
-export interface InternalFriend {
-    info: FriendUserInformation;
+export interface InternalUser {
+    info: UserInformation;
     headshot: string;
     presence: UserPresence;
 }
@@ -39,7 +39,7 @@ export interface UserProfileStats {
     followings: number
 }
 
-export interface FriendUserInformation {
+export interface UserInformation {
     user_id: number;
     username: string;
 

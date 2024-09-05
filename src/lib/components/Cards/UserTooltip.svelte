@@ -4,32 +4,29 @@
     import { robloxApi } from "$lib/robloxApi";
 
     import type {
-        FriendUserInformation,
+        UserInformation,
         UserPresence,
         PlaceDetails,
     } from "$lib/typings.ts";
     import { writeText } from "@tauri-apps/api/clipboard";
 
-    export let friend: FriendUserInformation;
-    export let friendPresence: UserPresence;
+    export let user: UserInformation;
+    export let userPresence: UserPresence;
     export let placeDetails: PlaceDetails | undefined;
     export let placeThumbnail: string | undefined;
 
     function join() {
-        if (friendPresence.place_id && friendPresence.game_id) {
-            robloxApi.playServer(
-                friendPresence.place_id,
-                friendPresence.game_id,
-            );
+        if (userPresence.place_id && userPresence.game_id) {
+            robloxApi.playServer(userPresence.place_id, userPresence.game_id);
         }
     }
 
     let copied = false;
 
     async function copyLink() {
-        if (friendPresence.place_id && friendPresence.game_id) {
+        if (userPresence.place_id && userPresence.game_id) {
             await writeText(
-                `roblox://experiences/start?placeId=${friendPresence.place_id}&gameInstanceId=${friendPresence.game_id}`,
+                `roblox://experiences/start?placeId=${userPresence.place_id}&gameInstanceId=${userPresence.game_id}`,
             );
 
             copied = true;
@@ -40,12 +37,12 @@
     }
 </script>
 
-<div class="friend-tooltip" data-user-id={friend.user_id}>
-    {#if friendPresence.place_id}
-        <div class="friend-presence">
+<div class="user-tooltip" data-user-id={user.user_id}>
+    {#if userPresence.place_id}
+        <div class="user-presence">
             <img src={placeThumbnail} alt={placeDetails?.name ?? "Thumbnail"} />
 
-            <div class="friend-tooltip-footer">
+            <div class="user-tooltip-footer">
                 <p>{placeDetails?.name ?? "Unknown"}</p>
                 <div class="join-button-container">
                     <button class="join-button" on:click={join}>Join</button>
@@ -89,14 +86,12 @@
         </div>
     {/if}
 
-    <div class="friend-buttons">
-        <p>@{friend.username}</p>
+    <div class="user-buttons">
+        <p>@{user.username}</p>
         <button
-            class="friend-button"
+            class="user-button"
             on:click={() => {
-                goto(`/user?id=${friend.user_id}`).then(() =>
-                    location.reload(),
-                );
+                goto(`/user?id=${user.user_id}`).then(() => location.reload());
             }}
         >
             View profile
@@ -108,7 +103,7 @@
     $width: 192px;
     $height: 108px;
 
-    .friend-tooltip {
+    .user-tooltip {
         @apply flex flex-col;
 
         @apply bg-black/50 backdrop-blur-lg;
@@ -116,7 +111,7 @@
 
         max-width: $width;
 
-        .friend-buttons {
+        .user-buttons {
             @apply p-2;
 
             & > * {
@@ -125,13 +120,13 @@
                 @apply text-center truncate;
             }
 
-            & > .friend-button {
+            & > .user-button {
                 @apply bg-[#525252];
             }
         }
     }
 
-    .friend-presence {
+    .user-presence {
         width: $width;
         height: $height;
         position: relative;
@@ -143,7 +138,7 @@
             height: $height;
         }
 
-        .friend-tooltip-footer {
+        .user-tooltip-footer {
             @apply absolute bottom-0 left-0;
             @apply px-2 py-3;
             width: $width;

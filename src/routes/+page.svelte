@@ -2,8 +2,8 @@
     import { robloxApi } from "$lib/robloxApi";
     import chunk from "lodash.chunk";
 
-    import FriendCard from "$lib/components/Cards/FriendCard.svelte";
-    import FriendCardSkeleton from "$lib/components/Cards/FriendCardSkeleton.svelte";
+    import UserCard from "$lib/components/Cards/UserCard.svelte";
+    import UserCardSkeleton from "$lib/components/Cards/UserCardSkeleton.svelte";
     import GameCard from "$lib/components/Cards/GameCard.svelte";
     import GameCardSkeleton from "$lib/components/Cards/GameCardSkeleton.svelte";
 
@@ -11,12 +11,12 @@
         TreatmentType,
         ThumbnailSize,
         ThumbnailType,
-        type InternalFriend,
+        type InternalUser,
         type RecommendationsTopic,
     } from "$lib/typings.js";
     import { PRESENCE_INDEXES } from "$lib/constants";
 
-    let friends: InternalFriend[] = [];
+    let friends: InternalUser[] = [];
     let topics: RecommendationsTopic[] = [];
     let gameIcons: Record<number, string> = {};
 
@@ -138,11 +138,11 @@
     <div class="section-content">
         {#await fetchFriends()}
             {#each Array(8).map(() => 0) as _}
-                <FriendCardSkeleton />
+                <UserCardSkeleton />
             {/each}
         {:then}
             {#each friends as friend}
-                <FriendCard {friend} />
+                <UserCard user={friend} />
             {/each}
         {/await}
     </div>

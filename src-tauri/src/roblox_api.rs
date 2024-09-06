@@ -103,6 +103,8 @@ pub fn init<R: Runtime>() -> TauriPlugin<R> {
             // thumbnails.rs
             commands::thumbnail_url_bulk,
             commands::token_thumbnail_url_bulk,
+            // search.rs
+            commands::omni_search,
             // game_launcher.rs
             commands::open_place,
             commands::open_server,

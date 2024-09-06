@@ -8,6 +8,7 @@ pub mod economy;
 pub mod friends;
 pub mod games;
 pub mod presence;
+pub mod search;
 pub mod thumbnails;
 pub mod users;
 

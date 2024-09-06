@@ -155,6 +155,11 @@ export const robloxApi = {
         })
     },
 
+    omniSearch(query: string) {
+        return this._invoke<any[]>("omni_search", {
+            queryString: query,
+        });
+    },
 
     playPlace(placeId: number) {
         return this._invoke<GameDetails>("open_place", {

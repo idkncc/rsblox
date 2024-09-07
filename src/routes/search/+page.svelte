@@ -1,6 +1,7 @@
 <script lang="ts">
     import { page } from "$app/stores";
     import GameCard from "$lib/components/Cards/GameCard.svelte";
+    import GameCardSkeleton from "$lib/components/Cards/GameCardSkeleton.svelte";
     import { robloxApi } from "$lib/robloxApi";
     import {
         ThumbnailSize,
@@ -27,7 +28,9 @@
 
 <main class="search-page">
     {#await loadSearchResults()}
-        <!--  -->
+        {#each Array(8).map(() => 0) as _}
+            <GameCardSkeleton />
+        {/each}
     {:then [results, thumbnails]}
         {#each results as game, i}
             <GameCard {game} thumbnail={thumbnails[i]} />

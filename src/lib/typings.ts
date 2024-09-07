@@ -106,16 +106,6 @@ export interface RecommendationsTopic {
     recommendation_list: Array<Recommendation>;
 }
 
-export interface Recommendation {
-    universe_id: number;
-    root_place_id: number;
-    name: string;
-    description?: string;
-
-    total_up_votes: number;
-    total_down_votes: number;
-    player_count: number;
-}
 
 export enum GameMediaType {
     Image = "Image",
@@ -151,16 +141,44 @@ export enum AvatarType {
     PlayerChoice = "PlayerChoice",
 }
 
-export interface GameDetails {
+//// Universe/Game related: ////
+
+/**
+ * Base interface of Universe (aka Game, which stores places)
+ */
+export interface BaseUniverse {
     universe_id: number;
     root_place_id: number;
-
-    /// Translated game's name
     name: string;
+    description?: string;
+}
 
-    /// Translated game's description
-    description: string;
+export interface Recommendation extends BaseUniverse {
+    total_up_votes: number;
+    total_down_votes: number;
+    player_count: number;
+}
 
+export interface SearchResult extends BaseUniverse {
+    total_up_votes: number;
+    total_down_votes: number;
+    player_count: number;
+
+    emphasis: boolean,
+    is_sponsored: boolean,
+
+    creator_id: number,
+    creator_name: string,
+    creator_has_verified_badge: boolean,
+
+    minimum_age: number,
+    age_recommendation_display_name: string,
+
+    content_type: string,
+    content_id: number,
+}
+
+export interface GameDetails extends BaseUniverse {
     /// Original game's name
     source_name: string;
 

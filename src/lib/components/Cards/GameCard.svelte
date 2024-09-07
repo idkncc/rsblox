@@ -1,9 +1,14 @@
 <script lang="ts">
-    import type { Recommendation, TreatmentType } from "$lib/typings.ts";
+    import {
+        TreatmentType,
+        type Recommendation,
+        type SearchResult,
+    } from "$lib/typings.js";
 
-    export let game: Recommendation;
+    export let game: Recommendation | SearchResult;
     export let thumbnail: string;
-    export let treatmentType: TreatmentType;
+    export let treatmentType: TreatmentType | undefined =
+        TreatmentType.Carousel;
 </script>
 
 <a href="/game?id={game.universe_id}">

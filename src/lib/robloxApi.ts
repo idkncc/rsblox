@@ -15,7 +15,8 @@ import {
     type RecommendationsTopic,
     type UserDetails,
     type UserPresence,
-    type UserProfileStats
+    type UserProfileStats,
+    type SearchResult
 } from "$lib/typings";
 import { STORE_PATH } from "./constants";
 import chunk from "lodash.chunk";
@@ -156,7 +157,7 @@ export const robloxApi = {
     },
 
     omniSearch(query: string) {
-        return this._invoke<any[]>("omni_search", {
+        return this._invoke<SearchResult[]>("omni_search", {
             queryString: query,
         });
     },

@@ -2,14 +2,17 @@
     import { page } from "$app/stores";
     import GameCard from "$lib/components/Cards/GameCard.svelte";
     import { robloxApi } from "$lib/robloxApi";
-    import { ThumbnailSize, ThumbnailType, TreatmentType } from "$lib/typings";
+    import {
+        ThumbnailSize,
+        ThumbnailType,
+        TreatmentType,
+        type SearchResult,
+    } from "$lib/typings";
 
     const queryString = $page.url.searchParams.get("q")!;
 
-    async function loadSearchResults() {
+    async function loadSearchResults(): Promise<[SearchResult[], string[]]> {
         const searchResult = await robloxApi.omniSearch(queryString);
-
-        console.log(searchResult);
 
         return [
             searchResult,
@@ -27,11 +30,7 @@
         <!--  -->
     {:then [results, thumbnails]}
         {#each results as game, i}
-            <GameCard
-                {game}
-                thumbnail={thumbnails[i]}
-                treatmentType={TreatmentType.Carousel}
-            />
+            <GameCard {game} thumbnail={thumbnails[i]} />
         {/each}
     {/await}
 </main>

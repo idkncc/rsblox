@@ -2,7 +2,7 @@
     import type { Recommendation, TreatmentType } from "$lib/typings.ts";
 </script>
 
-<div class="game-card w-full" data-treatment-type={"Carousel"}>
+<div class="game-card" data-treatment-type={"Carousel"}>
     <div class="game-image rounded-md placeholder" />
 
     <p class="game-title"><span class="placeholder w-20" /></p>

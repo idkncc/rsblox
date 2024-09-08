@@ -16,6 +16,7 @@
     } from "$lib/typings.js";
     import { PRESENCE_INDEXES } from "$lib/constants";
     import Skeleton from "@/components/ui/skeleton/skeleton.svelte";
+    import * as Section from "@/components/ui/section";
 
     let friends: InternalUser[] = [];
     let topics: RecommendationsTopic[] = [];
@@ -151,31 +152,31 @@
 
 {#await fetchRecommendations()}
     {#each Array(8).map(() => 0) as _}
-        <section class="topic-section">
-            <p class="section-title">
-                <Skeleton class="w-40 h-4 mb-1 rounded-full" />
-            </p>
-            <div class="section-content carousel">
+        <Section.Root class="topic-section">
+            <Section.Title
+                ><Skeleton class="w-40 h-4 mb-1 rounded-full" /></Section.Title
+            >
+
+            <Section.Content class={"overflow-scroll gap-2 flex"}>
                 {#each Array(10).map(() => 0) as _}
                     <GameCardSkeleton />
                 {/each}
-            </div>
-        </section>
+            </Section.Content>
+        </Section.Root>
     {/each}
 {:then}
     {#each topics as topic}
-        <section class="topic-section">
-            <p class="section-title">{topic.topic}</p>
+        <Section.Root class="topic-section">
+            <Section.Title>{topic.topic}</Section.Title>
+
             {#if topic.subtitle}
-                <p class="section-subtitle">
-                    {topic.subtitle}
-                </p>
+                <Section.Description>{topic.subtitle}</Section.Description>
             {/if}
 
-            <div
+            <Section.Content
                 class={topic.treatment_type === TreatmentType.SortlessGrid
-                    ? "section-content sortless-grid"
-                    : "section-content carousel"}
+                    ? "overflow-scroll gap-2 grid md:grid-cols-3 lg:grid-cols-4" /* sortless-grid */
+                    : "overflow-scroll gap-2 flex"}
             >
                 {#each topic.recommendation_list as game}
                     <GameCard
@@ -184,27 +185,12 @@
                         treatmentType={topic.treatment_type}
                     />
                 {/each}
-            </div>
-        </section>
+            </Section.Content>
+        </Section.Root>
     {/each}
 {/await}
 
 <style lang="scss">
-    section {
-        .section-title {
-            @apply font-semibold;
-        }
-
-        .section-subtitle {
-            @apply text-xs text-[#C0C0C0];
-        }
-
-        .section-content {
-            @apply border bg-stone-900;
-            @apply p-2 pb-4 rounded-xl;
-        }
-    }
-
     section.friends {
         .section-content {
             @apply flex gap-2;
@@ -212,28 +198,21 @@
         }
     }
 
-    section.topic-section {
-        @apply my-2;
-
-        .section-content {
-            @apply gap-2;
-            @apply overflow-scroll;
-
-            &.carousel {
-                @apply flex;
-            }
-
-            &.sortless-grid {
-                @media screen and (max-width: 400px) {
-                    @apply grid-cols-1;
-                }
-
-                @media screen and (max-width: 800px) {
-                    @apply grid-cols-2;
-                }
-
-                @apply grid md:grid-cols-3 lg:grid-cols-4;
-            }
-        }
+    .carousel {
+        @apply flex;
     }
+
+    .sortless-grid {
+        @media screen and (max-width: 400px) {
+            @apply grid-cols-1;
+        }
+
+        @media screen and (max-width: 800px) {
+            @apply grid-cols-2;
+        }
+
+        @apply grid md:grid-cols-3 lg:grid-cols-4;
+    }
+
+    /* } */
 </style>

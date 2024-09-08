@@ -1,14 +1,15 @@
+<script>
+    import Skeleton from "../ui/skeleton/skeleton.svelte";
+</script>
+
 <div class="user-card">
     <div class="user-image">
-        <div
-            class="placeholder rounded-lg"
-            style="width: 90px; height: 90px;"
-        />
+        <Skeleton class="skeleton w-full h-full rounded-md" />
     </div>
 
     <div class="user-username">
         <p class="user-name text-center">
-            <span class="placeholder w-full rounded-lg" style="width: 70px" />
+            <Skeleton class="skeleton w-15 h-4 rounded-md" />
         </p>
     </div>
 </div>
@@ -30,7 +31,7 @@
             @apply aspect-square;
             @apply rounded-full relative;
 
-            img {
+            .skeleton {
                 @apply w-full rounded-full;
             }
         }

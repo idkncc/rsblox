@@ -1,0 +1,108 @@
+.user-page {
+  @apply flex flex-col gap-2;
+
+  .section-content {
+    @apply bg-card text-card-foreground rounded-xl border shadow;
+    @apply p-2;
+  }
+
+  .user-details .section-content {
+    @apply flex flex-row gap-2;
+
+    .user-image-container {
+      @apply relative;
+
+      .user-image {
+        @apply w-24 rounded-md;
+      }
+    }
+
+    .user-info {
+      @apply flex flex-col justify-between;
+      @apply flex-grow;
+
+      .user-display-name {
+        @apply font-bold text-2xl;
+      }
+
+      .user-name {
+        @apply text-muted-foreground;
+      }
+
+      .user-bar {
+        @apply flex flex-row justify-between items-center;
+        @apply w-full;
+
+        .user-stats {
+          @apply flex gap-2 items-center;
+
+          .user-stat span {
+            @apply font-semibold;
+          }
+        }
+
+        .user-actions {
+          .user-action {
+            @apply px-2 py-1;
+            @apply rounded-md;
+
+            &.join {
+              @apply bg-green-800 mr-2;
+            }
+
+            &.unfriend {
+              @apply bg-destructive text-destructive-foreground;
+            }
+
+            &.friend {
+              @apply bg-green-700;
+            }
+
+            &.pending {
+              @apply bg-secondary cursor-default;
+            }
+
+            &.request- {
+              &accept {
+                @apply bg-green-800;
+              }
+
+              &decline {
+                @apply bg-red-900;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .user-description {
+    @apply overflow-x-scroll;
+  }
+
+  .user-friends .section-content {
+    @apply flex gap-2 overflow-x-scroll;
+  }
+
+  .user-avatar .section-content {
+    @apply grid grid-cols-2 h-80 gap-2;
+
+    .avatar-container {
+      @apply flex justify-center items-center;
+      @apply overflow-hidden;
+      @apply w-full h-full;
+
+      .avatar {
+        @apply h-[125%];
+      }
+    }
+
+    .avatar-items-container {
+      @apply w-full h-full;
+      @apply bg-secondary rounded-md;
+    }
+
+    /* @apply flex gap-2 overflow-x-scroll; */
+  }
+}

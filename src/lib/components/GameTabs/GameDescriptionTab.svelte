@@ -1,12 +1,16 @@
 <script setup lang="ts">
     import { type GameDetails } from "$lib/typings";
+    import * as Section from "@ui/section";
 
-    export let visible: boolean;
     export let gameDetails: GameDetails;
 </script>
 
-<section class="game-tab" class:hidden={!visible}>
-    <p style="white-space: pre-wrap;" class="w-full">
-        {gameDetails.description}
-    </p>
-</section>
+<Section.Root>
+    <Section.Content>
+        <section class="game-tab">
+            <p style="white-space: pre-wrap;" class="w-full">
+                {gameDetails.description}
+            </p>
+        </section>
+    </Section.Content>
+</Section.Root>

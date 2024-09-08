@@ -10,8 +10,8 @@
     import chunk from "lodash.chunk";
 
     import GameServerItem from "./GameServerItem.svelte";
+    import * as Section from "@ui/section";
 
-    export let visible: boolean;
     export let gameDetails: GameDetails;
 
     let friendsServers: {
@@ -128,15 +128,13 @@
     // }
 </script>
 
-<section class="game-tab" class:hidden={!visible}>
-    {#await fetchFriendsServers()}
-        TODO: skeleton elements
-    {:then _}
-        <section class="game-servers-type">
-            <div class="game-servers-title">
-                <p>Friends:</p>
-                <!-- <button>Refresh</button> -->
-            </div>
+<Section.Root>
+    <!-- <button>Refresh</button> -->
+    <Section.Title>Friends Servers:</Section.Title>
+    <Section.Content>
+        {#await fetchFriendsServers()}
+            TODO: skeleton elements
+        {:then _}
             <div class="game-servers">
                 {#each friendsServers.servers as gameServer}
                     <GameServerItem
@@ -151,18 +149,18 @@
                     Load next servers
                 </button>
             {/if}
-        </section>
-    {/await}
+        {/await}
+    </Section.Content>
+</Section.Root>
 
-    {#await fetchPublicServers()}
-        TODO: skeleton elements
-    {:then _}
-        <section class="game-servers-type">
+<Section.Root>
+    <Section.Title>Public Servers:</Section.Title>
+    <Section.Content>
+        {#await fetchPublicServers()}
+            TODO: skeleton elements
+        {:then _}
             <!-- TODO: filters (sortOrder, excludeFullServers)  -->
-            <div class="game-servers-title">
-                <p>Public Servers:</p>
-                <!-- <button>Refresh</button> -->
-            </div>
+
             <div class="game-servers">
                 {#each publicServers.servers as gameServer}
                     <GameServerItem
@@ -174,13 +172,14 @@
             </div>
 
             {#if publicServers.nextCursor !== null}
+                <!-- TODO: Pagination   -->
                 <button on:click={fetchNextPublicServers}>
                     Load next servers
                 </button>
             {/if}
-        </section>
-    {/await}
-</section>
+        {/await}
+    </Section.Content>
+</Section.Root>
 
 <style scoped lang="scss">
     .game-servers {

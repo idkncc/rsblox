@@ -1,0 +1,57 @@
+  .game-header {
+    @apply grid grid-cols-2 gap-4;
+
+    .game-info {
+      @apply flex flex-col justify-between;
+
+      .game-play .play-button {
+        @apply rounded-lg;
+        @apply px-3 py-2 w-full;
+        @apply bg-green-600;
+
+        @apply font-bold;
+
+        @apply flex justify-center;
+
+        .play-button-icon {
+          @apply w-10 h-10;
+          @apply text-white;
+        }
+
+        &:hover {
+          @apply bg-green-500;
+        }
+
+        &:active {
+          @apply bg-green-700;
+        }
+      }
+    }
+  }
+
+  .game-sections {
+    @apply mt-2;
+
+    .game-tabs {
+      @apply grid grid-cols-3 gap-2 mb-2;
+
+      button {
+        @apply w-full p-2;
+        @apply rounded-sm;
+
+        &.tab-active {
+          @apply bg-[#242424];
+        }
+
+        &:hover {
+          @apply bg-[#242424];
+        }
+
+        &:active {
+          @apply bg-[#101010];
+        }
+      }
+    }
+
+    .game-tab {}
+  }

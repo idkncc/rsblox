@@ -1,0 +1,28 @@
+.game-server {
+  @apply p-2;
+  @apply bg-[#181818] rounded-lg;
+
+  .game-server-avatars {
+    @apply grid grid-cols-3 justify-items-center gap-2;
+    @apply mb-2;
+
+    .avatar-image {
+      @apply bg-secondary rounded-md;
+      @apply w-full h-full;
+    }
+  }
+
+  .game-server-join-container {
+    @apply flex gap-2;
+
+    .game-server-join,
+    .game-server-copy {
+      @apply px-2 py-1;
+      @apply bg-green-600 rounded-md;
+    }
+
+    .game-server-join {
+      @apply flex-grow;
+    }
+  }
+}

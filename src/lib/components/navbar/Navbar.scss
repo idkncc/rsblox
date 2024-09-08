@@ -1,0 +1,58 @@
+nav.navbar {
+  @apply text-lg select-none cursor-default;
+  @apply grid grid-cols-[1fr_2fr_1fr] items-center gap-4;
+  @apply sticky top-0;
+  @apply z-40;
+
+  @apply bg-background/60 backdrop-blur-2xl;
+
+  .navbar-search {
+    .input-container {
+      @apply relative;
+
+      input {
+        @media (screen and max-width: 400px) {
+          @apply hidden;
+        }
+
+        @apply w-full py-0.5;
+        @apply text-base;
+      }
+
+      .search-button {
+        @apply absolute top-0 right-0;
+        @apply h-full p-1;
+
+        .search-icon {
+          @apply transition-all;
+          @apply text-border;
+          @apply h-full;
+        }
+
+        &:hover .search-icon {
+          @apply text-[#A4A4A4];
+        }
+
+        &:active .search-icon {
+          @apply text-[#646464];
+        }
+      }
+    }
+  }
+
+  .navbar-profile {
+    @apply justify-self-end;
+  }
+
+  .navbar-link {
+    @apply transition-all;
+
+    &.router-link-active {
+      @apply font-bold;
+    }
+
+    &:hover {
+      @apply font-bold;
+    }
+  }
+}

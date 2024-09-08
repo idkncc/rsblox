@@ -283,8 +283,8 @@
         @apply flex flex-col gap-2;
 
         .section-content {
-            @apply border border-[#787878] bg-[#121212];
-            @apply p-2 rounded-lg;
+            @apply bg-card text-card-foreground rounded-xl border shadow;
+            @apply p-2;
         }
 
         .user-details {
@@ -331,15 +331,15 @@
                             }
 
                             &.unfriend {
-                                @apply bg-red-900;
+                                @apply bg-destructive text-destructive-foreground;
                             }
 
                             &.friend {
-                                @apply bg-green-800;
+                                @apply bg-green-700;
                             }
 
                             &.pending {
-                                @apply bg-[#242424] cursor-default;
+                                @apply bg-secondary cursor-default;
                             }
 
                             &.request- {
@@ -379,7 +379,7 @@
 
             .avatar-items-container {
                 @apply w-full h-full;
-                @apply bg-[#242424] rounded-md;
+                @apply bg-secondary rounded-md;
             }
             /* @apply flex gap-2 overflow-x-scroll; */
         }

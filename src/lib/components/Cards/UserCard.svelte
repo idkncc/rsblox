@@ -1,9 +1,14 @@
 <script lang="ts">
+    import "./UserCard.scss";
     import "tippy.js/animations/shift-away.css";
     import "tippy.js/animations/shift-away-subtle.css";
 
-    import "./UserCard.scss";
+    import { robloxApi } from "$lib/robloxApi";
+    import { tippy } from "$lib/tippy";
 
+    import * as Avatar from "@ui/avatar";
+
+    import UserStatus from "@components/UserStatus.svelte";
     import UserTooltip from "./UserTooltip.svelte";
 
     import {
@@ -12,15 +17,11 @@
         type InternalUser,
         type PlaceDetails,
     } from "$lib/typings";
-    import { robloxApi } from "$lib/robloxApi";
-    import { tippy } from "$lib/tippy";
-    import UserStatus from "../UserStatus.svelte";
-    import * as Avatar from "$lib/components/ui/avatar";
 
     export let user: InternalUser;
 
     let tippyTooltip: HTMLDivElement;
-    // onMounted(async () => {
+
     async function fetchDataForTooltip() {
         let placeDetails: PlaceDetails | undefined;
         let placeThumbnail: string = "https://placehold.co/512";

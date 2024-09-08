@@ -2,15 +2,14 @@
     import "./UserTooltip.scss";
 
     import { goto } from "$app/navigation";
-
     import { robloxApi } from "$lib/robloxApi";
+    import { writeText } from "@tauri-apps/api/clipboard";
 
     import type {
         UserInformation,
         UserPresence,
         PlaceDetails,
     } from "$lib/typings.ts";
-    import { writeText } from "@tauri-apps/api/clipboard";
 
     export let user: UserInformation;
     export let userPresence: UserPresence;

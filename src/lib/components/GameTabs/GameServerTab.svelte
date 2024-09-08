@@ -1,16 +1,18 @@
 <script setup lang="ts">
+    import chunk from "lodash.chunk";
+
     import { robloxApi } from "$lib/robloxApi";
+
+    import * as Section from "@ui/section";
+
+    import GameServerItem from "./GameServerItem.svelte";
+
     import {
         ThumbnailSize,
         ThumbnailType,
         type GameDetails,
         type GameServer,
     } from "$lib/typings";
-
-    import chunk from "lodash.chunk";
-
-    import GameServerItem from "./GameServerItem.svelte";
-    import * as Section from "@ui/section";
 
     export let gameDetails: GameDetails;
 

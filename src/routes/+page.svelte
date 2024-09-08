@@ -4,10 +4,13 @@
     import { robloxApi } from "$lib/robloxApi";
     import chunk from "lodash.chunk";
 
-    import UserCard from "$lib/components/Cards/UserCard.svelte";
-    import UserCardSkeleton from "$lib/components/Cards/UserCardSkeleton.svelte";
-    import GameCard from "$lib/components/Cards/GameCard.svelte";
-    import GameCardSkeleton from "$lib/components/Cards/GameCardSkeleton.svelte";
+    import Skeleton from "@ui/skeleton/skeleton.svelte";
+    import * as Section from "@ui/section";
+
+    import UserCard from "@components/Cards/UserCard.svelte";
+    import UserCardSkeleton from "@components/Cards/UserCardSkeleton.svelte";
+    import GameCard from "@components/Cards/GameCard.svelte";
+    import GameCardSkeleton from "@components/Cards/GameCardSkeleton.svelte";
 
     import {
         TreatmentType,
@@ -17,8 +20,6 @@
         type RecommendationsTopic,
     } from "$lib/typings.js";
     import { PRESENCE_INDEXES } from "$lib/constants";
-    import Skeleton from "@/components/ui/skeleton/skeleton.svelte";
-    import * as Section from "@/components/ui/section";
 
     let friends: InternalUser[] = [];
     let topics: RecommendationsTopic[] = [];

@@ -3,10 +3,10 @@
     import { tippy } from "$lib/tippy";
 
     import NavbarProfileTooltip from "./NavbarProfileTooltip.svelte";
+
     import type { ClientInfoWritable } from "$lib/typings";
 
     const clientInfo = getContext<ClientInfoWritable>("clientInfo");
-    $: console.log($clientInfo);
 
     let tippyTooltip: HTMLDivElement;
     onMount(() => {

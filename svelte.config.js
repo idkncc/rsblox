@@ -8,8 +8,8 @@ const config = {
     kit: {
         adapter: adapter(),
         alias: {
-            "@/*": "./src/lib/*",
             "@ui/*": "./src/lib/components/ui/*",
+            "@components/*": "./src/lib/components/*",
         },
     },
     preprocess: vitePreprocess()

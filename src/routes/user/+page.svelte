@@ -1,18 +1,20 @@
 <script lang="ts">
-    import "./user.scss";
+    import "./UserPage.scss";
 
     import { getContext } from "svelte";
 
     import { robloxApi } from "$lib/robloxApi";
     import { page } from "$app/stores";
+
     import { PRESENCE_INDEXES } from "$lib/constants";
 
-    import UserStatus from "$lib/components/UserStatus.svelte";
-    import UserCard from "$lib/components/Cards/UserCard.svelte";
-    import UserCardSkeleton from "$lib/components/Cards/UserCardSkeleton.svelte";
+    import * as Section from "@ui/section";
+    import * as Avatar from "@ui/avatar";
+    import { Skeleton } from "@ui/skeleton";
 
-    import * as Section from "@/components/ui/section";
-    import * as Avatar from "@/components/ui/avatar";
+    import UserStatus from "@components/UserStatus.svelte";
+    import UserCard from "@components/Cards/UserCard.svelte";
+    import UserCardSkeleton from "@components/Cards/UserCardSkeleton.svelte";
 
     import {
         FriendStatus,
@@ -25,7 +27,6 @@
         type UserPresence,
         type UserProfileStats,
     } from "$lib/typings";
-    import Skeleton from "@/components/ui/skeleton/skeleton.svelte";
 
     const userId = parseInt($page.url.searchParams.get("id") ?? "1");
 

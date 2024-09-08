@@ -1,12 +1,13 @@
 <script lang="ts">
     import "./GameCard.scss";
 
+    import * as Avatar from "@ui/avatar";
+
     import {
         TreatmentType,
         type Recommendation,
         type SearchResult,
     } from "$lib/typings.js";
-    import * as Avatar from "../ui/avatar";
 
     export let game: Recommendation | SearchResult;
     export let thumbnail: string;

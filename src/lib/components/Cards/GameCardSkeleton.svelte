@@ -1,7 +1,7 @@
 <script lang="ts">
     import "./GameCard.scss";
 
-    import Skeleton from "@ui/skeleton/skeleton.svelte";
+    import { Skeleton } from "@ui/skeleton";
 </script>
 
 <div class="game-card">

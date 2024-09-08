@@ -1,9 +1,10 @@
 <script lang="ts">
     import { Store } from "tauri-plugin-store-api";
     import { STORE_PATH } from "$lib/constants";
+
     import * as Alert from "@ui/alert";
-    import Input from "./ui/input/input.svelte";
-    import Button from "./ui/button/button.svelte";
+    import { Input } from "@ui/input";
+    import { Button } from "@ui/button";
 
     let userCookie = "";
 

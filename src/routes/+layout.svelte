@@ -1,30 +1,24 @@
 <script lang="ts">
-    import "victormono";
     import "tippy.js/animations/shift-away-subtle.css";
     import "../css/main.scss";
 
-    import { onMount, setContext } from "svelte";
-    import { writable, readable } from "svelte/store";
+    import { setContext } from "svelte";
+    import { writable } from "svelte/store";
     import { robloxApi } from "$lib/robloxApi";
 
     import { Store } from "tauri-plugin-store-api";
     import { STORE_PATH } from "$lib/constants";
 
-    import Login from "$lib/components/Login.svelte";
-    import Navbar from "@/components/navbar/navbar.svelte";
+    import Login from "@components/Login.svelte";
+    import Navbar from "@components/navbar/navbar.svelte";
 
     import type { ClientInfo } from "$lib/typings";
-    import { afterNavigate, goto } from "$app/navigation";
-    import { page } from "$app/stores";
 
     export const clientInfo = writable<ClientInfo | undefined>();
     export const isLoggedIn = writable(false);
 
     async function loadAuthorization() {
-        // await ((n) => new Promise((res) => setTimeout(res, n)))(5e3);
-
         async function processCookie() {
-            console.log("Procesin");
             clientInfo.set(await robloxApi.getMe());
         }
 
@@ -64,7 +58,7 @@
 
 <main class="main-app">
     {#await loadAuthorization()}
-        <p>Getting information about account...</p>
+        <!-- <p>Getting information about account...</p> -->
     {:then}
         {#if $isLoggedIn}
             <slot></slot>

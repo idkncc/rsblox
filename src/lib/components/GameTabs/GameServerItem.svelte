@@ -2,11 +2,12 @@
     import "./GameServerItem.scss";
 
     import { robloxApi } from "$lib/robloxApi";
-    import type { GameServer } from "$lib/typings";
     import { writeText } from "@tauri-apps/api/clipboard";
+
     import * as Card from "@ui/card";
     import * as Avatar from "@ui/avatar";
-    import { Description } from "../ui/section";
+
+    import type { GameServer } from "$lib/typings";
 
     export let gameServer: GameServer;
     export let avatarUrls: Record<string, string>;

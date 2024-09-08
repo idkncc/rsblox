@@ -4,8 +4,9 @@
     import { afterNavigate, goto } from "$app/navigation";
     import { page } from "$app/stores";
 
-    import NavbarProfile from "$lib/components/NavbarProfile.svelte";
-    import Input from "../ui/input/input.svelte";
+    import { Input } from "@ui/input";
+
+    import NavbarProfile from "@components/NavbarProfile.svelte";
 
     let searchQuery = "";
 

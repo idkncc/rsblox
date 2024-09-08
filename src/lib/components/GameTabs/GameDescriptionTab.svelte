@@ -1,6 +1,7 @@
 <script setup lang="ts">
-    import { type GameDetails } from "$lib/typings";
     import * as Section from "@ui/section";
+
+    import { type GameDetails } from "$lib/typings";
 
     export let gameDetails: GameDetails;
 </script>

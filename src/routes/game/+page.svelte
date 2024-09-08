@@ -1,13 +1,13 @@
 <script setup lang="ts">
     import "./GamePage.scss";
 
-    import GameDescriptionTab from "$lib/components/GameTabs/GameDescriptionTab.svelte";
-    import GameStoreTab from "$lib/components/GameTabs/GameStoreTab.svelte";
-    import GameServerTab from "$lib/components/GameTabs/GameServerTab.svelte";
+    import * as Carousel from "@ui/carousel";
+    import * as Section from "@ui/section";
+    import * as Tabs from "@ui/tabs";
 
-    import * as Carousel from "@/components/ui/carousel";
-    import * as Section from "@/components/ui/section";
-    import * as Tabs from "@/components/ui/tabs";
+    import GameDescriptionTab from "@components/GameTabs/GameDescriptionTab.svelte";
+    import GameStoreTab from "@components/GameTabs/GameStoreTab.svelte";
+    import GameServerTab from "@components/GameTabs/GameServerTab.svelte";
 
     import { page } from "$app/stores";
     import { robloxApi } from "$lib/robloxApi";

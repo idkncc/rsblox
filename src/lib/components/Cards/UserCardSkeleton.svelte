@@ -1,5 +1,5 @@
 <script>
-    import Skeleton from "../ui/skeleton/skeleton.svelte";
+    import { Skeleton } from "@ui/skeleton";
 </script>
 
 <div class="user-card">

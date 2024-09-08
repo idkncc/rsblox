@@ -13,6 +13,7 @@
     import { robloxApi } from "$lib/robloxApi";
     import { tippy } from "$lib/tippy";
     import UserStatus from "../UserStatus.svelte";
+    import * as Avatar from "$lib/components/ui/avatar";
 
     export let user: InternalUser;
 
@@ -64,13 +65,10 @@
     <a data-sveltekit-reload href="/user?id={user.info.user_id}">
         <div class="friend-card">
             <div class="friend-image">
-                <img
-                    class="rounded-md"
-                    src={user.headshot}
-                    alt={user.info.display_name}
-                    width="90"
-                    height="90"
-                />
+                <Avatar.Root class="friend-image-root">
+                    <Avatar.Image src={user.headshot} alt="@shadcn" />
+                    <Avatar.Fallback>CN</Avatar.Fallback>
+                </Avatar.Root>
 
                 <UserStatus presenceType={user.presence.presence_type} />
             </div>
@@ -88,11 +86,7 @@
 
 <style lang="scss">
     .friend-card {
-        --size: 100px;
-
-        @media screen and (max-width: 920px) {
-            --size: 80px;
-        }
+        --size: 5rem;
 
         @apply flex flex-col;
 
@@ -102,10 +96,6 @@
 
             @apply aspect-square;
             @apply bg-[#787878] rounded-full relative;
-
-            img {
-                @apply w-full rounded-full;
-            }
         }
 
         div.friend-username {

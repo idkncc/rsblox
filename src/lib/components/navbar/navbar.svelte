@@ -6,8 +6,6 @@
     import Input from "../ui/input/input.svelte";
 
     let searchQuery = "";
-    // $: searchQuery = $page.url.searchParams.get("q") ?? "";
-    //
 
     afterNavigate(() => {
         console.log("movin");
@@ -76,7 +74,7 @@
         @apply sticky top-0;
         @apply z-40;
 
-        @apply bg-black/60 backdrop-blur-2xl;
+        @apply bg-neutral-950/60 backdrop-blur-2xl;
 
         .navbar-search {
             .input-container {

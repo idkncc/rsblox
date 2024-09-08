@@ -15,6 +15,7 @@
         type RecommendationsTopic,
     } from "$lib/typings.js";
     import { PRESENCE_INDEXES } from "$lib/constants";
+    import Skeleton from "@/components/ui/skeleton/skeleton.svelte";
 
     let friends: InternalUser[] = [];
     let topics: RecommendationsTopic[] = [];
@@ -151,7 +152,9 @@
 {#await fetchRecommendations()}
     {#each Array(8).map(() => 0) as _}
         <section class="topic-section">
-            <p class="section-title"><span class="placeholder w-28" /></p>
+            <p class="section-title">
+                <Skeleton class="w-40 h-4 mb-1 rounded-full" />
+            </p>
             <div class="section-content carousel">
                 {#each Array(10).map(() => 0) as _}
                     <GameCardSkeleton />
@@ -188,13 +191,17 @@
 
 <style lang="scss">
     section {
+        .section-title {
+            @apply font-semibold;
+        }
+
         .section-subtitle {
             @apply text-xs text-[#C0C0C0];
         }
 
         .section-content {
-            @apply border border-[#787878] bg-[#121212];
-            @apply p-2 rounded-lg;
+            @apply border bg-stone-900;
+            @apply p-2 pb-4 rounded-xl;
         }
     }
 

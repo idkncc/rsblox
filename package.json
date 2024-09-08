@@ -27,8 +27,12 @@
   "type": "module",
   "dependencies": {
     "@tauri-apps/api": "^1.6.0",
+    "bits-ui": "^0.21.13",
+    "clsx": "^2.1.1",
     "lodash.chunk": "^4.2.0",
     "swiper": "^11.1.7",
+    "tailwind-merge": "^2.5.2",
+    "tailwind-variants": "^0.2.1",
     "tauri-plugin-store-api": "^0.0.0",
     "tippy.js": "^6.3.7",
     "victormono": "^1.5.6"

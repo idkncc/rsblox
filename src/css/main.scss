@@ -2,124 +2,77 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @import "tippy.js/animations/shift-away-subtle.css"; */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 20 14.3% 4.1%;
 
-:root {
-  @apply bg-[#181818] text-[#F1F1F1];
+    --muted: 60 4.8% 95.9%;
+    --muted-foreground: 25 5.3% 44.7%;
 
-  font-family: "Victor Mono", monospace;
-}
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14.3% 4.1%;
 
-nav.navbar {
-  @apply text-lg select-none cursor-default;
-  @apply grid grid-cols-[1fr_2fr_1fr] items-center gap-4;
-  @apply sticky top-0;
-  @apply z-40;
+    --card: 0 0% 100%;
+    --card-foreground: 20 14.3% 4.1%;
 
-  @apply bg-black/60 backdrop-blur-2xl;
+    --border: 20 5.9% 90%;
+    --input: 20 5.9% 90%;
 
-  .navbar-search {
-    .input-container {
-      @apply relative;
+    --primary: 24 9.8% 10%;
+    --primary-foreground: 60 9.1% 97.8%;
 
-      input {
-        @media (screen and max-width: 400px) {
-          @apply hidden;
-        }
+    --secondary: 60 4.8% 95.9%;
+    --secondary-foreground: 24 9.8% 10%;
 
-        @apply w-full py-0.5;
-        @apply text-base;
-      }
+    --accent: 60 4.8% 95.9%;
+    --accent-foreground: 24 9.8% 10%;
 
-      .search-button {
-        @apply absolute top-0 right-0;
-        @apply h-full p-1;
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
 
-        .search-icon {
-          @apply transition-all;
-          @apply text-[#787878];
-          @apply h-full;
-        }
+    --ring: 20 14.3% 4.1%;
 
-        &:hover .search-icon {
-          @apply text-[#A4A4A4];
-        }
-
-        &:active .search-icon {
-          @apply text-[#646464];
-        }
-      }
-    }
+    --radius: 0.5rem;
   }
 
-  .navbar-profile {
-    @apply justify-self-end;
-  }
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
 
-  .navbar-link {
-    @apply transition-all;
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
 
-    &.router-link-active {
-      @apply font-bold;
-    }
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 60 9.1% 97.8%;
 
-    &:hover {
-      @apply font-bold;
-    }
-  }
-}
+    --card: 20 14.3% 4.1%;
+    --card-foreground: 60 9.1% 97.8%;
 
-.main-app {
-  @apply p-2
-}
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
 
-h1, h2, h3, h4, h5, h6 {
-  @apply font-bold
-}
+    --primary: 60 9.1% 97.8%;
+    --primary-foreground: 24 9.8% 10%;
 
-h1 {
-  @apply text-2xl
-}
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
 
-input.control-input {
-  @apply px-2 py-2;
-  @apply rounded-lg;
-  @apply border border-[#787878] placeholder-[#787878] bg-[#181818];
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 60 9.1% 97.8%;
 
-  @apply outline-none;
-}
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
 
-.control-button {
-  @apply px-2 py-2;
-  @apply rounded-lg;
-
-  @apply bg-[#183618];
-}
-
-.alert {
-  @apply p-2;
-  @apply border rounded-lg;
-
-  &.warning {
-    @apply border-amber-700 bg-amber-950;
+    --ring: 24 5.7% 82.9%;
   }
 }
 
-.placeholder {
-  display: inline-block;
-  min-height: 1em;
-  vertical-align: middle;
-  cursor: wait;
-  background-color: currentcolor;
-  opacity: .5;
-
-  mask-image: linear-gradient(130deg, #000 55%, rgba(0, 0, 0, 0.8) 75%, #000 95%);
-  mask-size: 200% 100%;
-  animation: placeholder-wave 2s linear infinite;
-}
-
-@keyframes placeholder-wave {
-  100% {
-    mask-position: -200% 0%;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
   }
 }

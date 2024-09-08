@@ -1,0 +1,29 @@
+.friend-card {
+  --size: 5rem;
+
+  @apply flex flex-col;
+
+  .friend-image {
+    width: var(--size);
+    height: var(--size);
+
+    @apply aspect-square;
+    @apply bg-[#787878] rounded-full relative;
+  }
+
+  div.friend-username {
+    @apply text-xs text-center;
+    @apply flex gap-1 justify-center;
+
+    width: var(--size);
+
+    .user-name {
+      max-width: calc(var(--size) - 10);
+      @apply truncate;
+    }
+
+    .user-status {
+      @apply w-fit;
+    }
+  }
+}

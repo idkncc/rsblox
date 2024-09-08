@@ -1,4 +1,6 @@
 <script lang="ts">
+    import "./HomePage.scss";
+
     import { robloxApi } from "$lib/robloxApi";
     import chunk from "lodash.chunk";
 
@@ -135,9 +137,9 @@
     }
 </script>
 
-<section class="friends">
-    <p class="section-title">Friends</p>
-    <div class="section-content">
+<Section.Root class="friends-section">
+    <Section.Title>Friends</Section.Title>
+    <Section.Content>
         {#await fetchFriends()}
             {#each Array(8).map(() => 0) as _}
                 <UserCardSkeleton />
@@ -147,15 +149,16 @@
                 <UserCard user={friend} />
             {/each}
         {/await}
-    </div>
-</section>
+    </Section.Content>
+</Section.Root>
 
 {#await fetchRecommendations()}
+    <!-- Recommendations skeleton  -->
     {#each Array(8).map(() => 0) as _}
         <Section.Root class="topic-section">
-            <Section.Title
-                ><Skeleton class="w-40 h-4 mb-1 rounded-full" /></Section.Title
-            >
+            <Section.Title>
+                <Skeleton class="w-40 h-4 mb-1 rounded-full" />
+            </Section.Title>
 
             <Section.Content class={"overflow-scroll gap-2 flex"}>
                 {#each Array(10).map(() => 0) as _}
@@ -175,8 +178,8 @@
 
             <Section.Content
                 class={topic.treatment_type === TreatmentType.SortlessGrid
-                    ? "overflow-scroll gap-2 grid md:grid-cols-3 lg:grid-cols-4" /* sortless-grid */
-                    : "overflow-scroll gap-2 flex"}
+                    ? "sortless-grid" /* sortless-grid */
+                    : "carousel"}
             >
                 {#each topic.recommendation_list as game}
                     <GameCard
@@ -189,30 +192,3 @@
         </Section.Root>
     {/each}
 {/await}
-
-<style lang="scss">
-    section.friends {
-        .section-content {
-            @apply flex gap-2;
-            @apply overflow-scroll;
-        }
-    }
-
-    .carousel {
-        @apply flex;
-    }
-
-    .sortless-grid {
-        @media screen and (max-width: 400px) {
-            @apply grid-cols-1;
-        }
-
-        @media screen and (max-width: 800px) {
-            @apply grid-cols-2;
-        }
-
-        @apply grid md:grid-cols-3 lg:grid-cols-4;
-    }
-
-    /* } */
-</style>

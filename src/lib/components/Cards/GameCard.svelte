@@ -1,9 +1,12 @@
 <script lang="ts">
+    import "./GameCard.scss";
+
     import {
         TreatmentType,
         type Recommendation,
         type SearchResult,
     } from "$lib/typings.js";
+    import * as Avatar from "../ui/avatar";
 
     export let game: Recommendation | SearchResult;
     export let thumbnail: string;
@@ -13,44 +16,12 @@
 
 <a href="/game?id={game.universe_id}">
     <div class="game-card w-full" data-treatment-type={treatmentType}>
-        <img
-            class="game-image rounded-md"
-            src={thumbnail}
-            alt="Game"
-            height="120"
-        />
+        <Avatar.Root class="rounded-md game-image">
+            <Avatar.Image src={thumbnail} alt={game.name} />
+            <Avatar.Fallback>{game.name.slice(0, 4)}</Avatar.Fallback>
+        </Avatar.Root>
 
         <p class="game-title">{game.name}</p>
         <p class="game-playing">Playing {game.player_count}</p>
     </div>
 </a>
-
-<style lang="scss">
-    .game-card {
-        @apply min-w-[120px];
-        @apply cursor-pointer;
-
-        .game-title {
-            @apply max-w-[120px] max-h-[52px] text-sm truncate;
-        }
-
-        .game-playing {
-            @apply text-[#C0C0C0] text-xs;
-        }
-    }
-
-    .game-card[data-treatment-type="Carousel"] {
-        .game-image {
-            @apply w-[120px] h-[120px];
-        }
-    }
-
-    .game-card[data-treatment-type="SortlessGrid"] {
-        .game-image {
-            @apply min-w-[120px] min-h-[120px];
-
-            width: 100%;
-            aspect-ratio: 16 / 9;
-        }
-    }
-</style>

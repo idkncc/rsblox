@@ -2,6 +2,8 @@
     import "tippy.js/animations/shift-away.css";
     import "tippy.js/animations/shift-away-subtle.css";
 
+    import "./UserCard.scss";
+
     import UserTooltip from "./UserTooltip.svelte";
 
     import {
@@ -66,8 +68,15 @@
         <div class="friend-card">
             <div class="friend-image">
                 <Avatar.Root class="friend-image-root">
-                    <Avatar.Image src={user.headshot} alt="@shadcn" />
-                    <Avatar.Fallback>CN</Avatar.Fallback>
+                    <Avatar.Image
+                        src={user.headshot}
+                        alt={`@${user.info.display_name}`}
+                    />
+                    <Avatar.Fallback
+                        >{user.info.display_name
+                            .slice(0, 2)
+                            .toUpperCase()}</Avatar.Fallback
+                    >
                 </Avatar.Root>
 
                 <UserStatus presenceType={user.presence.presence_type} />
@@ -83,35 +92,3 @@
         <UserTooltip {...props} />
     {/await}
 </div>
-
-<style lang="scss">
-    .friend-card {
-        --size: 5rem;
-
-        @apply flex flex-col;
-
-        .friend-image {
-            width: var(--size);
-            height: var(--size);
-
-            @apply aspect-square;
-            @apply bg-[#787878] rounded-full relative;
-        }
-
-        div.friend-username {
-            @apply text-xs text-center;
-            @apply flex gap-1 justify-center;
-
-            width: var(--size);
-
-            .user-name {
-                max-width: calc(var(--size) - 10);
-                @apply truncate;
-            }
-
-            .user-status {
-                @apply w-fit;
-            }
-        }
-    }
-</style>

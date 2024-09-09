@@ -4,6 +4,8 @@
     import { robloxApi } from "$lib/robloxApi";
     import { writeText } from "@tauri-apps/api/clipboard";
 
+    import { Progress } from "@ui/progress";
+    import { Button } from "@ui/button";
     import * as Card from "@ui/card";
     import * as Avatar from "@ui/avatar";
 
@@ -40,7 +42,7 @@
                         src={avatarUrls[playerToken]}
                         alt="Player Headshot"
                     />
-                    <Avatar.Fallback>???</Avatar.Fallback>
+                    <Avatar.Fallback />
                 </Avatar.Root>
             {/each}
 
@@ -52,12 +54,24 @@
                 </Avatar.Root>
             {/if}
         </div>
-        <p>{gameServer.playing} of {gameServer.max_players}</p>
+
+        <div class="game-server-playing-container">
+            <p class="game-server-playing">
+                {gameServer.playing} of {gameServer.max_players}
+            </p>
+            <Progress
+                value={gameServer.playing}
+                max={gameServer.max_players}
+                class="game-server-playing-progressbar"
+            />
+        </div>
 
         <div class="game-server-join-container">
-            <button class="game-server-join" on:click={join}>Join</button>
+            <Button class="flex-grow" variant="default" on:click={join}>
+                Join
+            </Button>
 
-            <button class="game-server-copy" on:click={copyLink}>
+            <Button variant="secondary" on:click={copyLink}>
                 {#if copied}
                     <svg
                         class="w-6 h-6"
@@ -91,7 +105,7 @@
                         />
                     </svg>
                 {/if}
-            </button>
+            </Button>
         </div>
     </Card.Content>
 </Card.Root>

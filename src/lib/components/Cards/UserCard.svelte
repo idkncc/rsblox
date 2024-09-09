@@ -1,7 +1,14 @@
 <script lang="ts">
+    import "./UserCard.scss";
     import "tippy.js/animations/shift-away.css";
     import "tippy.js/animations/shift-away-subtle.css";
 
+    import { robloxApi } from "$lib/robloxApi";
+    import { tippy } from "$lib/tippy";
+
+    import * as Avatar from "@ui/avatar";
+
+    import UserStatus from "@components/UserStatus.svelte";
     import UserTooltip from "./UserTooltip.svelte";
 
     import {
@@ -10,14 +17,11 @@
         type InternalUser,
         type PlaceDetails,
     } from "$lib/typings";
-    import { robloxApi } from "$lib/robloxApi";
-    import { tippy } from "$lib/tippy";
-    import UserStatus from "../UserStatus.svelte";
 
     export let user: InternalUser;
 
     let tippyTooltip: HTMLDivElement;
-    // onMounted(async () => {
+
     async function fetchDataForTooltip() {
         let placeDetails: PlaceDetails | undefined;
         let placeThumbnail: string = "https://placehold.co/512";
@@ -64,13 +68,17 @@
     <a data-sveltekit-reload href="/user?id={user.info.user_id}">
         <div class="friend-card">
             <div class="friend-image">
-                <img
-                    class="rounded-md"
-                    src={user.headshot}
-                    alt={user.info.display_name}
-                    width="90"
-                    height="90"
-                />
+                <Avatar.Root class="friend-image-root">
+                    <Avatar.Image
+                        src={user.headshot}
+                        alt={`@${user.info.display_name}`}
+                    />
+                    <Avatar.Fallback
+                        >{user.info.display_name
+                            .slice(0, 2)
+                            .toUpperCase()}</Avatar.Fallback
+                    >
+                </Avatar.Root>
 
                 <UserStatus presenceType={user.presence.presence_type} />
             </div>
@@ -85,43 +93,3 @@
         <UserTooltip {...props} />
     {/await}
 </div>
-
-<style lang="scss">
-    .friend-card {
-        --size: 100px;
-
-        @media screen and (max-width: 920px) {
-            --size: 80px;
-        }
-
-        @apply flex flex-col;
-
-        .friend-image {
-            width: var(--size);
-            height: var(--size);
-
-            @apply aspect-square;
-            @apply bg-[#787878] rounded-full relative;
-
-            img {
-                @apply w-full rounded-full;
-            }
-        }
-
-        div.friend-username {
-            @apply text-xs text-center;
-            @apply flex gap-1 justify-center;
-
-            width: var(--size);
-
-            .user-name {
-                max-width: calc(var(--size) - 10);
-                @apply truncate;
-            }
-
-            .user-status {
-                @apply w-fit;
-            }
-        }
-    }
-</style>

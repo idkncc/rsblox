@@ -1,0 +1,36 @@
+.game-server {
+  .game-server-avatars {
+    @apply grid grid-cols-3 justify-items-center gap-2;
+
+    .avatar-image {
+      @apply bg-secondary rounded-md;
+      @apply w-full h-full;
+    }
+  }
+
+  .game-server-playing-container {
+    @apply flex gap-1 items-center mt-1;
+
+    .game-server-playing {
+      @apply text-sm text-muted-foreground text-nowrap;
+    }
+
+    .game-server-playing-progressbar {
+      @apply flex-grow;
+    }
+  }
+
+  .game-server-join-container {
+    @apply flex gap-2 mt-2;
+
+    .game-server-join,
+    .game-server-copy {
+      @apply px-2 py-1;
+      @apply bg-green-600 rounded-md;
+    }
+
+    .game-server-join {
+      @apply flex-grow;
+    }
+  }
+}

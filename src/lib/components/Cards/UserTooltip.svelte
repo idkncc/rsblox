@@ -1,14 +1,15 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
+    import "./UserTooltip.scss";
 
+    import { goto } from "$app/navigation";
     import { robloxApi } from "$lib/robloxApi";
+    import { writeText } from "@tauri-apps/api/clipboard";
 
     import type {
         UserInformation,
         UserPresence,
         PlaceDetails,
     } from "$lib/typings.ts";
-    import { writeText } from "@tauri-apps/api/clipboard";
 
     export let user: UserInformation;
     export let userPresence: UserPresence;
@@ -98,66 +99,3 @@
         </button>
     </div>
 </div>
-
-<style lang="scss">
-    $width: 192px;
-    $height: 108px;
-
-    .user-tooltip {
-        @apply flex flex-col;
-
-        @apply bg-black/50 backdrop-blur-lg;
-        @apply overflow-hidden rounded-lg;
-
-        max-width: $width;
-
-        .user-buttons {
-            @apply p-2;
-
-            & > * {
-                @apply w-full px-2 py-1;
-                @apply rounded-md;
-                @apply text-center truncate;
-            }
-
-            & > .user-button {
-                @apply bg-[#525252];
-            }
-        }
-    }
-
-    .user-presence {
-        width: $width;
-        height: $height;
-        position: relative;
-
-        img {
-            @apply absolute top-0 left-0;
-            @apply w-full;
-
-            height: $height;
-        }
-
-        .user-tooltip-footer {
-            @apply absolute bottom-0 left-0;
-            @apply px-2 py-3;
-            width: $width;
-
-            @apply bg-gradient-to-t from-black to-white/0;
-
-            .join-button-container {
-                @apply flex gap-2;
-
-                .join-button,
-                .copy-button {
-                    @apply px-2 py-1;
-                    @apply bg-green-600 rounded-sm;
-                }
-
-                .join-button {
-                    @apply flex-grow;
-                }
-            }
-        }
-    }
-</style>

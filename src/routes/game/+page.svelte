@@ -1,10 +1,13 @@
 <script setup lang="ts">
-    import { register } from "swiper/element/bundle";
-    register();
+    import "./GamePage.scss";
 
-    import GameDescriptionTab from "$lib/components/GameTabs/GameDescriptionTab.svelte";
-    import GameStoreTab from "$lib/components/GameTabs/GameStoreTab.svelte";
-    import GameServerTab from "$lib/components/GameTabs/GameServerTab.svelte";
+    import * as Carousel from "@ui/carousel";
+    import * as Section from "@ui/section";
+    import * as Tabs from "@ui/tabs";
+
+    import GameDescriptionTab from "@components/GameTabs/GameDescriptionTab.svelte";
+    import GameStoreTab from "@components/GameTabs/GameStoreTab.svelte";
+    import GameServerTab from "@components/GameTabs/GameServerTab.svelte";
 
     import { page } from "$app/stores";
     import { robloxApi } from "$lib/robloxApi";
@@ -58,160 +61,89 @@
 
 {#await fetchGameDetails() then _}
     <main class="game-page">
-        <div class="game-header grid grid-cols-2 gap-4">
-            <div class="game-images">
-                {#await fetchGameMedia()}
-                    <div class="placeholder rounded-lg w-full aspect-video" />
-                {:then [gameMedia, gameMediaUrls]}
-                    <swiper-container
-                        navigation="true"
-                        pagination="true"
-                        space-between={10}
-                    >
-                        >
-                        {#each gameMedia as media}
-                            <swiper-slide>
-                                {#if media.asset_type === GameMediaType.Image}
-                                    <img
-                                        src={gameMediaUrls[
-                                            media.image_id ?? 0
-                                        ] ??
-                                            "https://placehold.co/1920x1080?text=Loading..."}
-                                        alt={media.alt_text}
-                                        class="rounded-lg w-[calc(100%-10px)]"
-                                    />
-                                {:else}
-                                    <img
-                                        src={"https://placehold.co/1920x1080?text=Youtube+Embeds+not+currently+supported"}
-                                        alt={media.alt_text}
-                                        class="rounded-lg w-[calc(100%-10px)]"
-                                    />
-                                {/if}
-                            </swiper-slide>
-                        {/each}
-                    </swiper-container>
-                {/await}
-            </div>
-            <div class="game-info">
-                <div class="game-title">
-                    <h3 class="text-2xl">{gameDetails.name}</h3>
-                    <p>
-                        by <b>{gameDetails.creator.name}</b>
-                    </p>
+        <Section.Root>
+            <Section.Content class="game-header">
+                <div class="game-images">
+                    {#await fetchGameMedia()}
+                        <div
+                            class="placeholder rounded-lg w-full aspect-video"
+                        />
+                    {:then [gameMedia, gameMediaUrls]}
+                        <Carousel.Root>
+                            <Carousel.Content>
+                                {#each gameMedia as media}
+                                    <Carousel.Item>
+                                        {#if media.asset_type === GameMediaType.Image}
+                                            <img
+                                                src={gameMediaUrls[
+                                                    media.image_id ?? 0
+                                                ] ??
+                                                    "https://placehold.co/1920x1080?text=Loading..."}
+                                                alt={media.alt_text}
+                                                class="rounded-lg w-[calc(100%-10px)]"
+                                            />
+                                        {:else}
+                                            <img
+                                                src={"https://placehold.co/1920x1080?text=Youtube+Embeds+not+currently+supported"}
+                                                alt={media.alt_text}
+                                                class="rounded-lg w-[calc(100%-10px)]"
+                                            />
+                                        {/if}
+                                    </Carousel.Item>
+                                {/each}
+                            </Carousel.Content>
+                            <Carousel.Previous />
+                            <Carousel.Next />
+                        </Carousel.Root>
+                    {/await}
                 </div>
+                <div class="game-info">
+                    <div class="game-title">
+                        <h3 class="text-2xl">{gameDetails.name}</h3>
+                        <p>
+                            by <b>{gameDetails.creator.name}</b>
+                        </p>
+                    </div>
 
-                <div class="game-play">
-                    <button class="play-button" on:click={play}>
-                        <svg
-                            class="play-button-icon"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M10.271 5.575C8.967 4.501 7 5.43 7 7.12v9.762c0 1.69 1.967 2.618 3.271 1.544l5.927-4.881a2 2 0 0 0 0-3.088l-5.927-4.88Z"
-                                clip-rule="evenodd"
-                            />
-                        </svg>
-                    </button>
+                    <div class="game-play">
+                        <button class="play-button" on:click={play}>
+                            <svg
+                                class="play-button-icon"
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                fill="currentColor"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    fill-rule="evenodd"
+                                    d="M10.271 5.575C8.967 4.501 7 5.43 7 7.12v9.762c0 1.69 1.967 2.618 3.271 1.544l5.927-4.881a2 2 0 0 0 0-3.088l-5.927-4.88Z"
+                                    clip-rule="evenodd"
+                                />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </div>
+            </Section.Content>
+        </Section.Root>
 
-        <div class="game-sections">
-            <div class="game-tabs">
-                <button
-                    class={currentTab === 0 ? "tab-active" : ""}
-                    on:click={() => (currentTab = 0)}
-                >
-                    About
-                </button>
-                <button
-                    class={currentTab === 1 ? "tab-active" : ""}
-                    on:click={() => (currentTab = 1)}
-                >
-                    Store
-                </button>
-                <button
-                    class={currentTab === 2 ? "tab-active" : ""}
-                    on:click={() => (currentTab = 2)}
-                >
-                    Servers
-                </button>
-            </div>
+        <Tabs.Root value="about" class="game-sections">
+            <Tabs.List class="grid grid-cols-3">
+                <Tabs.Trigger value="about">About</Tabs.Trigger>
+                <Tabs.Trigger value="store">Store</Tabs.Trigger>
+                <Tabs.Trigger value="servers">Servers</Tabs.Trigger>
+            </Tabs.List>
 
-            <GameDescriptionTab visible={currentTab === 0} {gameDetails} />
-            <GameStoreTab visible={currentTab === 1} {gameDetails} />
-            <GameServerTab visible={currentTab === 2} {gameDetails} />
-        </div>
+            <Tabs.Content value="about">
+                <GameDescriptionTab {gameDetails} />
+            </Tabs.Content>
+            <Tabs.Content value="store">
+                <GameStoreTab {gameDetails} />
+            </Tabs.Content>
+            <Tabs.Content value="servers">
+                <GameServerTab {gameDetails} />
+            </Tabs.Content>
+        </Tabs.Root>
     </main>
 {/await}
-
-<style lang="scss">
-    .game-page {
-        .game-header {
-            @apply bg-[#121212] rounded-lg;
-            @apply p-3;
-
-            .game-info {
-                @apply flex flex-col justify-between;
-
-                .game-play .play-button {
-                    @apply rounded-lg;
-                    @apply px-3 py-2 w-full;
-                    @apply bg-green-600;
-
-                    @apply font-bold;
-
-                    @apply flex justify-center;
-
-                    .play-button-icon {
-                        @apply w-10 h-10;
-                        @apply text-white;
-                    }
-
-                    &:hover {
-                        @apply bg-green-500;
-                    }
-
-                    &:active {
-                        @apply bg-green-700;
-                    }
-                }
-            }
-        }
-
-        .game-sections {
-            @apply mt-2 rounded-lg;
-            @apply p-2 bg-[#121212];
-
-            .game-tabs {
-                @apply grid grid-cols-3 gap-2 mb-2;
-
-                button {
-                    @apply w-full p-2;
-                    @apply rounded-sm;
-
-                    &.tab-active {
-                        @apply bg-[#242424];
-                    }
-
-                    &:hover {
-                        @apply bg-[#242424];
-                    }
-
-                    &:active {
-                        @apply bg-[#101010];
-                    }
-                }
-            }
-
-            .game-tab {
-            }
-        }
-    }
-</style>

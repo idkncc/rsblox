@@ -1,11 +1,16 @@
 <script lang="ts">
+    import "./HomePage.scss";
+
     import { robloxApi } from "$lib/robloxApi";
     import chunk from "lodash.chunk";
 
-    import UserCard from "$lib/components/Cards/UserCard.svelte";
-    import UserCardSkeleton from "$lib/components/Cards/UserCardSkeleton.svelte";
-    import GameCard from "$lib/components/Cards/GameCard.svelte";
-    import GameCardSkeleton from "$lib/components/Cards/GameCardSkeleton.svelte";
+    import Skeleton from "@ui/skeleton/skeleton.svelte";
+    import * as Section from "@ui/section";
+
+    import UserCard from "@components/Cards/UserCard.svelte";
+    import UserCardSkeleton from "@components/Cards/UserCardSkeleton.svelte";
+    import GameCard from "@components/Cards/GameCard.svelte";
+    import GameCardSkeleton from "@components/Cards/GameCardSkeleton.svelte";
 
     import {
         TreatmentType,
@@ -133,9 +138,9 @@
     }
 </script>
 
-<section class="friends">
-    <p class="section-title">Friends</p>
-    <div class="section-content">
+<Section.Root class="friends-section">
+    <Section.Title>Friends</Section.Title>
+    <Section.Content>
         {#await fetchFriends()}
             {#each Array(8).map(() => 0) as _}
                 <UserCardSkeleton />
@@ -145,34 +150,37 @@
                 <UserCard user={friend} />
             {/each}
         {/await}
-    </div>
-</section>
+    </Section.Content>
+</Section.Root>
 
 {#await fetchRecommendations()}
+    <!-- Recommendations skeleton  -->
     {#each Array(8).map(() => 0) as _}
-        <section class="topic-section">
-            <p class="section-title"><span class="placeholder w-28" /></p>
-            <div class="section-content carousel">
+        <Section.Root class="topic-section">
+            <Section.Title>
+                <Skeleton class="w-40 h-4 mb-1 rounded-full" />
+            </Section.Title>
+
+            <Section.Content class={"overflow-scroll gap-2 flex"}>
                 {#each Array(10).map(() => 0) as _}
                     <GameCardSkeleton />
                 {/each}
-            </div>
-        </section>
+            </Section.Content>
+        </Section.Root>
     {/each}
 {:then}
     {#each topics as topic}
-        <section class="topic-section">
-            <p class="section-title">{topic.topic}</p>
+        <Section.Root class="topic-section">
+            <Section.Title>{topic.topic}</Section.Title>
+
             {#if topic.subtitle}
-                <p class="section-subtitle">
-                    {topic.subtitle}
-                </p>
+                <Section.Description>{topic.subtitle}</Section.Description>
             {/if}
 
-            <div
+            <Section.Content
                 class={topic.treatment_type === TreatmentType.SortlessGrid
-                    ? "section-content sortless-grid"
-                    : "section-content carousel"}
+                    ? "sortless-grid" /* sortless-grid */
+                    : "carousel"}
             >
                 {#each topic.recommendation_list as game}
                     <GameCard
@@ -181,52 +189,7 @@
                         treatmentType={topic.treatment_type}
                     />
                 {/each}
-            </div>
-        </section>
+            </Section.Content>
+        </Section.Root>
     {/each}
 {/await}
-
-<style lang="scss">
-    section {
-        .section-subtitle {
-            @apply text-xs text-[#C0C0C0];
-        }
-
-        .section-content {
-            @apply border border-[#787878] bg-[#121212];
-            @apply p-2 rounded-lg;
-        }
-    }
-
-    section.friends {
-        .section-content {
-            @apply flex gap-2;
-            @apply overflow-scroll;
-        }
-    }
-
-    section.topic-section {
-        @apply my-2;
-
-        .section-content {
-            @apply gap-2;
-            @apply overflow-scroll;
-
-            &.carousel {
-                @apply flex;
-            }
-
-            &.sortless-grid {
-                @media screen and (max-width: 400px) {
-                    @apply grid-cols-1;
-                }
-
-                @media screen and (max-width: 800px) {
-                    @apply grid-cols-2;
-                }
-
-                @apply grid md:grid-cols-3 lg:grid-cols-4;
-            }
-        }
-    }
-</style>

@@ -1,6 +1,5 @@
 import { invoke, type InvokeArgs } from "@tauri-apps/api/tauri";
-import { readable, writable } from "svelte/store";
-import { Store } from "tauri-plugin-store-api";
+import chunk from "lodash.chunk";
 
 import {
     FriendStatus,
@@ -18,8 +17,6 @@ import {
     type UserProfileStats,
     type SearchResult
 } from "$lib/typings";
-import { STORE_PATH } from "./constants";
-import chunk from "lodash.chunk";
 
 // Roblox api
 export const robloxApi = {

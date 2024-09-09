@@ -1,0 +1,25 @@
+.friends-section .section-content {
+  @apply flex gap-2;
+  @apply overflow-scroll;
+}
+
+.topic-section .section-content {
+  @apply gap-2 overflow-scroll;
+
+  &.carousel {
+    @apply flex;
+  }
+
+  &.sortless-grid {
+    @media screen and (max-width: 400px) {
+      @apply grid-cols-1;
+    }
+
+    @media screen and (max-width: 800px) {
+      @apply grid-cols-2;
+    }
+
+    @apply grid md:grid-cols-3 lg:grid-cols-4;
+  }
+
+}

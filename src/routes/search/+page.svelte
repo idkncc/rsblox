@@ -1,8 +1,10 @@
 <script lang="ts">
     import { page } from "$app/stores";
-    import GameCard from "$lib/components/Cards/GameCard.svelte";
-    import GameCardSkeleton from "$lib/components/Cards/GameCardSkeleton.svelte";
     import { robloxApi } from "$lib/robloxApi";
+
+    import GameCard from "@components/Cards/GameCard.svelte";
+    import GameCardSkeleton from "@components/Cards/GameCardSkeleton.svelte";
+
     import {
         ThumbnailSize,
         ThumbnailType,

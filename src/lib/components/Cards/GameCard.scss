@@ -1,0 +1,26 @@
+.game-card {
+  @apply min-w-[120px];
+  @apply cursor-pointer;
+
+  .game-title {
+    @apply max-w-[120px] max-h-[52px] text-sm truncate;
+  }
+
+  .game-playing {
+    @apply text-[#C0C0C0] text-xs;
+  }
+}
+
+.game-card[data-treatment-type="Carousel"] {
+  .game-image {
+    @apply w-[120px] h-[120px];
+  }
+}
+
+.game-card[data-treatment-type="SortlessGrid"] {
+  .game-image {
+    @apply w-full h-auto;
+
+    aspect-ratio: 16 / 9 auto;
+  }
+}

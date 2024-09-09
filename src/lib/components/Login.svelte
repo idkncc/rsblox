@@ -2,6 +2,10 @@
     import { Store } from "tauri-plugin-store-api";
     import { STORE_PATH } from "$lib/constants";
 
+    import * as Alert from "@ui/alert";
+    import { Input } from "@ui/input";
+    import { Button } from "@ui/button";
+
     let userCookie = "";
 
     async function loginCookie() {
@@ -11,20 +15,28 @@
     }
 </script>
 
-<h1>Log in</h1>
-<div class="alert warning my-2">
-    <p>Currently only with cookie</p>
-</div>
+<h1 class="text-3xl font-bold mb-2">Log in</h1>
 
-<div class="flex w-full gap-2">
-    <input
+<Alert.Root variant="warning">
+    <Alert.Title>Warning</Alert.Title>
+    <Alert.Description>
+        <p>Currently, you can log in only with cookie</p>
+        <p>
+            Maybe in the future, I could make with Quick Login or
+            Username&Password
+        </p>
+    </Alert.Description>
+</Alert.Root>
+
+<div class="flex w-full gap-2 mt-2">
+    <Input
         type="text"
         class="control-input flex-grow"
         placeholder="_|WARNING:-DO-NOT-SHARE-THIS.--Sharing-this-will-allow-someone-to-log-in-as-you-and-to-steal-your-ROBUX-and-items.|_..."
         bind:value={userCookie}
     />
 
-    <button class="control-button" on:click={loginCookie}>Login</button>
+    <Button class="h-auto" on:click={loginCookie}>Login</Button>
 </div>
 
 <style scoped>

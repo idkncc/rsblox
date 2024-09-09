@@ -26,18 +26,18 @@
 
 <style lang="scss">
     #navbar-profile-tooltip {
-        @apply border border-[#787878];
-        @apply overflow-hidden backdrop-blur-lg;
+        @apply border;
+        @apply overflow-hidden backdrop-blur-xl;
         @apply w-full rounded-lg;
         @apply z-50;
 
         .tooltip-header {
-            @apply bg-[#121212]/75;
+            @apply bg-secondary/80 text-secondary-foreground;
             @apply w-full p-2;
         }
 
         .tooltip-body > * {
-            @apply bg-[#212121]/75;
+            @apply bg-secondary/60 text-secondary-foreground;
             @apply w-full p-2;
         }
     }

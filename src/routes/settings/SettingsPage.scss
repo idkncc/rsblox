@@ -1,0 +1,12 @@
+.settings-page {
+  @apply grid grid-cols-[180px_1fr] gap-4;
+
+  .settings-sidebar .section-content {
+    @apply flex flex-col gap-2;
+    @apply text-muted-foreground;
+
+    .settings-page-active {
+      @apply text-foreground;
+    }
+  }
+}

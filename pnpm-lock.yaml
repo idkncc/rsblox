@@ -23,6 +23,9 @@ importers:
       lodash.chunk:
         specifier: ^4.2.0
         version: 4.2.0
+      mode-watcher:
+        specifier: ^0.4.1
+        version: 0.4.1(svelte@4.2.18)
       svelte-radix:
         specifier: ^1.1.1
         version: 1.1.1(svelte@4.2.18)
@@ -861,6 +864,11 @@ packages:
   mkdirp@0.5.6:
     resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}
     hasBin: true
+
+  mode-watcher@0.4.1:
+    resolution: {integrity: sha512-bNC+1NXmwEFZtziCdZSgP7HFQTpqJPcQn9GwwJQGSf6SBF3neEPYV1uRwkYuAQwbsvsXIYtzaqgedDzJ7D1mhg==}
+    peerDependencies:
+      svelte: ^4.0.0 || ^5.0.0-next.1
 
   mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
@@ -2002,6 +2010,10 @@ snapshots:
   mkdirp@0.5.6:
     dependencies:
       minimist: 1.2.8
+
+  mode-watcher@0.4.1(svelte@4.2.18):
+    dependencies:
+      svelte: 4.2.18
 
   mri@1.2.0: {}
 

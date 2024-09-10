@@ -12,6 +12,8 @@
     import Login from "@components/Login.svelte";
     import Navbar from "@components/navbar/navbar.svelte";
 
+    import { ModeWatcher } from "mode-watcher";
+
     import type { ClientInfo } from "$lib/typings";
 
     export const clientInfo = writable<ClientInfo | undefined>();
@@ -54,6 +56,7 @@
     setContext("clientInfo", clientInfo);
 </script>
 
+<ModeWatcher />
 <Navbar />
 
 <main class="main-app">

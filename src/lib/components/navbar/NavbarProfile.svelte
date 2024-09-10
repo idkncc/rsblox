@@ -37,11 +37,11 @@
     </p>
 
     {#if $clientInfo}
-        <a data-sveltekit-reload href={`/user?id=${$clientInfo.user_id}`}>
-            <p use:tippy={{ content: tippyTooltip, placement: "bottom-end" }}>
+        <p use:tippy={{ content: tippyTooltip, placement: "bottom-end" }}>
+            <a data-sveltekit-reload href={`/user?id=${$clientInfo.user_id}`}>
                 {$clientInfo.display_name}
-            </p>
-        </a>
+            </a>
+        </p>
     {:else}
         <p use:tippy={{ content: tippyTooltip, placement: "bottom-end" }}>
             Loading...

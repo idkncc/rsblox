@@ -1,10 +1,15 @@
 <script lang="ts">
+    import "./NavbarProfileTooltip.scss";
+
     import { getContext } from "svelte";
 
     import { Store } from "tauri-plugin-store-api";
     import { STORE_PATH } from "$lib/constants";
 
+    import { Button } from "@ui/button";
+
     import { type ClientInfoWritable } from "$lib/typings";
+    import { goto } from "$app/navigation";
 
     const clientInfo = getContext<ClientInfoWritable>("clientInfo");
 
@@ -20,25 +25,9 @@
         @{$clientInfo?.username ?? "loading"}
     </div>
     <div class="tooltip-body">
-        <button on:click={logOut}>Logout</button>
+        <a href="/settings">
+            <Button variant="ghost" class="w-full">Settings</Button>
+        </a>
+        <Button variant="ghost" on:click={logOut}>Logout</Button>
     </div>
 </div>
-
-<style lang="scss">
-    #navbar-profile-tooltip {
-        @apply border;
-        @apply overflow-hidden backdrop-blur-xl;
-        @apply w-full rounded-lg;
-        @apply z-50;
-
-        .tooltip-header {
-            @apply bg-secondary/80 text-secondary-foreground;
-            @apply w-full p-2;
-        }
-
-        .tooltip-body > * {
-            @apply bg-secondary/60 text-secondary-foreground;
-            @apply w-full p-2;
-        }
-    }
-</style>

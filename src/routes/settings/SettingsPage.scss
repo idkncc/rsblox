@@ -9,4 +9,18 @@
       @apply text-foreground;
     }
   }
+
+  .settings-content .section-content {
+    @apply flex flex-col gap-2;
+
+    .settings-field {
+      @apply grid grid-cols-[180px_1fr] gap-2 items-center;
+
+      h3 {
+        @apply font-medium
+      }
+
+      .settings-field-content {}
+    }
+  }
 }

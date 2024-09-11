@@ -2,19 +2,35 @@
     import "./SettingsPage.scss";
 
     import * as Section from "@ui/section";
-    import { page } from "$app/stores";
+    import { Separator } from "@ui/separator";
+
     import SettingsPageLink from "@components/Settings/SettingsPageLink.svelte";
 </script>
 
-<h1 class="text-2xl font-bold">Settings</h1>
+<!-- <h1 class="text-2xl font-bold">Settings</h1> -->
 
 <div class="settings-page">
-    <Section.Root class="settings-sidebar">
-        <Section.Content>
-            <SettingsPageLink href="/settings" title="Home" />
-            <SettingsPageLink href="/settings/theme" title="Theme" />
-        </Section.Content>
-    </Section.Root>
+    <nav class="settings-sidebar">
+        <!-- <Section.Root>
+            <Section.Title>Roblox settings</Section.Title>
+            <Section.Content>
+                <SettingsPageLink
+                    href="/settings/account-info"
+                    title="Account Info"
+                />
+            </Section.Content>
+        </Section.Root> -->
+        <Section.Root class="settings-sidebar">
+            <Section.Title class="">rsblox settings</Section.Title>
+            <Section.Content>
+                <SettingsPageLink href="/settings/theme" title="Theme" />
+                <SettingsPageLink href="/settings/tray" title="Tray" />
+                <Separator />
+                <SettingsPageLink href="/settings/about" title="About" />
+                <!-- <SettingsPageLink href="/settings/theme" title="Tray" /> -->
+            </Section.Content>
+        </Section.Root>
+    </nav>
 
     <main class="settings-content">
         <slot></slot>

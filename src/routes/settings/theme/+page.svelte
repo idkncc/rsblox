@@ -20,7 +20,7 @@
                 userPrefersMode.set(selected?.value ?? "system");
             }}
         >
-            <Select.Trigger class="w-[180px]">
+            <Select.Trigger class="w-full">
                 <Select.Value placeholder="Color scheme" />
             </Select.Trigger>
             <Select.Content>

@@ -1,7 +1,7 @@
 <script lang="ts">
     import * as Section from "@ui/section";
     import * as Select from "@ui/select";
-    import { Checkbox } from "@ui/checkbox";
+    import { Switch } from "@ui/switch";
 
     import { type Selected } from "bits-ui";
 
@@ -28,7 +28,7 @@
             <h3>Enabled</h3>
 
             <div class="settings-field-content">
-                <Checkbox />
+                <Switch />
             </div>
         </div>
         <div class="settings-field">

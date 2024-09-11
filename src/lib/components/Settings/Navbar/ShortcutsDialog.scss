@@ -1,0 +1,11 @@
+.settings-navbar {
+  @apply grid grid-cols-[5fr_3fr_2fr] gap-2 items-center;
+  @apply bg-secondary text-secondary-foreground rounded-xl border;
+  @apply p-2;
+
+  .shortcuts {
+    @apply flex gap-1;
+    @apply p-2;
+    @apply bg-background text-foreground border border-dashed rounded-lg;
+  }
+}

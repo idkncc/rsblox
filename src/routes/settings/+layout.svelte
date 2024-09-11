@@ -23,8 +23,21 @@
         <Section.Root class="settings-sidebar">
             <Section.Title class="">rsblox settings</Section.Title>
             <Section.Content>
-                <SettingsPageLink href="/settings/theme" title="Theme" />
-                <SettingsPageLink href="/settings/tray" title="Tray" />
+                <SettingsPageLink
+                    href="/settings/theme"
+                    title="Theme"
+                    badge="new"
+                />
+                <SettingsPageLink
+                    href="/settings/tray"
+                    title="Tray"
+                    badge="wip"
+                />
+                <SettingsPageLink
+                    href="/settings/navbar"
+                    title="Navbar"
+                    badge="wip"
+                />
                 <Separator />
                 <SettingsPageLink href="/settings/about" title="About" />
                 <!-- <SettingsPageLink href="/settings/theme" title="Tray" /> -->

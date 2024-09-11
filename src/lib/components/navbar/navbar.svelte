@@ -6,7 +6,7 @@
 
     import { Input } from "@ui/input";
 
-    import NavbarProfile from "@components/NavbarProfile.svelte";
+    import NavbarProfile from "./NavbarProfile.svelte";
 
     let searchQuery = "";
 

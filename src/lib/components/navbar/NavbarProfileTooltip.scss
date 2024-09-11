@@ -1,0 +1,20 @@
+#navbar-profile-tooltip {
+  @apply border border-secondary;
+  @apply overflow-hidden backdrop-blur-xl;
+  @apply w-full rounded-lg;
+  @apply z-50;
+
+  .tooltip-header {
+    @apply bg-secondary/80 text-secondary-foreground;
+    @apply w-full p-2;
+  }
+
+  .tooltip-body {
+    @apply p-1.5;
+    @apply flex flex-col;
+
+    &>* {
+      @apply w-full;
+    }
+  }
+}

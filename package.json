@@ -31,6 +31,7 @@
     "clsx": "^2.1.1",
     "embla-carousel-svelte": "^8.2.1",
     "lodash.chunk": "^4.2.0",
+    "mode-watcher": "^0.4.1",
     "svelte-radix": "^1.1.1",
     "swiper": "^11.1.7",
     "tailwind-merge": "^2.5.2",

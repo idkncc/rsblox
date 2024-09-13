@@ -267,3 +267,8 @@ export const enum ThumbnailType {
     GameIcon = "GameIcon",
     GameThumbnail = "GameThumbnail",
 }
+
+export interface TrayGame {
+    id: number,
+    title: string
+}

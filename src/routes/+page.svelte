@@ -20,6 +20,7 @@
         type RecommendationsTopic,
     } from "$lib/typings.js";
     import { PRESENCE_INDEXES } from "$lib/constants";
+    import { trayApi } from "$lib/trayApi";
 
     let friends: InternalUser[] = [];
     let topics: RecommendationsTopic[] = [];
@@ -135,6 +136,15 @@
         );
 
         gameIcons = Object.fromEntries(iconsBatches.flat(1));
+
+        trayApi.setGames(
+            topics
+                .find((topic) => topic.topic_id === 100000003)!
+                .recommendation_list.map((recommendation) => ({
+                    id: recommendation.root_place_id,
+                    title: recommendation.name,
+                })),
+        );
     }
 </script>
 

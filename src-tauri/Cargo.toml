@@ -10,7 +10,7 @@ edition = "2021"
 [build-dependencies]
 tauri-build = { version = "1", features = [] }
 [dependencies]
-tauri = { version = "1", features = [
+tauri = { version = "1", features = [ "system-tray",
     "clipboard-write-text",
     "shell-open",
     "shell-open-api",

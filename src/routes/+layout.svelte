@@ -2,7 +2,7 @@
     import "tippy.js/animations/shift-away-subtle.css";
     import "../css/main.scss";
 
-    import { setContext } from "svelte";
+    import { onMount, setContext } from "svelte";
     import { writable } from "svelte/store";
     import { robloxApi } from "$lib/robloxApi";
 

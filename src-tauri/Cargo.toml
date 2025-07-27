@@ -1,34 +1,27 @@
 [package]
 name = "rsblox"
-version = "2.0.0"
+version = "0.1.0"
 description = "A Tauri App"
 authors = ["you"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[lib]
+# The `_lib` suffix may seem redundant but it is necessary
+# to make the lib name unique and wouldn't conflict with the bin name.
+# This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
+name = "rsblox_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
 [build-dependencies]
-tauri-build = { version = "1", features = [] }
+tauri-build = { version = "2", features = [] }
+
 [dependencies]
-tauri = { version = "1", features = [
-    "clipboard-write-text",
-    "shell-open",
-    "shell-open-api",
-] }
+tauri = { version = "2", features = [] }
+tauri-plugin-opener = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+thiserror = "2.0.12"
+reqwest = { version = "0.12.22", features = ["json"] }
 
-tauri-plugin-store = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
-tokio = { version = "1.27.0", features = ["full"] }
-reqwest = { version = "0.12.5", default-features = false, features = [
-    "rustls-tls",
-    "json",
-    "multipart",
-    "blocking",
-] }
-thiserror = "1.0.63"
-base64 = "0.22.1"
-
-[features]
-# This feature is used for production builds or when a dev server is not specified, DO NOT REMOVE!!
-custom-protocol = ["tauri/custom-protocol"]
